@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المتجر الإلكتروني</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #ffffff; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #1e40af; border-radius: 10px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="overflow-x-hidden text-gray-800">
+
+    <!-- شاشة التحميل -->
+    <div id="page-loader" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-4 text-center">
+        <div class="animate-spin text-4xl mb-4 text-blue-600">🔄</div>
+        <p class="font-bold text-gray-500">جاري تحميل المتجر...</p>
+    </div>
+
+    <!-- الشريط العلوي (Navbar) -->
+    <header class="sticky top-0 bg-white shadow-sm z-40 border-b border-gray-100 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 md:gap-6 flex-1">
+                <button id="menu-btn" class="text-gray-700 text-xl hover:text-blue-600 transition p-1">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="flex items-center gap-2">
+                    <div id="store-logo-container" class="w-8 h-8 rounded-full overflow-hidden bg-gray-100 hidden">
+                        <img id="store-logo" src="" alt="Logo" class="w-full h-full object-cover">
+                    </div>
+                    <span id="store-name" class="font-black text-lg md:text-xl text-gray-900 tracking-wide">جاري التحميل...</span>
+                </div>
+                <div class="relative flex-1 max-w-xl hidden md:block">
+                    <input type="text" id="search-input" placeholder="ابحث عن منتج..." class="w-full bg-gray-100 text-sm rounded-full py-2 pr-10 pl-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+                <span id="cart-total" class="font-bold text-sm text-gray-900">0 د.ج</span>
+                <i class="fa-solid fa-cart-shopping text-gray-700 text-sm"></i>
+            </div>
+        </div>
+        <div class="relative w-full mt-2 md:hidden">
+            <input type="text" id="search-input-mobile" placeholder="ابحث عن منتج..." class="w-full bg-gray-100 text-sm rounded-full py-2 pr-10 pl-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
+            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+        </div>
+    </header>
+
+    <!-- القائمة الجانبية (Sidebar) -->
+    <div id="sidebar" class="fixed inset-y-0 right-0 w-80 bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b border-gray-100 flex flex-col items-center text-center relative">
+            <button id="close-sidebar" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-lg"></i></button>
+            <div class="w-20 h-20 rounded-full overflow-hidden bg-gray-50 border shadow-sm p-1 mb-3">
+                <img id="sidebar-logo" src="https://placehold.co/150" class="w-full h-full object-cover rounded-full">
+            </div>
+            <h2 id="sidebar-store-name" class="font-black text-gray-900 text-lg">اسم المتجر</h2>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1">
+            <a href="#" onclick="toggleSidebar(false)" class="flex items-center justify-between px-4 py-3 text-blue-600 font-bold bg-blue-50 rounded-xl">
+                <span>الرئيسية</span>
+            </a>
+            <button onclick="scrollToSection('categories-section')" class="w-full flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-gray-50 font-semibold rounded-xl transition">
+                <span>التصنيفات</span>
+            </button>
+            <button onclick="alert('ميزة تتبع حالة الطلب قيد التطوير حالياً')" class="w-full flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-gray-50 font-semibold rounded-xl transition">
+                <span>حالة الطلب</span>
+            </button>
+            <button onclick="openShippingModal()" class="w-full flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-gray-50 font-semibold rounded-xl transition">
+                <span>أسعار التوصيل</span>
+            </button>
+            
+            <div class="pt-4 border-t border-gray-100 mt-4">
+                <p class="text-xs font-bold text-gray-400 px-4 mb-2">التصنيفات المتاحة</p>
+                <div id="sidebar-categories" class="grid grid-cols-1 gap-2 px-2">
+                    <!-- تصنيفات المنتجات المتاحة فقط -->
+                </div>
+            </div>
+        </div>
+        <div id="sidebar-socials" class="p-4 border-t border-gray-100 flex items-center justify-center gap-4 bg-gray-50"></div>
+    </div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-40 hidden opacity-0 transition-opacity duration-300"></div>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="max-w-7xl mx-auto px-4 py-6 md:py-10 space-y-12">
+
+        <!-- قسم التصنيفات النشطة للتاجر فقط -->
+        <section id="categories-section" class="space-y-4">
+            <div class="text-right">
+                <h2 class="text-2xl font-black text-gray-900">التصنيفات</h2>
+                <p class="text-xs text-gray-400 font-medium mt-0.5">اكتشف تصنيفات منتجاتنا المتوفرة</p>
+            </div>
+            <div id="categories-container" class="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x no-scrollbar">
+                <!-- يظهر هنا ما يبيعه التاجر فقط -->
+            </div>
+        </section>
+
+        <!-- قسم المنتجات -->
+        <section class="space-y-6">
+            <div class="text-right">
+                <h2 class="text-2xl font-black text-gray-900 flex items-center gap-2">مرحباً بك ❤️</h2>
+                <p class="text-xs text-gray-400 font-medium mt-0.5">اكتشف أفضل المنتجات بأفضل الأسعار🔥</p>
+            </div>
+            <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                <!-- المنتجات -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- أسعار التوصيل -->
+    <div id="shipping-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-3xl p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
+            <button onclick="closeShippingModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-lg"></i></button>
+            <h3 class="text-xl font-black text-gray-900 border-b pb-3 mb-4"><i class="fa-solid fa-truck text-blue-600 ml-2"></i>أسعار التوصيل المعتمدة</h3>
+            <div id="shipping-list" class="flex-1 overflow-y-auto space-y-3 pr-1">
+                <!-- جلب حقول التوصيل ديناميكياً للتاجر الحالي فقط -->
+            </div>
+        </div>
+    </div>
+
+    <!-- الفوتر السفلي -->
+    <footer id="footer-section" class="bg-gray-50 border-t border-gray-100 mt-20 py-10 px-6 text-center md:text-right">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div class="flex flex-col items-center md:items-end space-y-3">
+                <div class="flex items-center gap-2">
+                    <span id="footer-store-name" class="font-black text-gray-900 text-lg">اسم المتجر</span>
+                    <img id="footer-logo" src="" class="w-8 h-8 rounded-full object-cover hidden">
+                </div>
+                <p id="store-bio" class="text-xs text-gray-400 max-w-xs leading-relaxed">بائع معتمد في المنصة SouqiExpress.</p>
+            </div>
+            <div class="space-y-2">
+                <h4 class="font-bold text-gray-400 text-xs uppercase tracking-wider">التوصيل والخدمات</h4>
+                <ul class="text-sm font-semibold text-gray-700 space-y-2">
+                    <li><button onclick="openShippingModal()" class="hover:text-blue-600 transition">أسعار التوصيل في الجزائر</button></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
+            authDomain: "walid-shop.firebaseapp.com",
+            projectId: "walid-shop",
+            storageBucket: "walid-shop.firebasestorage.app",
+            messagingSenderId: "3705207162",
+            appId: "1:3705207162:web:7b3a80ba4acea3e29c3ec3",
+            measurementId: "G-YX3PT078PG"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const merchantId = urlParams.get('merchantId') || urlParams.get('id') || "o11g5iW1LLfPer47OqkvHAKpzYL2";
+
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        const closeSidebar = document.getElementById('close-sidebar');
+
+        function toggleSidebar(open) {
+            if(open) {
+                sidebarOverlay.classList.remove('hidden');
+                setTimeout(() => sidebarOverlay.classList.add('opacity-100'), 10);
+                sidebar.classList.remove('translate-x-full');
+            } else {
+                sidebarOverlay.classList.remove('opacity-100');
+                sidebar.classList.add('translate-x-full');
+                setTimeout(() => sidebarOverlay.classList.add('hidden'), 300);
+            }
+        }
+        menuBtn.addEventListener('click', () => toggleSidebar(true));
+        closeSidebar.addEventListener('click', () => toggleSidebar(false));
+        sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
+
+        function scrollToSection(id) {
+            toggleSidebar(false);
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openShippingModal() {
+            toggleSidebar(false);
+            document.getElementById('shipping-modal').classList.remove('hidden');
+        }
+        function closeShippingModal() {
+            document.getElementById('shipping-modal').classList.add('hidden');
+        }
+
+        async function initStore() {
+            try {
+                // 1. جلب بيانات التاجر الأساسية
+                const merchantDoc = await db.collection('users').doc(merchantId).get();
+                if (merchantDoc.exists) {
+                    const merchant = merchantDoc.data();
+                    const sName = merchant.name || "متجر التاجر";
+                    document.getElementById('store-name').innerText = sName;
+                    document.getElementById('sidebar-store-name').innerText = sName;
+                    document.getElementById('footer-store-name').innerText = sName;
+                    
+                    if (merchant.avatar) {
+                        ['store-logo', 'sidebar-logo', 'footer-logo'].forEach(id => {
+                            const el = document.getElementById(id);
+                            el.src = merchant.avatar;
+                            el.parentElement.classList.remove('hidden');
+                        });
+                    }
+                }
+
+                // 2. إعدادات السوشيال ميديا
+                try {
+                    const settingsSnapshot = await db.collection('merchant_settings').where('merchant', '==', merchantId).limit(1).get();
+                    if (!settingsSnapshot.empty) {
+                        const settings = settingsSnapshot.docs[0].data();
+                        const socialContainer = document.getElementById('sidebar-socials');
+                        socialContainer.innerHTML = '';
+                        
+                        if (settings.facebook) socialContainer.innerHTML += `<a href="${settings.facebook}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-[#1877f2] text-lg hover:scale-110 transition"><i class="fa-brands fa-facebook-f"></i></a>`;
+                        if (settings.instagram) socialContainer.innerHTML += `<a href="${settings.instagram}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-gradient-to-tr from-[#fccc63] via-[#f75274] to-[#9d36e7] text-lg hover:scale-110 transition"><i class="fa-brands fa-instagram"></i></a>`;
+                        if (settings.tiktok) socialContainer.innerHTML += `<a href="${settings.tiktok}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-black text-lg hover:scale-110 transition"><i class="fa-brands fa-tiktok"></i></a>`;
+                        if (settings.snapchat || settings.whatsapp) {
+                            const snap = settings.snapchat || `https://wa.me/${settings.whatsapp}`;
+                            // تم تحويل الأيقونة والخلفية هنا إلى واتساب الأخضر بدلاً من سناب شات الأصفر
+                            socialContainer.innerHTML += `<a href="${snap}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-[#25D366] text-lg hover:scale-110 transition shadow-sm"><i class="fa-brands fa-whatsapp"></i></a>`;
+                        }
+                    }
+                } catch (e) {}
+
+                // 3. قراءة أسعار التوصيل الخاصة بالتاجر الحالي فقط
+                try {
+                    const shippingSnapshot = await db.collection('shipping_rates').where('merchant', '==', merchantId).get();
+                    const shippingList = document.getElementById('shipping-list');
+                    shippingList.innerHTML = '';
+                    
+                    if (shippingSnapshot.empty) {
+                        shippingList.innerHTML = '<p class="text-center py-6 text-gray-400 font-bold text-sm">لا توجد أسعار توصيل محددة لهذا التاجر حالياً.</p>';
+                    } else {
+                        shippingSnapshot.forEach(doc => {
+                            const rate = doc.data();
+                            if(rate.is_active !== false) {
+                                let stateName = rate.wilaya_name || rate.state || "ولاية غير معروفة";
+                                let deskPrice = rate.desk_price !== undefined ? rate.desk_price : 0;
+                                let homePrice = rate.home_price !== undefined ? rate.home_price : 0;
+
+                                shippingList.innerHTML += `
+                                    <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-blue-200 transition flex flex-col gap-2">
+                                        <div class="flex items-center justify-between border-b border-gray-200/60 pb-1.5">
+                                            <span class="font-bold text-gray-900 text-base flex items-center gap-2">
+                                                <i class="fa-solid fa-location-dot text-blue-600 text-sm"></i> ${stateName}
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center justify-between text-xs font-semibold text-gray-600">
+                                            <span><i class="fa-solid fa-building-user ml-1"></i> للمكتب: <strong class="text-blue-600 font-bold">${deskPrice} د.ج</strong></span>
+                                            <span><i class="fa-solid fa-house-chimney ml-1"></i> للمنزل: <strong class="text-blue-600 font-bold">${homePrice} د.ج</strong></span>
+                                        </div>
+                                    </div>`;
+                            }
+                        });
+                    }
+                } catch(e) { console.log(e); }
+
+                // 4. جلب منتجات التاجر لمعرفة ما يبيعه حالياً
+                const productsSnapshot = await db.collection('products').where('user_id', '==', merchantId).get();
+                let allProducts = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).filter(p => p.is_active !== false);
+                
+                allProducts.sort((a, b) => new Date(b.created || 0) - new Date(a.created || 0));
+                window.productsList = allProducts;
+
+                // استخراج معرفات/أسماء التصنيفات الفريدة من المنتجات النشطة
+                const activeCategories = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
+                
+                // 5. جلب جدول التصنيفات بالكامل للحصول على الاسم الصحيح
+                const categoriesSnapshot = await db.collection('categories').get();
+                const categoriesMap = {};
+                categoriesSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    categoriesMap[doc.id] = data;
+                    if(data.name) categoriesMap[data.name] = data;
+                });
+
+                const catsContainer = document.getElementById('categories-container');
+                const sidebarCats = document.getElementById('sidebar-categories');
+                catsContainer.innerHTML = '';
+                sidebarCats.innerHTML = '';
+
+                let displayedCategoriesCount = 0;
+
+                activeCategories.forEach(catKey => {
+                    const catData = categoriesMap[catKey] || {};
+                    const finalCatName = catData.nameAr || catData.name || catKey;
+                    const catImage = catData.image || 'https://placehold.co/300x400/1e40af/ffffff?text=' + encodeURIComponent(finalCatName);
+                    
+                    displayedCategoriesCount++;
+
+                    catsContainer.innerHTML += `
+                        <div class="min-w-[170px] sm:min-w-[210px] h-64 relative rounded-2xl overflow-hidden snap-start shrink-0 group shadow-sm border border-gray-100">
+                            <img src="${catImage}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
+                                <h3 class="text-white font-black text-sm sm:text-base text-right mb-2.5 leading-tight">${finalCatName}</h3>
+                                <button onclick="filterByCategory('${catKey}')" class="w-full bg-blue-600 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1 shadow-md hover:bg-blue-700 transition">
+                                    <span>تصفح الآن</span> <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>`;
+
+                    sidebarCats.innerHTML += `
+                        <button onclick="filterByCategory('${catKey}')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 text-right text-xs font-bold text-gray-700 hover:text-blue-600 rounded-xl transition border border-gray-100 flex items-center justify-between">
+                            <span>${finalCatName}</span>
+                            <i class="fa-solid fa-chevron-left text-[10px] opacity-50"></i>
+                        </button>`;
+                });
+
+                if(displayedCategoriesCount === 0) {
+                    document.getElementById('categories-section').classList.add('hidden');
+                }
+
+                renderProducts(allProducts);
+
+            } catch (error) {
+                console.error(error);
+            } finally {
+                document.getElementById('page-loader').classList.add('hidden');
+            }
+        }
+
+        function renderProducts(list) {
+            const grid = document.getElementById('products-grid');
+            if (list.length === 0) {
+                grid.innerHTML = "<p class='col-span-full text-center py-12 text-gray-400 font-bold bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200'>لا توجد منتجات متوفرة في هذا القسم حالياً.</p>";
+                return;
+            }
+
+            grid.innerHTML = list.map(product => {
+                let productImg = product.image ? (Array.isArray(product.image) ? product.image[0] : product.image) : 'https://placehold.co/400x400?text=No+Image';
+                const currentPrice = Number(product.price || 0);
+                const oldPrice = product.old_price ? Number(product.old_price) : null;
+                
+                let discountBadge = '';
+                if(oldPrice && oldPrice > currentPrice) {
+                    const discountPercentage = Math.round(((oldPrice - currentPrice) / oldPrice) * 100);
+                    discountBadge = `<div class="absolute top-3 right-3 bg-red-500 text-white text-[11px] font-black px-2 py-0.5 rounded-full shadow-sm">-${discountPercentage}%</div>`;
+                }
+
+                return `
+                <div class="bg-white rounded-2xl overflow-hidden flex flex-col justify-between group transition-all duration-300 border border-gray-50 hover:shadow-md p-1">
+                    <div class="aspect-square w-full overflow-hidden relative rounded-xl bg-gray-50">
+                        <img src="${productImg}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        ${discountBadge}
+                    </div>
+                    <div class="pt-3 pb-2 px-1 flex flex-col items-center text-center space-y-1">
+                        <h3 class="font-semibold text-gray-800 text-sm md:text-base line-clamp-1 w-full">${product.name || 'منتج جديد'}</h3>
+                        <div class="flex items-center gap-0.5 text-amber-400 text-[11px]">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <div class="flex items-center justify-center gap-2 flex-wrap">
+                            <span class="text-blue-700 font-black text-sm md:text-base">${currentPrice.toLocaleString('fr-FR')} دج</span>
+                            ${oldPrice ? `<span class="text-gray-400 line-through text-xs">${oldPrice.toLocaleString('fr-FR')} دج</span>` : ''}
+                        </div>
+                        <a href="product-details.html?id=${product.id}" class="w-full mt-2 bg-blue-600 text-white hover:bg-blue-700 text-xs font-bold py-2.5 rounded-xl shadow-sm transition-all block text-center">
+                            أطلب الآن
+                        </a>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function filterByCategory(catKey) {
+            toggleSidebar(false);
+            if(!window.productsList) return;
+            const filtered = window.productsList.filter(p => p.category === catKey);
+            renderProducts(filtered);
+            document.getElementById('products-grid').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        const searchInput = document.getElementById('search-input');
+        const searchInputMobile = document.getElementById('search-input-mobile');
+        
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase();
+            if(!window.productsList) return;
+            const filtered = window.productsList.filter(p => (p.name || '').toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+        searchInput.addEventListener('input', handleSearch);
+        searchInputMobile.addEventListener('input', handleSearch);
+
+        initStore();
+    </script>
+</body>
+</html>

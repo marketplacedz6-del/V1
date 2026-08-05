@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الدخول | SouqiExpress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .auth-gradient { 
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); 
+        }
+    </style>
+</head>
+<body class="auth-gradient min-h-screen flex items-center justify-center p-4 antialiased">
+
+    <div id="successModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 transition-all duration-300">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl border border-gray-100 transform scale-95 transition-transform duration-300">
+            <div class="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-100 shadow-inner animate-bounce">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">تم إنشاء الحساب بنجاح!</h3>
+            <p class="text-gray-500 text-xs sm:text-sm mb-6 leading-relaxed">أهلاً بك في منصتنا، يمكنك الآن تسجيل الدخول مباشرة باستخدام بريدك الإلكتروني بعد موافقة الإدارة إن كنت تاجراً.</p>
+            <button onclick="closeSuccessModal()" class="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white py-3.5 rounded-2xl font-bold shadow-lg shadow-blue-600/20 transition duration-300">
+                حسناً، تسجيل الدخول
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-white/95 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl shadow-blue-950/50 w-full max-w-md border border-white/40 my-6 transition-all duration-300">
+        
+        <div class="flex flex-col items-center mb-6">
+            <div class="flex items-center gap-2 bg-gradient-to-r from-blue-900 to-blue-800 text-white px-4 py-2 rounded-2xl shadow-md">
+                <span class="text-xl">🛒</span>
+                <span class="font-black tracking-wide text-sm sm:text-base">Souqi<span class="text-green-400">Express</span></span>
+            </div>
+            <span class="text-[10px] text-gray-400 font-bold mt-2 uppercase tracking-widest">بوابة الوصول الآمنة</span>
+        </div>
+
+        <h2 id="formTitle" class="text-2xl sm:text-3xl font-black mb-6 text-center text-gray-800">تسجيل الدخول</h2>
+        
+        <form id="authForm" class="space-y-4">
+            
+            <div id="registerFields" class="hidden space-y-4">
+                
+                <div class="flex flex-col items-center justify-center mb-2">
+                    <span class="text-xs text-gray-500 font-bold mb-2">الصورة الشخصية (اختياري)</span>
+                    <div class="relative group">
+                        <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="previewAvatar(event)">
+                        <button type="button" onclick="document.getElementById('avatarInput').click()" class="w-24 h-24 rounded-full bg-gray-50 border-2 border-dashed border-gray-200 hover:border-blue-500 flex flex-col items-center justify-center overflow-hidden transition relative shadow-inner group">
+                            <img id="avatarPreview" src="" class="w-full h-full object-cover hidden" alt="الصورة الشخصية">
+                            <div id="avatarPlaceholder" class="flex flex-col items-center justify-center text-gray-400 group-hover:text-blue-500 transition">
+                                <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812-1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                <span class="text-[9px] font-bold">إضافة صورة</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">👤</span>
+                    <input type="text" id="name" placeholder="الاسم الكامل" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
+                </div>
+
+                <div class="relative">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">📞</span>
+                    <input type="tel" id="phone" placeholder="رقم الهاتف" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-left" dir="ltr">
+                </div>
+            </div>
+            
+            <div class="relative">
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">✉️</span>
+                <input type="email" id="email" required placeholder="البريد الإلكتروني" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
+            </div>
+
+            <div class="relative">
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔒</span>
+                <input type="password" id="password" required placeholder="كلمة المرور" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-12 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
+                <button type="button" onclick="togglePasswordVisibility('password', 'eyeBtn')" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition text-sm select-none" id="eyeBtn">
+                    👁️
+                </button>
+            </div>
+
+            <div id="confirmPasswordFields" class="relative hidden">
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔒</span>
+                <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-12 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
+                <button type="button" onclick="togglePasswordVisibility('confirmPassword', 'confirmEyeBtn')" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition text-sm select-none" id="confirmEyeBtn">
+                    👁️
+                </button>
+            </div>
+            
+            <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white py-3.5 sm:py-4 rounded-2xl font-bold hover:from-blue-700 hover:to-blue-900 shadow-lg shadow-blue-600/15 transition transform active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm">
+                دخول
+            </button>
+        </form>
+
+        <div id="errorMessage" class="text-red-600 bg-red-50/80 backdrop-blur-sm border border-red-200 p-4 rounded-2xl mt-4 text-xs sm:text-sm hidden font-medium space-y-2">
+            <p id="errorTitle" class="font-bold flex items-center gap-1.5 text-red-700"></p>
+            <p id="errorDetails" class="text-[11px] text-red-600 leading-relaxed pl-2"></p>
+            <div id="errorActionContainer" class="pt-1 hidden">
+                <a href="resellers_list.html" class="inline-flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl shadow-md transition transform active:scale-95">
+                    <span>👥 اختيار مسوق لتفعيل الحساب</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="mt-6 text-center text-xs sm:text-sm text-gray-500 font-semibold border-t border-gray-100 pt-4">
+            <span id="toggleText">ليس لديك حساب؟</span>
+            <button type="button" onclick="toggleMode()" class="text-blue-600 font-bold hover:text-blue-800 hover:underline mr-1 transition">سجل الآن</button>
+        </div>
+    </div>
+
+<script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
+            authDomain: "walid-shop.firebaseapp.com",
+            projectId: "walid-shop",
+            storageBucket: "walid-shop.firebasestorage.app",
+            messagingSenderId: "3705207162",
+            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
+            measurementId: "G-PGLFSTBVTH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let isLoginMode = true;
+
+        window.togglePasswordVisibility = (inputId, btnId) => {
+            const passwordInput = document.getElementById(inputId);
+            const eyeBtn = document.getElementById(btnId);
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeBtn.textContent = '🕶️';
+            } else {
+                passwordInput.type = 'password';
+                eyeBtn.textContent = '👁️';
+            }
+        };
+
+        window.previewAvatar = (event) => {
+            const file = event.target.files[0];
+            const preview = document.getElementById('avatarPreview');
+            const placeholder = document.getElementById('avatarPlaceholder');
+            
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            }
+        };
+
+        window.toggleMode = () => {
+            isLoginMode = !isLoginMode;
+            document.getElementById('formTitle').textContent = isLoginMode ? 'تسجيل الدخول' : 'إنشاء حساب جديد';
+            document.getElementById('submitBtn').textContent = isLoginMode ? 'دخول' : 'إنشاء حساب جديد';
+            document.getElementById('registerFields').classList.toggle('hidden', isLoginMode);
+            document.getElementById('confirmPasswordFields').classList.toggle('hidden', isLoginMode);
+            document.getElementById('toggleText').textContent = isLoginMode ? 'ليس لديك حساب؟' : 'لديك حساب بالفعل؟';
+            document.getElementById('errorMessage').classList.add('hidden'); 
+            document.getElementById('errorActionContainer').classList.add('hidden');
+            
+            document.getElementById('phone').required = !isLoginMode;
+            document.getElementById('name').required = !isLoginMode;
+            document.getElementById('confirmPassword').required = !isLoginMode;
+
+            if (isLoginMode) {
+                document.getElementById('avatarInput').value = '';
+                document.getElementById('avatarPreview').src = '';
+                document.getElementById('avatarPreview').classList.add('hidden');
+                document.getElementById('avatarPlaceholder').classList.remove('hidden');
+                document.getElementById('phone').value = '';
+                document.getElementById('name').value = '';
+                document.getElementById('confirmPassword').value = '';
+            }
+        };
+
+        window.closeSuccessModal = () => {
+            const modal = document.getElementById('successModal');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                window.toggleMode(); 
+            }, 150);
+        };
+
+        function convertImageToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        function getFriendlyErrorMessage(code) {
+            switch (code) {
+                case 'auth/invalid-credential':
+                case 'auth/wrong-password':
+                case 'auth/user-not-found':
+                    return 'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التثبت والمحاولة مجدداً.';
+                case 'auth/invalid-email':
+                    return 'صيغة البريد الإلكتروني المكتوب غير صحيحة.';
+                case 'auth/email-already-in-use':
+                    return 'البريد الإلكتروني مستخدم بالفعل في حساب آخر.';
+                case 'auth/weak-password':
+                    return 'كلمة المرور ضعيفة جداً، يجب أن تتكون من 6 أحرف أو رموز على الأقل.';
+                case 'auth/network-request-failed':
+                    return 'فشل الاتصال بالشبكة، يرجى التحقق من اتصال الإنترنت لديك.';
+                default:
+                    return 'حدث خطأ أثناء الاتصال بقاعدة البيانات، يرجى إعادة المحاولة.';
+            }
+        }
+
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const errorTitle = document.getElementById('errorTitle');
+            const errorDetails = document.getElementById('errorDetails');
+            const errorActionContainer = document.getElementById('errorActionContainer');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            errorMessage.classList.add('hidden'); 
+            errorActionContainer.classList.add('hidden');
+
+            if (!isLoginMode) {
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                if (password !== confirmPassword) {
+                    errorTitle.innerHTML = "⚠️ خطأ في كلمة المرور";
+                    errorDetails.textContent = "كلمتا المرور غير متطابقتين، يرجى التأكد وإعادة الكتابة.";
+                    errorMessage.classList.remove('hidden');
+                    return;
+                }
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span class="inline-block animate-spin">⏳</span> جاري التحقق...`;
+
+            try {
+                if (isLoginMode) {
+                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                    const uid = userCredential.user.uid;
+
+                    const userDocRef = doc(db, "users", uid);
+                    let userDoc = await getDoc(userDocRef);
+                    
+                    if (!userDoc.exists()) {
+                        await setDoc(userDocRef, {
+                            uid: uid,
+                            name: email.split('@')[0],
+                            email: email,
+                            phone: "",
+                            role: "merchant",
+                            avatar: "",
+                            is_approved: false,
+                            emailVisibility: false,
+                            createdAt: new Date().toISOString()
+                        });
+                        userDoc = await getDoc(userDocRef);
+                    }
+                    
+                    const userData = userDoc.data();
+                    const userRole = userData.role || 'user';
+                    const isApproved = userData.is_approved;
+
+                    if (userRole === 'merchant' && isApproved !== true) {
+                        errorTitle.innerHTML = "⚠️ الحساب قيد المراجعة والتدقيق";
+                        errorDetails.textContent = "عذراً، حسابك كتاجر لم يتم تفعيله بعد. يرجى التواصل مع الشخص أو المسوق الشريك الذي وجهك إلينا لتفعيل حسابك، أو اضغط على الزر أدناه للانتقال إلى قائمة المسوقين المعتمدين واختيار الشخص المناسب لتفعيل حسابك مباشرة.";
+                        errorMessage.classList.remove('hidden');
+                        errorActionContainer.classList.remove('hidden'); // إظهار الزر
+                        await signOut(auth);
+                        return;
+                    }
+
+                    const routes = { 
+                        'admin': 'admin-dashboard.html',
+                        'reseller': 'approve-vendors.html', 
+                        'merchant': 'merchant-dashboard.html',
+                        'user': 'index.html' 
+                    };
+
+                    const targetPage = routes[userRole] || 'index.html';
+                    window.location.replace(targetPage);
+                        
+                } else {
+                    const name = document.getElementById('name').value;
+                    const phone = document.getElementById('phone').value;
+                    const avatarFile = document.getElementById('avatarInput').files[0];
+
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const uid = userCredential.user.uid;
+
+                    let avatarUrl = "";
+
+                    if (avatarFile) {
+                        try {
+                            avatarUrl = await convertImageToBase64(avatarFile);
+                        } catch (imgErr) {
+                            console.error("خطأ في تجهيز الصورة:", imgErr);
+                        }
+                    }
+
+                    await setDoc(doc(db, "users", uid), {
+                        uid: uid,
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        role: "merchant",
+                        avatar: avatarUrl,
+                        is_approved: false,
+                        emailVisibility: false,
+                        createdAt: new Date().toISOString()
+                    });
+
+                    await signOut(auth);
+
+                    const modal = document.getElementById('successModal');
+                    modal.classList.remove('hidden');
+                    setTimeout(() => {
+                        modal.querySelector('div').classList.remove('scale-95');
+                        modal.querySelector('div').classList.add('scale-100');
+                    }, 10);
+                }
+            } catch (err) {
+                console.error("Firebase Error:", err);
+                errorMessage.classList.remove('hidden');
+                errorTitle.innerHTML = "❌ فشل الإجراء";
+                errorDetails.textContent = getFriendlyErrorMessage(err.code);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = isLoginMode ? 'دخول' : 'إنشاء حساب جديد';
+            }
+        });
+    </script>
+</body>
+</html>

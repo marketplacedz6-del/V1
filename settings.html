@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعدادات المتجر والحساب - مركز التاجر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap');
+        body { font-family: 'Cairo', sans-serif; }
+        
+        /* تأثير كرت الزجاج الفاخر الموحد عبر النظام */
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+        }
+        
+        /* شريط تمرير داخلي مخصص ومخفي */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-slate-900 flex h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-blue-50/30 relative">
+
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-40 hidden md:hidden transition-all duration-300"></div>
+
+    <aside id="sidebar" class="fixed inset-y-0 right-0 w-68 bg-white/90 backdrop-blur-xl border-l border-slate-200/80 shadow-xl shadow-slate-900/5 flex flex-col z-50 transform translate-x-full transition-transform duration-300 ease-out md:translate-x-0 md:static md:h-full">
+        <div class="p-6 border-b border-slate-100/80 flex items-center gap-3.5">
+            <div class="w-11 h-11 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-lg shadow-blue-600/20 transform rotate-3">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+            </div>
+            <div>
+                <h1 class="text-lg font-black text-slate-900 leading-none">مركز التاجر</h1>
+                <p id="sidebarStoreName" class="text-xs text-blue-600 font-extrabold mt-1 truncate max-w-[130px]">جاري التحميل...</p>
+            </div>
+        </div>
+        
+        <nav class="flex-grow p-4 space-y-1.5 overflow-y-auto">
+            <a href="merchant-dashboard.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
+                <span class="text-base group-hover:scale-110 transition-transform">📊</span> لوحة القيادة
+            </a>
+            <a href="products.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
+                <span class="text-base group-hover:scale-110 transition-transform">📦</span> إدارة المنتجات
+            </a>
+            <a href="orders.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
+                <span class="text-base group-hover:scale-110 transition-transform">🛒</span> الطلبات الواردة
+            </a>
+            <a href="shipping.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
+                <span class="text-base group-hover:scale-110 transition-transform">🚚</span> إدارة الشحن
+            </a>
+            <a href="settings.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-black bg-gradient-to-l from-blue-50 to-indigo-50/50 text-blue-600 border-r-4 border-blue-600 shadow-sm transition-all duration-200">
+                <span class="text-base">⚙️</span> الإعدادات
+            </a>
+        </nav>
+        
+        <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span id="db-status-dot" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                <span id="db-status-text" class="text-xs font-bold text-slate-600">فحص الاتصال...</span>
+            </div>
+            <button onclick="logout()" class="text-xs font-black text-red-500 hover:text-red-600 transition-colors flex items-center gap-1">🚪 خروج</button>
+        </div>
+    </aside>
+
+    <div class="flex-grow flex flex-col min-w-0 overflow-hidden">
+        
+        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/60 p-4 flex items-center justify-between md:hidden z-30 shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-md">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                </div>
+                <span id="mobileStoreName" class="font-black text-slate-800 text-sm truncate max-w-[160px]">جاري التحميل...</span>
+            </div>
+            <button onclick="toggleSidebar()" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-all active:scale-95">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </header>
+
+        <main class="flex-grow overflow-y-auto p-4 md:p-8 relative">
+            
+            <div class="mb-6 md:mb-8">
+                <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">إعدادات المتجر وروابط التواصل</h2>
+                <p class="text-slate-500 text-xs md:text-sm font-semibold mt-1">تعديل وتحديث روابط شبكات التواصل الاجتماعي الخاصة بمتجرك لتظهر لزبائنك.</p>
+            </div>
+
+            <div class="flex justify-center">
+                <div class="w-full max-w-2xl bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-3xl shadow-xl shadow-slate-900/5 overflow-hidden">
+                    
+                    <div class="p-6 bg-slate-50/70 border-b border-slate-100/80">
+                        <h3 class="text-base md:text-lg font-black text-slate-800">بيانات التواصل الاجتماعي</h3>
+                        <p class="text-xs text-slate-400 font-bold mt-1">تظهر هذه الروابط للزبائن في صفحة منتجاتك لتسهيل وتنشيط التواصل المباشر معك.</p>
+                    </div>
+
+                    <form id="settingsForm" class="p-6 space-y-6 text-sm font-semibold text-slate-700">
+                        
+                        <div class="space-y-2">
+                            <label class="block text-xs font-extrabold text-slate-500">🟢 رقم الواتساب (WhatsApp):</label>
+                            <div class="relative group">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-base transition-colors group-focus-within:text-green-500">📞</span>
+                                <input type="text" id="whatsapp" placeholder="مثال: 213600000000" class="w-full border border-slate-200 bg-slate-50/50 rounded-2xl pl-4 pr-12 py-3.5 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all font-bold text-sm text-left" dir="ltr">
+                            </div>
+                            <p class="text-[10px] text-slate-400 font-bold mr-1">اكتب الرقم مع رمز الدولة بدون مفتاح (00) أو (+). مثال للجزائر: 213555xxxxxx</p>
+                        </div>
+
+                        <hr class="border-slate-100">
+
+                        <div class="space-y-2">
+                            <label class="block text-xs font-extrabold text-slate-500">🎵 رابط حساب تيك توك (TikTok):</label>
+                            <div class="relative group">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-base transition-colors group-focus-within:text-slate-900">🔗</span>
+                                <input type="url" id="tiktok" placeholder="https://www.tiktok.com/@username" class="w-full border border-slate-200 bg-slate-50/50 rounded-2xl pl-4 pr-12 py-3.5 outline-none focus:border-slate-900 focus:ring-4 focus:ring-slate-900/5 transition-all text-sm text-left" dir="ltr">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-xs font-extrabold text-slate-500">📸 رابط حساب انستغرام (Instagram):</label>
+                            <div class="relative group">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-base transition-colors group-focus-within:text-pink-500">🔗</span>
+                                <input type="url" id="instagram" placeholder="https://www.instagram.com/username" class="w-full border border-slate-200 bg-slate-50/50 rounded-2xl pl-4 pr-12 py-3.5 outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 transition-all text-sm text-left" dir="ltr">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-xs font-extrabold text-slate-500">🔵 رابط حساب فيسبوك (Facebook):</label>
+                            <div class="relative group">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-base transition-colors group-focus-within:text-blue-600">🔗</span>
+                                <input type="url" id="facebook" placeholder="https://www.facebook.com/username" class="w-full border border-slate-200 bg-slate-50/50 rounded-2xl pl-4 pr-12 py-3.5 outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 transition-all text-sm text-left" dir="ltr">
+                            </div>
+                        </div>
+
+                        <div class="pt-4">
+                            <button type="submit" id="saveBtn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-2xl font-black shadow-lg shadow-blue-600/20 hover:shadow-xl hover:shadow-blue-600/30 hover:-translate-y-0.5 active:scale-98 active:translate-y-0 transition-all text-base flex items-center justify-center gap-2">
+                                <span>💾</span> حفظ جميع الإعدادات
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // إعدادات Firebase المطابقة تماماً لمشروعك المستقر ولتجنب أخطاء الاتصال
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
+            authDomain: "walid-shop.firebaseapp.com",
+            projectId: "walid-shop",
+            storageBucket: "walid-shop.firebasestorage.app",
+            messagingSenderId: "3705207162",
+            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
+            measurementId: "G-PGLFSTBVTH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentMerchant = null;
+
+        window.toggleSidebar = toggleSidebar;
+        window.logout = logout;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        // نظام حماية وفحص الصلاحيات الموحد لمنع الطرد الفوري
+        const ALLOWED_ROLE = 'merchant'; 
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.replace('login.html');
+                return;
+            }
+            
+            try {
+                // الانتظار حتى جلب وثيقة المستخدم بالكامل
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (!userDoc.exists()) {
+                    console.error("المستند غير موجود في الفايرستور لهذا الـ UID");
+                    await forceLogout();
+                    return;
+                }
+
+                const userData = userDoc.data();
+                const userRole = userData.role;
+
+                // التحقق من الرتبة والصلاحية
+                if (userRole !== ALLOWED_ROLE && userRole !== 'admin') {
+                    alert(`عذراً، لا تملك الصلاحية لدخول هذه اللوحة. رتبتك الحالية هي: (${userRole || 'مستخدم عادي'})`);
+                    const routes = {
+                        'admin': 'admin-dashboard.html',
+                        'reseller': 'admin-control.html',
+                        'merchant': 'merchant-dashboard.html',
+                        'user': 'index.html'
+                    };
+                    window.location.replace(routes[userRole] || 'index.html');
+                    return;
+                }
+
+                // فحص التفعيل
+                if (userRole === 'merchant' && userData.is_approved !== true) {
+                    alert("حسابك قيد المراجعة! لا يمكنك الدخول إلى لوحة التحكم حتى يتم تفعيل حسابك من الإدارة.");
+                    await forceLogout();
+                    return;
+                }
+
+                // تم التحقق بنجاح وتأمين الجلسة
+                currentMerchant = { id: user.uid, ...userData };
+                const storeName = currentMerchant.name || 'متجر غير مسمى';
+                document.getElementById('sidebarStoreName').textContent = storeName;
+                document.getElementById('mobileStoreName').textContent = storeName;
+                
+                // جلب الإعدادات الخاصة بالتاجر بعد التحقق الآمن من هويته
+                await loadMerchantSettings();
+
+            } catch (err) {
+                console.error("خطأ أثناء التحقق من الصلاحيات:", err);
+                alert("تأخرت قاعدة البيانات في الرد، يرجى تحديث الصفحة.");
+            }
+        });
+
+        // جلب الإعدادات من Firestore
+        async function loadMerchantSettings() {
+            try {
+                const docRef = doc(db, 'merchant_settings', currentMerchant.id);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const record = docSnap.data();
+                    document.getElementById('whatsapp').value = record.whatsapp || "";
+                    document.getElementById('tiktok').value = record.tiktok || "";
+                    document.getElementById('instagram').value = record.instagram || "";
+                    document.getElementById('facebook').value = record.facebook || "";
+                    
+                    document.getElementById('db-status-dot').className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
+                    document.getElementById('db-status-text').innerText = "تم جلب إعداداتك ✅";
+                } else {
+                    document.getElementById('db-status-dot').className = "w-2 h-2 rounded-full bg-amber-500";
+                    document.getElementById('db-status-text').innerText = "بإمكانك ضبط إعداداتك الآن";
+                }
+            } catch (error) {
+                document.getElementById('db-status-dot').className = "w-2 h-2 rounded-full bg-red-500 animate-pulse";
+                document.getElementById('db-status-text').innerText = "خطأ في الاتصال بالسيرفر ❌";
+                console.error("Firebase Firestore Error:", error);
+            }
+        }
+
+        // مستمع حدث إرسال النموذج لحفظ وتحديث الإعدادات
+        document.getElementById('settingsForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            if (!currentMerchant) return;
+
+            const saveBtn = document.getElementById('saveBtn');
+            const rawWhatsapp = document.getElementById('whatsapp').value;
+            const cleanWhatsapp = rawWhatsapp.replace(/\D/g, ''); // الاحتفاظ بالأرقام فقط
+
+            const data = {
+                merchant: currentMerchant.id,
+                whatsapp: cleanWhatsapp,
+                tiktok: document.getElementById('tiktok').value,
+                instagram: document.getElementById('instagram').value,
+                facebook: document.getElementById('facebook').value,
+                updatedAt: serverTimestamp()
+            };
+
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = "⏳ جاري الحفظ...";
+
+            try {
+                const docRef = doc(db, 'merchant_settings', currentMerchant.id);
+                await setDoc(docRef, data, { merge: true });
+                
+                alert("✅ تم حفظ إعدادات التواصل بنجاح!");
+                document.getElementById('db-status-dot').className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
+                document.getElementById('db-status-text').innerText = "تم تحديث البيانات بنجاح ✅";
+            } catch (error) {
+                console.error("Error saving to Firestore:", error);
+                alert("❌ حدث خطأ أثناء الحفظ. تأكد من إعدادات القواعد (Rules) في الفايربيز.");
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = "💾 حفظ جميع الإعدادات";
+            }
+        });
+
+        async function forceLogout() {
+            await signOut(auth);
+            window.location.replace('login.html');
+        }
+
+        async function logout() { 
+            try {
+                await forceLogout();
+            } catch (err) {
+                console.error("خطأ أثناء تسجيل الخروج:", err);
+            }
+        }
+    </script>
+</body>
+</html>

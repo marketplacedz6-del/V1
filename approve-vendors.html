@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة المسوق | تفعيل وإدارة التجار | Walid Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        
+        /* تأثير الزجاج السحابي الفاخر والموحد للهوية */
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(14px); 
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+        }
+        
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-slate-100 to-indigo-50/40 relative">
+
+    <div id="toastContainer" class="fixed bottom-5 left-5 z-50 space-y-3 pointer-events-none"></div>
+
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200/60 shadow-sm">
+        <div class="container mx-auto px-4 md:px-6 py-3.5 flex justify-between items-center">
+            
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-md shadow-blue-600/20 transform rotate-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-base md:text-lg font-black text-slate-800 tracking-tight leading-tight" id="resellerWelcome">لوحة المسوق</h1>
+                    <p class="text-[11px] text-blue-600 font-extrabold mt-0.5">بوابة إدارة وتفعيل التجار الشركاء</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button onclick="window.location.href='index.html'" class="text-slate-600 hover:text-blue-600 font-extrabold text-xs px-3 py-2 rounded-xl hover:bg-slate-50 transition-all">عرض السوق</button>
+                <button id="logoutBtn" class="bg-rose-50 hover:bg-rose-100/80 text-rose-600 border border-rose-100/50 px-4 py-2 rounded-xl text-xs font-black transition-all active:scale-95">تسجيل الخروج</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-6 flex-grow space-y-6 max-w-7xl">
+
+        <div class="glass-card p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center md:text-right">
+                <span class="bg-blue-50 text-blue-700 border border-blue-100/50 px-3.5 py-1.5 rounded-full text-[11px] font-extrabold tracking-wide">الرصيد المتاح للتفعيل</span>
+                <h2 class="text-xl md:text-2xl font-black text-slate-800 tracking-tight">حالة رصيد تفعيلاتك الحالية</h2>
+                <p class="text-xs md:text-sm text-slate-400 font-medium leading-relaxed max-w-md">يمكنك تفعيل حسابات التجار الجدد طالما تملك تفعيلات متبقية ومتاحة في محفظتك الرقابية.</p>
+            </div>
+            
+            <div class="w-full md:w-96 space-y-3.5 bg-slate-50/80 border border-slate-200/40 p-5 rounded-2xl shadow-inner">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500 font-extrabold">نسبة استهلاك التراخيص</span>
+                    <span class="font-mono font-black text-blue-600 bg-white px-2.5 py-1 rounded-lg border border-slate-200/60 shadow-sm" id="balanceText">0 / 0 ترخيص</span>
+                </div>
+                <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden p-[2px]">
+                    <div id="balanceProgress" class="bg-gradient-to-r from-blue-600 to-cyan-500 h-full rounded-full transition-all duration-700 ease-out shadow-sm" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-[11px] text-slate-400 font-extrabold">
+                    <span class="flex items-center gap-1">📉 مستهلك: <span id="balanceUsed" class="text-slate-700 font-black">0</span></span>
+                    <span class="flex items-center gap-1 text-emerald-600">💎 المتبقي المتاح: <span id="balanceAvailable" class="font-black">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="debugErrorContainer" class="hidden bg-rose-50/90 backdrop-blur-md border border-rose-200 text-rose-900 p-6 rounded-3xl space-y-3 shadow-md animate-pulse">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 bg-rose-500 text-white rounded-lg flex items-center justify-center text-sm shrink-0 shadow-md shadow-rose-500/10">⚠️</div>
+                <h3 class="font-black text-sm md:text-base" id="debugErrorTitle">تم اكتشاف خطأ من خادم قاعدة البيانات</h3>
+            </div>
+            <p class="text-xs md:text-sm font-semibold leading-relaxed opacity-90" id="debugErrorDesc"></p>
+            <div class="bg-slate-900 text-emerald-400 p-4 rounded-xl font-mono text-xs overflow-x-auto leading-relaxed shadow-inner" id="debugErrorRaw"></div>
+        </div>
+
+        <div class="glass-card p-5 md:p-6 rounded-3xl shadow-sm border border-slate-200/60 space-y-6">
+            
+            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 border-b border-slate-100 pb-5">
+                <div class="space-y-0.5">
+                    <h3 class="text-base md:text-lg font-black text-slate-800 flex items-center gap-2">
+                        <span class="w-2.5 h-5 bg-gradient-to-b from-blue-600 to-indigo-600 rounded-full"></span>
+                        طلبات تفعيل التجار والشركاء الجدد
+                    </h3>
+                    <p class="text-[11px] md:text-xs text-slate-400 font-bold">اكتب اسم التاجر أو بريده الإلكتروني في خانة البحث لتجده وتفعله مباشرة</p>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                    <button id="bulkPublicBtn" class="bg-amber-50 hover:bg-amber-100/80 border border-amber-200/60 text-amber-800 px-4 py-3 rounded-2xl text-[11px] md:text-xs font-black transition-all active:scale-98 flex items-center gap-1.5 shadow-sm whitespace-nowrap">
+                        <span>⚡</span> جعل كل الإيميلات علنية (Public: ON)
+                    </button>
+
+                    <div class="relative flex-grow lg:w-80">
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 pointer-events-none">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </span>
+                        <input 
+                            type="text" 
+                            id="merchantSearchInput" 
+                            placeholder="ابحث عن التاجر بالاسم أو الإيميل..." 
+                            class="w-full pr-10 pl-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs md:text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-blue-500/5 focus:border-blue-500 focus:bg-white transition-all text-right shadow-inner"
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-right border-collapse min-w-[700px]">
+                    <thead>
+                        <tr class="border-b border-slate-200 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                            <th class="pb-4 font-extrabold w-1/4">التاجر الشريك</th>
+                            <th class="pb-4 font-extrabold w-1/3">البريد الإلكتروني وحالة الـ Public</th>
+                            <th class="pb-4 font-extrabold text-center w-1/4">حالة التفعيل الحالية</th>
+                            <th class="pb-4 font-extrabold text-left w-1/6">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="merchantsTableBody" class="divide-y divide-slate-100 text-xs md:text-sm font-semibold text-slate-700">
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="noMerchantsMessage" class="hidden text-center py-16 text-slate-400 font-black text-xs md:text-sm bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+                <span class="block text-2xl mb-1.5">🔍</span> لا يوجد تجار شُركاء مطابقين لمعايير البحث حالياً.
+            </div>
+        </div>
+<script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc, collection, query, where, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // ⚙️ إعدادات واجهة Firebase الخاصة بـ Walid Market
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
+            authDomain: "walid-shop.firebaseapp.com",
+            projectId: "walid-shop",
+            storageBucket: "walid-shop.firebasestorage.app",
+            messagingSenderId: "3705207162",
+            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
+            measurementId: "G-PGLFSTBVTH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let maxActivations = 0;
+        let currentActivations = 0;
+        let currentResellerId = '';
+
+        // 🔒 نظام فحص الصلاحيات وجلب رصيد المسوق مباشرة من مستنده الرئيسي
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.replace('login.html');
+                return;
+            }
+            
+            currentResellerId = user.uid;
+            
+            try {
+                // جلب بيانات المسوق مباشرة من مجموعة "users" كما يفعل الأدمن القديم
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (!userDoc.exists()) {
+                    console.error("المستند غير موجود في الفايرستور لهذا الـ UID");
+                    await forceLogout();
+                    return;
+                }
+                
+                const userData = userDoc.data();
+                const userRole = userData.role;
+
+                if (userRole !== 'reseller' && userRole !== 'admin') {
+                    alert(`عذراً، لا تملك الصلاحية لدخول لوحة المسوقين.`);
+                    const routes = {
+                        'admin': 'admin-dashboard.html',
+                        'merchant': 'merchant-dashboard.html',
+                        'user': 'index.html'
+                    };
+                    window.location.replace(routes[userRole] || 'index.html');
+                    return;
+                }
+                
+                document.getElementById('resellerWelcome').textContent = `أهلاً بك، ${userData.name || 'مسوقنا المتميز'}`;
+                
+                // تخزين الرصيد والمستهلك مباشرة من كولكشن users
+                maxActivations = userData.max_activations || 0;
+                currentActivations = userData.current_activations || 0;
+                
+                updateBalanceUI();
+                await loadAllMerchants();
+            } catch (err) {
+                console.error("Error validating user role:", err);
+            }
+        });
+
+        async function forceLogout() {
+            await signOut(auth);
+            window.location.replace('login.html');
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            
+            toast.className = `${bgClass} text-white px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 transition-all duration-300 transform translate-y-4 opacity-0 pointer-events-auto`;
+            toast.innerHTML = `
+                <span class="font-bold text-sm">${message}</span>
+                <button class="text-white hover:opacity-80 text-xs font-bold mr-auto cursor-pointer">✕</button>
+            `;
+            
+            toast.querySelector('button').addEventListener('click', () => toast.remove());
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.remove('translate-y-4', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        function updateBalanceUI() {
+            const percent = maxActivations > 0 ? (currentActivations / maxActivations) * 100 : 0;
+            const available = Math.max(0, maxActivations - currentActivations);
+
+            document.getElementById('balanceText').textContent = `${currentActivations} / ${maxActivations} تفعيل`;
+            document.getElementById('balanceProgress').style.width = `${percent}%`;
+            document.getElementById('balanceUsed').textContent = `${currentActivations} مستخدم`;
+            document.getElementById('balanceAvailable').textContent = `${available} تفعيل`;
+        }
+
+        async function loadAllMerchants() {
+            const tableBody = document.getElementById('merchantsTableBody');
+            const noData = document.getElementById('noMerchantsMessage');
+            
+            tableBody.innerHTML = '<tr><td colspan="4" class="text-center py-10 text-gray-400 font-bold">جاري تحميل التجار...</td></tr>';
+            noData.classList.add('hidden');
+
+            try {
+                const q = query(collection(db, "users"), where("role", "==", "merchant"));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = '';
+                    noData.textContent = "لا يوجد تجار مسجلين في المتجر حالياً.";
+                    noData.classList.remove('hidden');
+                    return;
+                }
+
+                tableBody.innerHTML = '';
+                querySnapshot.forEach((docSnap) => {
+                    const merId = docSnap.id;
+                    const mer = docSnap.data();
+
+                    const avatarUrl = mer.avatar || 'https://placehold.co/100x100?text=تاجر';
+                    const isApproved = mer.is_approved === true;
+                    const isPublicOn = mer.emailVisibility === true;
+                    const emailValue = mer.email || "مخفي (Public: OFF)";
+
+                    const rowHTML = `
+                        <tr class="merchant-row text-sm hover:bg-gray-50/50 transition" data-id="${merId}">
+                            <td class="py-4 flex items-center gap-3">
+                                <img src="${avatarUrl}" class="w-10 h-10 rounded-full object-cover border border-gray-100" onerror="this.src='https://placehold.co/100x100?text=تاجر'">
+                                <span class="search-name font-bold text-gray-800">${mer.name || 'مجهول الاسم'}</span>
+                            </td>
+                            <td class="py-4 font-mono text-gray-500 text-xs">
+                                <div class="flex items-center gap-2">
+                                    <span class="search-email">${emailValue}</span>
+                                    ${isPublicOn 
+                                        ? `<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-[10px] font-black border border-green-200">Public: ON</span>`
+                                        : `<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-[10px] font-black border border-gray-200">Public: OFF</span>`
+                                    }
+                                </div>
+                            </td>
+                            <td class="py-4 text-center">
+                                ${isApproved 
+                                    ? `<span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5">✓ مفعل معتمد</span>` 
+                                    : `<span class="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5">⏰ في الانتظار</span>`
+                                }
+                            </td>
+                            <td class="py-4 text-left">
+                                ${isApproved 
+                                    ? `<button disabled class="bg-gray-100 text-gray-400 px-4 py-2 rounded-xl text-xs font-bold cursor-not-allowed">مفعل مسبقاً</button>` 
+                                    : `<button class="approve-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-md shadow-blue-100">تفعيل الحساب</button>`
+                                }
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('beforeend', rowHTML);
+                });
+
+                document.querySelectorAll('.approve-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const mId = this.closest('.merchant-row').getAttribute('data-id');
+                        // نمرر كلمة (this) لتعطيل الزر الذي ضُغط عليه فوراً ومنع الضغط المتكرر
+                        approveMerchant(mId, this);
+                    });
+                });
+
+            } catch (err) {
+                console.error("خطأ أثناء جلب التجار من Firestore:", err);
+                tableBody.innerHTML = '<tr><td colspan="4" class="text-center py-10 text-red-500 font-bold">فشل الاتصال بخوادم قاعدة بيانات المتجر.</td></tr>';
+            }
+        }
+
+        async function approveMerchant(merchantId, btnElement) {
+            // الحماية القصوى: منع تنفيذ الدالة مجدداً إذا كان الزر قد تم قفله بالفعل
+            if (btnElement && btnElement.disabled) return;
+
+            const debugContainer = document.getElementById('debugErrorContainer');
+            debugContainer.classList.add('hidden');
+
+            if (currentActivations >= maxActivations) {
+                showToast("عذراً، نفد رصيد التفعيلات الخاص بك!", "error");
+                return;
+            }
+
+            // قفل الزر بصرياً وبرمجياً في نفس جزء الملي ثانية من الضغطة الأولى
+            if (btnElement) {
+                btnElement.disabled = true;
+                btnElement.innerHTML = `⏳ جاري التفعيل...`;
+                btnElement.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+            }
+
+            try {
+                // 1. تفعيل حساب التاجر
+                await updateDoc(doc(db, "users", merchantId), {
+                    is_approved: true,
+                    emailVisibility: true
+                });
+
+                // 2. تحديث عدد المستهلكات في مستند المسوق نفسه بداخل كولكشن users
+                currentActivations = currentActivations + 1;
+                await updateDoc(doc(db, "users", currentResellerId), {
+                    current_activations: currentActivations
+                });
+
+                showToast("تم تفعيل حساب التاجر بنجاح وتوثيق بياناته علنية! 🎉");
+                
+                updateBalanceUI();
+                await loadAllMerchants();
+
+            } catch (err) {
+                console.error("فشل تفعيل حساب التاجر:", err);
+                debugContainer.classList.remove('hidden');
+                document.getElementById('debugErrorRaw').textContent = JSON.stringify(err, null, 2);
+                document.getElementById('debugErrorDesc').textContent = err.message;
+                showToast("فشلت عملية تفعيل الحساب.", "error");
+
+                // في حالة فشل السيرفر والشبكة فقط، نعيد تنشيط الزر لكي يحاول مجدداً
+                if (btnElement) {
+                    btnElement.disabled = false;
+                    btnElement.innerHTML = "تفعيل الحساب";
+                    btnElement.classList.remove('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+                }
+            }
+        }
+
+        async function makeAllEmailsPublic() {
+            const btn = document.getElementById('bulkPublicBtn');
+            const originalHTML = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = `<span>جاري تحويل السيرفر إلى Public: ON...</span>`;
+            
+            try {
+                const q = query(collection(db, "users"), where("role", "==", "merchant"));
+                const querySnapshot = await getDocs(q);
+                
+                const batch = writeBatch(db);
+                let updateCount = 0;
+
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    if (data.emailVisibility !== true) {
+                        const docRef = doc(db, "users", docSnap.id);
+                        batch.update(docRef, { emailVisibility: true });
+                        updateCount++;
+                    }
+                });
+
+                if (updateCount === 0) {
+                    showToast("كل حسابات التجار مضبوطة على وضع العلنية (Public: ON) بالفعل!");
+                    return;
+                }
+
+                await batch.commit();
+                showToast(`نجاح! تم جعل ${updateCount} حساب تاجر مرئياً بالكامل على النظام! 🎉`);
+                await loadAllMerchants();
+
+            } catch (err) {
+                console.error("فشل التحديث الجماعي عبر Firestore Batch:", err);
+                showToast("حدث خطأ أثناء تعديل خصائص الحسابات بالسيرفر.", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+            }
+        }
+
+        function searchMerchants() {
+            const searchValue = document.getElementById('merchantSearchInput').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('.merchant-row');
+            const noData = document.getElementById('noMerchantsMessage');
+            let foundAny = false;
+
+            rows.forEach(row => {
+                const nameText = row.querySelector('.search-name').textContent.toLowerCase();
+                const emailText = row.querySelector('.search-email').textContent.toLowerCase();
+
+                if (nameText.includes(searchValue) || emailText.includes(searchValue)) {
+                    row.style.display = '';
+                    foundAny = true;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (!foundAny && rows.length > 0) {
+                noData.textContent = "لا توجد نتائج مطابقة للبحث.";
+                noData.classList.remove('hidden');
+            } else {
+                noData.classList.add('hidden');
+            }
+        }
+
+        async function logout() {
+            try {
+                await forceLogout();
+            } catch (err) {
+                console.error("خطأ أثناء تسجيل الخروج:", err);
+            }
+        }
+
+        document.getElementById('bulkPublicBtn').addEventListener('click', makeAllEmailsPublic);
+        document.getElementById('merchantSearchInput').addEventListener('input', searchMerchants);
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+    </script>
+</body>
+</html>

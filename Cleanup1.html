@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة صيانة الاشتراكات وتنظيف البيانات الذكية - SouqiExpress</title>
+    <style>
+        body { font-family: sans-serif; margin: 30px; background-color: #f7f9fa; text-align: center; color: #333; }
+        .container { max-width: 850px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        button { padding: 14px 35px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; }
+        .btn-main { background-color: #e74c3c; }
+        .btn-main:hover { background-color: #c0392b; }
+        .btn-sec { background-color: #2980b9; }
+        .btn-sec:hover { background-color: #1f618d; }
+        button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+        #log { margin-top: 25px; padding: 20px; background: #2c3e50; color: #ecf0f1; text-align: right; max-height: 400px; overflow-y: auto; border-radius: 6px; font-family: monospace; font-size: 14px; line-height: 1.6; }
+        #log div { margin-bottom: 6px; border-bottom: 1px solid #34495e; padding-bottom: 4px; }
+        textarea { width: 100%; height: 120px; margin: 15px 0; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: monospace; text-align: left; box-sizing: border-box; }
+        .result-item { background: #f2f4f4; padding: 12px; margin: 8px 0; border-right: 5px solid #e74c3c; text-align: right; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .info { color: #3498db; }
+        .success { color: #2ecc71; font-weight: bold; }
+        .warn { color: #f1c40f; }
+        .danger { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>⚙️ لوحة إدارة الاشتراكات وحماية بيانات التجار المتقدمة</h2>
+        <p>آلية العمل الآمنة والمحدثة: 
+            (1) تأمين وقفل كافة حسابات التجار الموجودين حالياً لحماية بضائعهم وطلباتهم.
+            (2) إلغاء تفعيل من انتهى اشتراكه [30 يوم] وحذف من تجاوز فترة السماح [7 أيام].
+            (3) مسح البيانات الميتة واليتيمة تماماً (المنتجات، أسعار الشحن، الإعدادات، والطلبات) التابعة فقط للتجار المحذوفين كلياً من النظام.
+        </p>
+        <br>
+        <button id="startBtn" class="btn-main">تشغيل الفحص والصيانة الآمنة</button>
+        <div id="log">بانتظار بدء عملية الفحص...</div>
+    </div>
+
+    <div class="container" style="border-top: 4px solid #2980b9;">
+        <h3>🔍 كاشف الحسابات المعلقة في الـ Authentication</h3>
+        <textarea id="authInput" placeholder="الصق النص المنسوخ من لوحة الـ Authentication هنا..."></textarea>
+        <button id="compareBtn" class="btn-sec">تصفية المعلقين في الـ Auth</button>
+        <div id="authResults" style="margin-top: 20px; text-align: right;"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
+            authDomain: "walid-shop.firebaseapp.com",
+            projectId: "walid-shop",
+            storageBucket: "walid-shop.firebasestorage.app",
+            messagingSenderId: "3705207162",
+            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
+            measurementId: "G-PGLFSTBVTH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const logDiv = document.getElementById('log');
+        const startBtn = document.getElementById('startBtn');
+        const compareBtn = document.getElementById('compareBtn');
+        const authInput = document.getElementById('authInput');
+        const authResults = document.getElementById('authResults');
+
+        function addLog(text, type = 'info') {
+            const p = document.createElement('div');
+            p.className = type;
+            p.innerText = `[${new Date().toLocaleTimeString()}] ${text}`;
+            logDiv.appendChild(p);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        startBtn.addEventListener('click', async () => {
+            startBtn.disabled = true;
+            logDiv.innerHTML = "";
+            addLog("خطوة 1: جلب وتأمين قائمة التجار المسجلين في النظام حالياً لحماية بياناتهم...", "info");
+
+            try {
+                const usersSnapshot = await getDocs(collection(db, "users"));
+                const existingUsersIds = [];
+                
+                usersSnapshot.forEach((userDoc) => {
+                    existingUsersIds.push(userDoc.id);
+                });
+
+                addLog(`تم قفل قائمة الحماية لـ ${existingUsersIds.length} مستخدم موجود في الـ Firestore بنجاح.`, "success");
+
+                addLog("خطوة 2: فحص تواريخ الاشتراكات والمدد الزمنية للتجار...", "info");
+                const now = new Date();
+                const MS_IN_DAY = 24 * 60 * 60 * 1000;
+                const userPromises = [];
+
+                usersSnapshot.forEach((userDoc) => {
+                    const data = userDoc.data();
+                    const userId = userDoc.id;
+
+                    if (data.role !== 'merchant') return; 
+
+                    let createdAt;
+                    try {
+                        if (data.createdAt) {
+                            if (typeof data.createdAt.toDate === 'function') {
+                                createdAt = data.createdAt.toDate();
+                            } else if (data.createdAt instanceof Date) {
+                                createdAt = data.createdAt;
+                            } else {
+                                createdAt = new Date(data.createdAt);
+                            }
+                        } else {
+                            createdAt = new Date();
+                        }
+
+                        const diffTime = Math.abs(now - createdAt);
+                        const diffDays = Math.ceil(diffTime / MS_IN_DAY);
+
+                        if (data.is_approved === true) {
+                            if (diffDays >= 30) {
+                                const userRef = doc(db, "users", userId);
+                                userPromises.push(updateDoc(userRef, {
+                                    is_approved: false,
+                                    createdAt: serverTimestamp() 
+                                }));
+                                addLog(`التاجر (${data.name || userId}) انتهى اشتراكه. تم إلغاء تفعيله بنجاح. بضاعته محمية.`, 'warn');
+                            }
+                        } else if (data.is_approved === false) {
+                            if (diffDays >= 7) {
+                                const userRef = doc(db, "users", userId);
+                                userPromises.push(deleteDoc(userRef));
+                                addLog(`التاجر (${data.name || userId}) تجاوز فترة السماح (7 أيام). تم حذفه من قائمة الـ users.`, 'danger');
+                                
+                                const index = existingUsersIds.indexOf(userId);
+                                if (index > -1) existingUsersIds.splice(index, 1);
+                            } else {
+                                addLog(`التاجر (${data.name || userId}) غير مفعّل ولكنه في فترة السماح (يوم ${diffDays} من 7). بياناته محمية.`, 'info');
+                            }
+                        }
+                    } catch (e) {}
+                });
+
+                await Promise.all(userPromises);
+                addLog("اكتملت صيانة حسابات المدد والاشتراكات بنجاح.", "success");
+
+                addLog("خطوة 3: فحص وتنظيف البيانات الميتة واليتيمة (للتجار الذين حُذفوا كلياً فقط)...", "info");
+                
+                // 1. تنظيف جدول المنتجات (products)
+                const productsSnapshot = await getDocs(collection(db, "products"));
+                const productPromises = [];
+                let deletedProductsCount = 0;
+                productsSnapshot.forEach((productDoc) => {
+                    const productData = productDoc.data();
+                    const vendorUid = productData.user_id || productData.uid || productData.vendorId;
+                    
+                    // نحذف فقط إذا كان معرّف التاجر موجوداً في المستند ولكنه غير مسجل في قائمة الحماية لـ users
+                    if (vendorUid && !existingUsersIds.includes(vendorUid)) {
+                        productPromises.push(deleteDoc(doc(db, "products", productDoc.id)));
+                        deletedProductsCount++;
+                    }
+                });
+                await Promise.all(productPromises);
+                if(deletedProductsCount > 0) {
+                    addLog(`تم تنظيف ${deletedProductsCount} منتج ميت لتاجر محذوف كلياً من النظام.`, 'danger');
+                } else {
+                    addLog("جدول المنتجات سليم وجميع المنتجات تتبع تجاراً مسجلين.", "success");
+                }
+
+                // 2. تنظيف جدول أسعار الشحن (shipping_rates)
+                const shippingSnapshot = await getDocs(collection(db, "shipping_rates"));
+                const shippingPromises = [];
+                let deletedShippingCount = 0;
+                shippingSnapshot.forEach((shipDoc) => {
+                    const shipData = shipDoc.data();
+                    const merchantUid = shipData.merchant || shipData.user_id || shipData.uid;
+                    
+                    if (merchantUid && !existingUsersIds.includes(merchantUid)) {
+                        shippingPromises.push(deleteDoc(doc(db, "shipping_rates", shipDoc.id)));
+                        deletedShippingCount++;
+                    }
+                });
+                await Promise.all(shippingPromises);
+                if(deletedShippingCount > 0) {
+                    addLog(`تم تنظيف ${deletedShippingCount} سعر توصيل يتيم لتجار محذوفين.`, 'danger');
+                } else {
+                    addLog("جدول أسعار الشحن سليم ومحمي بالكامل.", "success");
+                }
+
+                // 3. تنظيف جدول إعدادات التجار (merchant_settings)
+                const settingsSnapshot = await getDocs(collection(db, "merchant_settings"));
+                const settingsPromises = [];
+                let deletedSettingsCount = 0;
+                settingsSnapshot.forEach((setDoc) => {
+                    const setData = setDoc.data();
+                    const merchantUid = setData.merchant || setDoc.id; // التحقق من الحقل أو معرف المستند نفسه
+                    
+                    if (merchantUid && !existingUsersIds.includes(merchantUid)) {
+                        settingsPromises.push(deleteDoc(doc(db, "merchant_settings", setDoc.id)));
+                        deletedSettingsCount++;
+                    }
+                });
+                await Promise.all(settingsPromises);
+                if(deletedSettingsCount > 0) {
+                    addLog(`تم تنظيف ${deletedSettingsCount} مستند إعدادات يتيم للتجار المحذوفين.`, 'danger');
+                } else {
+                    addLog("جدول إعدادات التجار نظيف ومحمي.", "success");
+                }
+
+                // 4. تنظيف جدول الطلبات (orders) - تم تأمينه لحماية طلبات التجار الآخرين
+                const ordersSnapshot = await getDocs(collection(db, "orders"));
+                const orderPromises = [];
+                let deletedOrdersCount = 0;
+                ordersSnapshot.forEach((orderDoc) => {
+                    const orderData = orderDoc.data();
+                    const merchantUid = orderData.merchant || orderData.user_id;
+                    
+                    // الشرط الآمن: نحذف فقط إذا كان معرّف التاجر موجوداً في مستند الطلب وغير مسجل في users
+                    if (merchantUid && !existingUsersIds.includes(merchantUid)) {
+                        orderPromises.push(deleteDoc(doc(db, "orders", orderDoc.id)));
+                        deletedOrdersCount++;
+                    }
+                });
+                await Promise.all(orderPromises);
+                if(deletedOrdersCount > 0) {
+                    addLog(`تم تنظيف ${deletedOrdersCount} طلب ميت تابع للتجار المحذوفين بنجاح.`, 'danger');
+                } else {
+                    addLog("جدول الطلبات سليم وتمت حماية كافة طلبات التجار الآخرين بنجاح.", "success");
+                }
+
+                addLog("✨ انتهت العملية بالكامل بنجاح وأمان تام! جميع بيانات التجار النشطين والمسجلين محمية بنسبة 100%.", "success");
+
+            } catch (error) {
+                addLog(`حدث خطأ غير متوقع: ${error.message}`, "danger");
+            }
+            startBtn.disabled = false;
+        });
+
+        // كود مطابقة الـ Authentication
+        compareBtn.addEventListener('click', async () => {
+            const rawText = authInput.value.trim();
+            if(!rawText) return alert("الرجاء لصق النص أولاً!");
+            compareBtn.disabled = true;
+            try {
+                const usersSnapshot = await getDocs(collection(db, "users"));
+                const firestoreUids = [];
+                usersSnapshot.forEach(doc => { firestoreUids.push(doc.id); });
+                const uidRegex = /[a-zA-Z0-9]{28}/g;
+                const foundUidsInText = rawText.match(uidRegex) || [];
+                const uniqueUidsInText = [...new Set(foundUidsInText)];
+                authResults.innerHTML = "<h4>🔴 حسابات معلقة في الـ Authentication:</h4>";
+                let orphanCount = 0;
+                uniqueUidsInText.forEach(uid => {
+                    if (!firestoreUids.includes(uid)) {
+                        orphanCount++;
+                        const item = document.createElement('div');
+                        item.className = 'result-item';
+                        item.innerHTML = `<div><strong>UID معلق:</strong> <code>${uid}</code></div>`;
+                        authResults.appendChild(item);
+                    }
+                });
+                if (orphanCount === 0) authResults.innerHTML = "<p style='color:#27ae60; font-weight:bold; text-align:center;'>🎉 نظيفة تماماً ومطابقة!</p>";
+            } catch (error) { alert(error.message); }
+            compareBtn.disabled = false;
+        });
+    </script>
+</body>
+</html>

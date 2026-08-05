@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="Image/favicon.png">
+    <title>ستتوفر قريباً | SouqiExpress </title>
+    <!-- استدعاء Tailwind CSS للتصميم المتجاوب السريع -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #064e3b 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex flex-col justify-between text-white p-4 relative overflow-hidden">
+
+    <!-- جزيئات ضوئية جمالية في الخلفية -->
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px]"></div>
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl"></div>
+
+    <!-- الهيدر العلوي البسيط للشعار -->
+    <header class="w-full max-w-7xl mx-auto flex justify-center sm:justify-start pt-4 relative z-10">
+        <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md text-white px-4 py-2 rounded-2xl shadow-lg border border-white/10">
+            <span class="text-lg">🛒</span>
+            <span class="font-black tracking-wide text-sm sm:text-base">Souqi<span class="text-emerald-400">Express</span></span>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي للموقع المنتصف تماماً ليلائم الهاتف والكمبيوتر -->
+    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 max-w-2xl mx-auto relative z-10 py-12">
+        <!-- أيقونة تعبيرية متحركة بذكاء -->
+        <div class="text-6xl sm:text-7xl mb-6 animate-bounce duration-1000 select-none">🚀</div>
+        
+        <!-- الرسالة الأساسية واضحة وبخط عريض فخم -->
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-wide mb-3">
+            ستتوفر هذه الصفحة <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300 drop-shadow">قريباً!</span>
+        </h1>
+        
+        <p class="text-blue-100/70 text-sm sm:text-base font-medium leading-relaxed mb-8">
+            نحن نعمل بجد في الخلفية لتجهيز هذه الميزة من أجلك. ترقبوا الإطلاق قريباً جداً لتجربة تسوق ذكية وخرافية للتجار والزبائن!
+        </p>
+
+        <!-- زر الرجوع الفخم للصفحة الرئيسية لتفادي ضياع المستخدم -->
+        <a href="index.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-black text-xs sm:text-sm px-6 py-3.5 rounded-2xl transition transform active:scale-95 shadow-lg shadow-emerald-500/20 hover:from-emerald-600 hover:to-green-700">
+            ↩️ العودة للصفحة الرئيسية
+        </a>
+    </main>
+
+    <!-- حقوق المطور في الأسفل بوضوح وبساطة -->
+    <footer class="w-full text-center py-4 text-[10px] sm:text-xs font-bold text-slate-400/80 relative z-10 border-t border-white/5">
+        <p>&copy; 2026 <span class="text-white font-black">SouqiExpress</span>. جميع الحقوق محفوظة.</p>
+    </footer>
+
+</body>
+</html>

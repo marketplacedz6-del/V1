@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة القيادة | مركز التاجر </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+        body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; }
+        
+        /* تأثير الزجاج الاحترافي مع لمسة توهج ناعمة */
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+        }
+        
+        /* شريط تمرير مخصص وأنيق */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="text-slate-900 flex h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-blue-50/30 relative">
+
+    <!-- الطبقة الضبابية الخلفية عند فتح القائمة في الهاتف -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-40 hidden md:hidden transition-all duration-300"></div>
+
+    <!-- 1. شريط التنقل الجانبي الاحترافي (Sidebar) -->
+    <aside id="sidebar" class="fixed inset-y-0 right-0 w-68 bg-white/90 backdrop-blur-xl border-l border-slate-200/80 shadow-xl shadow-slate-900/5 flex flex-col z-50 transform translate-x-full transition-transform duration-300 ease-out md:translate-x-0 md:static md:h-full">
+        <!-- شعار المنصة -->
+        <div class="p-6 border-b border-slate-100/80 flex items-center gap-3.5">
+            <div class="w-11 h-11 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-lg shadow-blue-600/20 transform rotate-3">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+            </div>
+            <div>
+                <h1 class="text-lg font-black text-slate-900 leading-none">مركز التاجر</h1>
+                <p id="sidebarStoreName" class="text-xs text-blue-600 font-extrabold mt-1 truncate max-w-[130px]">جاري التحميل...</p>
+            </div>
+        </div>
+        
+        <!-- روابط التنقل -->
+        <nav class="flex-grow p-4 space-y-1.5 overflow-y-auto">
+            <a href="merchant-dashboard.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-black bg-gradient-to-l from-blue-50 to-indigo-50/50 text-blue-600 border-r-4 border-blue-600 shadow-sm transition-all duration-200">
+                <span class="text-base">📊</span> لوحة القيادة
+            </a>
+            <a href="products.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
+                <span class="text-base group-hover:scale-110 transition-transform">📦</span> إدارة المنتجات
+            </a>
+            <a href="orders.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
+                <span class="text-base group-hover:scale-110 transition-transform">🛒</span> الطلبات الواردة
+            </a>
+            <a href="shipping.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
+                <span class="text-base group-hover:scale-110 transition-transform">🚚</span> إدارة الشحن
+            </a>
+            <a href="settings.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
+                <span class="text-base group-hover:scale-110 transition-transform">⚙️</span> الإعدادات
+            </a>
+        </nav>
+        
+        <!-- زر تسجيل الخروج -->
+        <div class="p-4 border-t border-slate-100">
+            <button onclick="logout()" class="w-full text-right px-4 py-3 rounded-xl text-sm text-red-500 hover:bg-red-50/60 transition-all duration-200 font-black flex items-center gap-3">
+                <span>🚪</span> تسجيل الخروج
+            </button>
+        </div>
+    </aside>
+
+    <!-- 2. منطقة المحتوى الرئيسية -->
+    <div class="flex-grow flex flex-col min-w-0 overflow-hidden">
+        
+        <!-- الهيدر للموبايل فقط -->
+        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/60 p-4 flex items-center justify-between md:hidden z-30 shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-md">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                </div>
+                <span id="mobileStoreName" class="font-black text-slate-800 text-sm truncate max-w-[160px]">جاري التحميل...</span>
+            </div>
+            <button onclick="toggleSidebar()" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-all active:scale-95">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </header>
+
+        <!-- المحتوى الداخلي للوحة التحكم -->
+        <main class="flex-grow overflow-y-auto p-4 md:p-8 relative">
+            
+            <!-- عنوان الصفحة الترحيبي -->
+            <div class="mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">نظرة عامة على الأداء</h2>
+                    <p class="text-slate-500 text-xs md:text-sm font-semibold mt-1">مرحباً بك مجدداً في لوحة تحكم متجرك الذكي.</p>
+                </div>
+                <!-- ويدجت التاريخ الحالي يضفي طابع الحداثة -->
+                <div class="self-start sm:self-center bg-white/60 backdrop-blur border border-slate-200 px-4 py-1.5 rounded-full text-xs font-bold text-slate-500 shadow-sm">
+                    📅 اليوم النشط
+                </div>
+            </div>
+
+            <!-- شبكة كروت الإحصائيات الفخمة -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+                <!-- كارت 1 -->
+                <div class="glass-card p-5 md:p-6 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 text-xl shadow-inner font-normal">📥</div>
+                    <p class="text-xs md:text-sm font-extrabold text-slate-500">الطلبات الواردة (قيد الانتظار)</p>
+                    <h3 class="text-3xl font-black text-slate-900 mt-1 tracking-tight" id="incomingOrders">0</h3>
+                </div>
+                
+                <!-- كارت 2 -->
+                <div class="glass-card p-5 md:p-6 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-4 text-xl shadow-inner font-normal">✅</div>
+                    <p class="text-xs md:text-sm font-extrabold text-slate-500">الطلبات المكتملة</p>
+                    <h3 class="text-3xl font-black text-slate-900 mt-1 tracking-tight" id="completedOrders">0</h3>
+                </div>
+                
+                <!-- كارت 3 مميز بلون متدرج -->
+                <div class="glass-card p-5 md:p-6 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group border-b-4 border-indigo-500 sm:col-span-2 md:col-span-1">
+                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
+                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-4 text-xl shadow-inner font-normal">📦</div>
+                    <p class="text-xs md:text-sm font-extrabold text-slate-500">المنتجات في المخزن</p>
+                    <h3 class="text-3xl font-black text-indigo-600 mt-1 tracking-tight" id="totalStock">0</h3>
+                </div>
+            </div>
+
+            <!-- صندوق المبيعات والرسم البياني الباهر -->
+            <div class="glass-card p-5 md:p-6 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                    <div>
+                        <h3 class="font-black text-slate-800 text-base md:text-lg">تقرير المبيعات الإجمالي</h3>
+                        <p class="text-xs text-slate-400 font-semibold mt-0.5">آخر 7 أيام عمل للمتجر بالعملة المحلية (د.ج)</p>
+                    </div>
+                    <span class="self-start sm:self-center bg-emerald-50 text-emerald-700 font-bold px-3 py-1 rounded-lg text-xs">
+                        📈 تحديث فوري
+                    </span>
+                </div>
+                <div class="h-64 md:h-76 w-full"><canvas id="salesChart"></canvas></div>
+            </div>
+        </main>
+    </div>
+<script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // ⚠️ إعدادات مشروع Firebase الخاص بك
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
+            authDomain: "walid-shop.firebaseapp.com",
+            projectId: "walid-shop",
+            storageBucket: "walid-shop.firebasestorage.app",
+            messagingSenderId: "3705207162",
+            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
+            measurementId: "G-PGLFSTBVTH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let salesChartInstance = null;
+        let currentMerchant = null;
+
+        window.toggleSidebar = toggleSidebar;
+        window.logout = logout;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        // 🔒 نظام حماية وفحص الصلاحيات الموحد لمنع الطرد العشوائي
+        const ALLOWED_ROLE = 'merchant'; 
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.replace('login.html');
+                return;
+            }
+            
+            try {
+                // ⏳ ننتظر جلب البيانات من السيرفر بالكامل أولاً
+                const userDocRef = doc(db, "users", user.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (!userDoc.exists()) {
+                    console.error("المستند غير موجود في الفايرستور لهذا الـ UID");
+                    await forceLogout();
+                    return;
+                }
+
+                const userData = userDoc.data();
+                const userRole = userData.role;
+
+                // التحقق من الرتبة (مع إعطاء الأدمن حق الدخول الشامل دائماً)
+                if (userRole !== ALLOWED_ROLE && userRole !== 'admin') {
+                    alert(`عذراً، لا تملك الصلاحية لدخول هذه اللوحة. رتبتك الحالية هي: (${userRole || 'مستخدم عادي'})`);
+                    
+                    const routes = {
+                        'admin': 'admin-dashboard.html',
+                        'reseller': 'admin-control.html',
+                        'merchant': 'merchant-dashboard.html',
+                        'user': 'index.html'
+                    };
+                    window.location.replace(routes[userRole] || 'index.html');
+                    return;
+                }
+
+                // فحص تفعيل حساب التاجر
+                if (userRole === 'merchant' && userData.is_approved !== true) {
+                    alert("حسابك قيد المراجعة! لا يمكنك الدخول إلى لوحة التحكم حتى يتم تفعيل حسابك من الإدارة.");
+                    await forceLogout();
+                    return;
+                }
+
+                // الحساب سليم ومطابق للرتبة المطلوبة! تشغيل الواجهة
+                currentMerchant = { id: user.uid, ...userData };
+                const storeName = currentMerchant.name || 'متجر غير مسمى';
+                document.getElementById('sidebarStoreName').textContent = storeName;
+                document.getElementById('mobileStoreName').textContent = storeName;
+                
+                // جلب الإحصائيات وبناء المخطط
+                await fetchDashboardStats();
+
+            } catch (err) {
+                console.error("خطأ أثناء التحقق من الصلاحيات:", err);
+                alert("تأخرت قاعدة البيانات في الرد، يرجى تحديث الصفحة.");
+            }
+        });
+
+        async function forceLogout() {
+            await signOut(auth);
+            window.location.replace('login.html');
+        }
+
+        async function fetchDashboardStats() {
+            try {
+                const merchantId = currentMerchant.id;
+
+                // 1. حساب الطلبات الواردة (قيد الانتظار)
+                const pendingQuery = query(collection(db, "orders"), where("merchant", "==", merchantId), where("status", "==", "pending"));
+                const pendingSnapshot = await getDocs(pendingQuery);
+                document.getElementById('incomingOrders').innerText = pendingSnapshot.size;
+
+                // 2. حساب الطلبات المكتملة
+                const completedQuery = query(collection(db, "orders"), where("merchant", "==", merchantId), where("status", "==", "completed"));
+                const completedSnapshot = await getDocs(completedQuery);
+                document.getElementById('completedOrders').innerText = completedSnapshot.size;
+
+                // 3. حساب إجمالي المنتجات في المخزن
+                const productsQuery = query(collection(db, "products"), where("user_id", "==", merchantId));
+                const productsSnapshot = await getDocs(productsQuery);
+                
+                let totalStockCount = 0;
+                productsSnapshot.forEach((doc) => {
+                    totalStockCount += Number(doc.data().stock) || 0;
+                });
+                document.getElementById('totalStock').innerText = totalStockCount;
+
+                // 4. بناء وعرض مخطط المبيعات
+                await updateSalesChart(merchantId, completedSnapshot);
+
+            } catch (error) {
+                console.error("حدث خطأ أثناء جلب الإحصائيات من Firestore:", error);
+            }
+        }
+
+        async function updateSalesChart(merchantId, completedSnapshot) {
+            const daysOfWeek = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const labels = [];
+            const salesData = [];
+            const dateMap = {};
+
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const dateStr = d.toISOString().split('T')[0]; 
+                const dayName = daysOfWeek[d.getDay()];
+                
+                labels.push(dayName);
+                salesData.push(0); 
+                dateMap[dateStr] = labels.length - 1; 
+            }
+
+            try {
+                const prodQuery = query(collection(db, "products"), where("user_id", "==", merchantId));
+                const prodSnapshot = await getDocs(prodQuery);
+                const productsPriceMap = {};
+                prodSnapshot.forEach(doc => {
+                    productsPriceMap[doc.id] = Number(doc.data().price || 0);
+                });
+
+                completedSnapshot.forEach(orderDoc => {
+                    const order = orderDoc.data();
+                    if (order.created) {
+                        const timestamp = order.created.toDate ? order.created.toDate() : new Date(order.created);
+                        const orderDateStr = timestamp.toISOString().split('T')[0];
+                        
+                        if (dateMap[orderDateStr] !== undefined) {
+                            const price = productsPriceMap[order.product_ordered] || 0;
+                            const qty = Number(order.quantity || 1);
+                            salesData[dateMap[orderDateStr]] += (price * qty);
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error("خطأ أثناء معالجة بيانات المخطط البياني:", err);
+            }
+
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            if (salesChartInstance) {
+                salesChartInstance.destroy();
+            }
+
+            salesChartInstance = new Chart(ctx, {
+                type: 'line', 
+                data: { 
+                    labels: labels, 
+                    datasets: [{ 
+                        label: 'إجمالي المداخيل (د.ج)', 
+                        data: salesData, 
+                        borderColor: '#2563eb', 
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        fill: true,
+                        tension: 0.4 
+                    }] 
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { font: { family: 'Cairo' } } },
+                        x: { ticks: { font: { family: 'Cairo' } } }
+                    },
+                    plugins: {
+                        legend: { labels: { font: { family: 'Cairo', weight: 'bold' } } }
+                    }
+                }
+            });
+        }
+
+        async function logout() { 
+            try {
+                await forceLogout();
+            } catch (err) {
+                console.error("خطأ أثناء تسجيل الخروج:", err);
+            }
+        }
+    </script>
+</body>
+</html>
