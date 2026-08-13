@@ -10,7 +10,7 @@ window.SE_CONFIG = {
   logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s512/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg",
   /* الاشتراك الشهري للتاجر */
   subscription: {
-    price: 90000,          // د.ج
+    price: 900,            // د.ج
     period: "شهر",
     periodDays: 30
   },
