@@ -2,9 +2,30 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
     <title>إدارة المنتجات | مركز التاجر</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=34">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
         body { font-family: 'Cairo', sans-serif; }
@@ -23,60 +44,17 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
+    <link rel="stylesheet" href="assets/css/theme.css?v=34">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="text-slate-900 flex h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-blue-50/30 relative">
+<body class="se-admin flex h-screen overflow-hidden">
 
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-40 hidden md:hidden transition-all duration-300"></div>
-
-    <aside id="sidebar" class="fixed inset-y-0 right-0 w-68 bg-white/90 backdrop-blur-xl border-l border-slate-200/80 shadow-xl shadow-slate-900/5 flex flex-col z-50 transform translate-x-full transition-transform duration-300 ease-out md:translate-x-0 md:static md:h-full">
-        <div class="p-6 border-b border-slate-100/80 flex items-center gap-3.5">
-            <div class="w-11 h-11 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-lg shadow-blue-600/20 transform rotate-3">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-            </div>
-            <div>
-                <h1 class="text-lg font-black text-slate-900 leading-none">مركز التاجر</h1>
-                <p id="sidebarStoreName" class="text-xs text-blue-600 font-extrabold mt-1 truncate max-w-[130px]">جاري التحميل...</p>
-            </div>
-        </div>
-        
-        <nav class="flex-grow p-4 space-y-1.5 overflow-y-auto">
-            <a href="merchant-dashboard.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">📊</span> لوحة القيادة
-            </a>
-            <a href="products.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-black bg-gradient-to-l from-blue-50 to-indigo-50/50 text-blue-600 border-r-4 border-blue-600 shadow-sm transition-all duration-200">
-                <span class="text-base">📦</span> إدارة المنتجات
-            </a>
-            <a href="orders.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">🛒</span> الطلبات الواردة
-            </a>
-            <a href="shipping.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">🚚</span> إدارة الشحن
-            </a>
-            <a href="settings.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">⚙️</span> الإعدادات
-            </a>
-        </nav>
-        
-        <div class="p-4 border-t border-slate-100">
-            <button onclick="logout()" class="w-full text-right px-4 py-3 rounded-xl text-sm text-red-500 hover:bg-red-50/60 transition-all duration-200 font-black flex items-center gap-3">
-                <span>🚪</span> تسجيل الخروج
-            </button>
-        </div>
-    </aside>
+    <div id="shell"></div>
 
     <div class="flex-grow flex flex-col min-w-0 overflow-hidden">
         
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/60 p-4 flex items-center justify-between md:hidden z-30 shadow-sm">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-md">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                </div>
-                <span id="mobileStoreName" class="font-black text-slate-800 text-sm truncate max-w-[160px]">جاري التحميل...</span>
-            </div>
-            <button onclick="toggleSidebar()" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-all active:scale-95">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
-        </header>
+        <div id="shell-topbar"></div>
 
         <main class="flex-grow overflow-y-auto p-4 md:p-8 relative pb-24">
             
@@ -95,25 +73,25 @@
 
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
                 <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-slate-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
+                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-slate-500/5 rounded-full transition-transform group-hover:scale-125 duration-300"></div>
                     <p class="text-xs font-extrabold text-slate-400">إجمالي المنتجات</p>
                     <h3 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight" id="statTotal">0</h3>
                 </div>
                 
                 <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group border-r-4 border-emerald-500">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
+                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500/5 rounded-full transition-transform group-hover:scale-125 duration-300"></div>
                     <p class="text-xs font-extrabold text-emerald-500">متوفرة للبيع</p>
                     <h3 class="text-2xl md:text-3xl font-black text-emerald-600 mt-2 tracking-tight" id="statAvailable">0</h3>
                 </div>
                 
                 <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group border-r-4 border-amber-500">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-amber-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
+                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-amber-500/5 rounded-full transition-transform group-hover:scale-125 duration-300"></div>
                     <p class="text-xs font-extrabold text-amber-500">مخزون منخفض</p>
                     <h3 class="text-2xl md:text-3xl font-black text-amber-600 mt-2 tracking-tight" id="statLowStock">0</h3>
                 </div>
                 
                 <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group border-r-4 border-rose-500">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-rose-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
+                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-rose-500/5 rounded-full transition-transform group-hover:scale-125 duration-300"></div>
                     <p class="text-xs font-extrabold text-rose-500">نفذ من المخزون</p>
                     <h3 class="text-2xl md:text-3xl font-black text-rose-600 mt-2 tracking-tight" id="statOutOfStock">0</h3>
                 </div>
@@ -162,7 +140,7 @@
         <div class="bg-white rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] border border-slate-100">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                 <h3 class="font-black text-base md:text-lg text-slate-800" id="modalTitle">✨ إضافة منتج جديد</h3>
-                <button type="button" onclick="closeAddProductModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-lg flex items-center justify-center hover:bg-slate-100 text-sm font-bold transition-all-200">✕</button>
+                <button type="button" onclick="closeAddProductModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-lg flex items-center justify-center hover:bg-slate-100 text-sm font-bold transition-all duration-200">✕</button>
             </div>
             
             <form id="addProductForm" onsubmit="saveProduct(event)" class="p-6 space-y-4 overflow-y-auto flex-grow scrollbar-none">
@@ -230,6 +208,10 @@
             </form>
         </div>
     </div>
+    <script src="assets/js/config.js?v=34"></script>
+    <script src="assets/js/app.js?v=34"></script>
+    <script src="assets/js/subscription.js?v=34"></script>
+    <script src="assets/js/merchant-shell.js?v=34"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -247,6 +229,8 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+
+        SHELL.mount('products', 'إدارة المنتجات');
         const db = getFirestore(app);
 
         let allProducts = [];
@@ -281,13 +265,21 @@
                     const userDoc = await getDoc(doc(db, "users", user.uid));
                     if (userDoc.exists()) {
                         const userData = userDoc.data();
+                        if (userData.role === 'merchant' && userData.is_approved !== true) {
+                            if (window.SE_SUB) { window.SE_SUB.redirectExpired(userData); return; }
+                        }
+                        // فحص الاشتراك الشهري
+                        if (userData.role === 'merchant' && window.SE_SUB && !window.SE_SUB.status(userData).active) {
+                            window.SE_SUB.redirectExpired(userData);
+                            return;
+                        }
                         if (userData.role === 'merchant' && userData.is_approved === true) {
                             currentUserModel = { id: user.uid, ...userData };
+                            if (window.SE_SUB) { try { window.SE_SUB.mountBanner(userData); } catch (e) {} }
                             
                             const storeName = currentUserModel.name || 'متجر غير مسمى';
-                            document.getElementById('sidebarStoreName').textContent = storeName;
-                            document.getElementById('mobileStoreName').textContent = storeName;
-
+                            SHELL.setStoreName(storeName, user.uid);
+                            
                             await loadCategories();
                             await loadProducts();
                             return;
@@ -343,8 +335,10 @@
                 calculateStats();
                 renderCategoryTabs();
                 renderProductsTable(allProducts);
+                SHELL.setStatus(true, `متصل — ${allProducts.length} منتج`);
             } catch (error) {
                 console.error("Error loading products:", error);
+                SHELL.setStatus(false, 'تعذّر جلب المنتجات ❌');
                 document.getElementById('productsTableBody').innerHTML = `<tr><td colspan="6" class="text-center p-8 text-rose-500">فشل تحميل المنتجات.</td></tr>`;
             }
         }
@@ -415,7 +409,7 @@
                 filtered = filtered.filter(p => p.category === currentSelectedCategory);
             }
             if (term !== '') {
-                filtered = filtered.filter(p => p.name.toLowerCase().includes(term));
+                filtered = filtered.filter(p => String(p.name || '').toLowerCase().includes(term));
             }
             renderProductsTable(filtered);
         }
@@ -439,37 +433,55 @@
                     dateStr = new Date(p.created.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
                 }
                 
-                let stockBadge = `<span class="bg-slate-100 text-slate-700 text-xs px-2.5 py-1 rounded-md font-bold">${p.stock} قطعة</span>`;
-                if (Number(p.stock) === 0) {
+                // المخزون: نتعامل مع غياب الحقل بوضوح بدل عرض "undefined"
+                const stockNum = (p.stock === undefined || p.stock === null || p.stock === '')
+                    ? null : Number(p.stock);
+                let stockBadge;
+                if (stockNum === null || isNaN(stockNum)) {
+                    stockBadge = `<span class="bg-slate-100 text-slate-500 text-xs px-2.5 py-1 rounded-md font-bold" title="لم يُحدَّد المخزون لهذا المنتج">غير محدد</span>`;
+                } else if (stockNum === 0) {
                     stockBadge = `<span class="bg-rose-50 text-rose-600 text-xs px-2.5 py-1 rounded-md font-bold">نفذ!</span>`;
-                } else if (Number(p.stock) <= 5) {
-                    stockBadge = `<span class="bg-amber-50 text-amber-600 text-xs px-2.5 py-1 rounded-md font-bold">منخفض (${p.stock})</span>`;
+                } else if (stockNum <= 5) {
+                    stockBadge = `<span class="bg-amber-50 text-amber-600 text-xs px-2.5 py-1 rounded-md font-bold whitespace-nowrap">منخفض (${stockNum})</span>`;
+                } else {
+                    stockBadge = `<span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-md font-bold whitespace-nowrap">${stockNum} قطعة</span>`;
                 }
 
                 const statusBadge = p.is_active 
                     ? `<span class="text-emerald-600 font-bold flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span> نشط</span>`
                     : `<span class="text-slate-400 font-bold flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-slate-300 inline-block"></span> معطل</span>`;
 
+                const esc = window.SE ? SE.escape : (x => String(x == null ? '' : x));
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50/50 transition">
                         <td class="p-4 text-center"><input type="checkbox" class="rounded border-slate-300"></td>
                         <td class="p-4">
                             <div class="flex items-center gap-3">
-                                <img src="${imageUrl}" class="w-12 h-12 object-cover rounded-xl border border-slate-100 bg-slate-100" alt="">
-                                <div>
-                                    <h4 class="font-bold text-slate-800 text-sm">${p.name}</h4>
+                                <img src="${esc(imageUrl)}" loading="lazy" class="w-12 h-12 object-cover rounded-xl border border-slate-100 bg-slate-100 flex-shrink-0" alt="">
+                                <div class="min-w-0">
+                                    <h4 class="font-bold text-slate-800 text-sm truncate max-w-[220px]">${esc(p.name)}</h4>
                                     <p class="text-xs text-slate-400 mt-0.5">تاريخ النشر: ${dateStr}</p>
                                 </div>
                             </div>
                         </td>
-                        <td class="p-4 font-bold text-indigo-600">${Number(p.price).toLocaleString()} د.ج</td>
-                        <td class="p-4">${stockBadge}</td>
-                        <td class="p-4 text-xs">${statusBadge}</td>
+                        <td class="p-4 font-bold text-indigo-600 whitespace-nowrap">${Number(p.price).toLocaleString()} د.ج</td>
                         <td class="p-4">
-                            <div class="flex justify-center items-center gap-2">
-                                <button onclick="deleteProduct('${p.id}')" class="p-2 text-rose-500 hover:bg-rose-50 rounded-xl transition" title="حذف">🗑️</button>
-                                <button onclick="openEditProductModal('${p.id}')" class="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition" title="تعديل">✏️</button>
-                                <a href="product-details.html?id=${p.id}" class="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition" title="معاينة">👁️</a>
+                            <div class="flex items-center gap-1.5">
+                                ${stockBadge}
+                                <button onclick="quickStock('${esc(p.id)}',-1)" class="w-6 h-6 rounded-lg bg-slate-100 hover:bg-slate-200 font-black text-slate-600" title="إنقاص">-</button>
+                                <button onclick="quickStock('${esc(p.id)}',1)" class="w-6 h-6 rounded-lg bg-slate-100 hover:bg-slate-200 font-black text-slate-600" title="زيادة">+</button>
+                            </div>
+                        </td>
+                        <td class="p-4 text-xs">
+                            <button onclick="toggleActive('${esc(p.id)}')" class="cursor-pointer" title="اضغط للتبديل">${statusBadge}</button>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex justify-center items-center gap-1.5">
+                                <button onclick="duplicateProduct('${esc(p.id)}')" class="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition" title="نسخ المنتج">📄</button>
+                                <button onclick="copyProductLink('${esc(p.id)}')" class="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition" title="نسخ الرابط">🔗</button>
+                                <button onclick="openEditProductModal('${esc(p.id)}')" class="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition" title="تعديل">✏️</button>
+                                <a href="product-details.html?id=${encodeURIComponent(p.id)}" target="_blank" class="p-2 text-slate-500 hover:bg-slate-100 rounded-xl transition" title="معاينة">👁️</a>
+                                <button onclick="deleteProduct('${esc(p.id)}')" class="p-2 text-rose-500 hover:bg-rose-50 rounded-xl transition" title="حذف">🗑️</button>
                             </div>
                         </td>
                     </tr>
@@ -606,13 +618,24 @@
 
             try {
                 const id = document.getElementById('pId').value;
-                const name = document.getElementById('pName').value;
+                const name = document.getElementById('pName').value.trim();
                 const price = Number(document.getElementById('pPrice').value);
                 const stock = Number(document.getElementById('pStock').value);
                 const category = document.getElementById('pCategory').value;
                 const description = document.getElementById('pDesc').value;
                 const colors = document.getElementById('pColors').value;
                 const sizes = document.getElementById('pSizes').value;
+
+                // تحقّق من صحة البيانات قبل الحفظ
+                const fail = (msg) => {
+                    alert(msg);
+                    saveBtn.disabled = false;
+                    saveBtn.innerText = "حفظ التغييرات";
+                };
+                if (name.length < 2) { fail("⚠️ اكتب اسماً صحيحاً للمنتج (حرفان على الأقل)."); return; }
+                if (!isFinite(price) || price <= 0) { fail("⚠️ السعر يجب أن يكون رقماً أكبر من صفر."); return; }
+                if (!Number.isInteger(stock) || stock < 0) { fail("⚠️ الكمية يجب أن تكون رقماً صحيحاً غير سالب."); return; }
+                if (!category) { fail("⚠️ اختر فئة المنتج."); return; }
 
                 if (id === "" && merchantUploadedFiles.length === 0) {
                     alert("⚠️ يرجى إضافة صورة واحدة على الأقل للمنتج الجديد.");
@@ -663,6 +686,51 @@
                 saveBtn.innerText = "حفظ التغييرات";
             }
         }
+
+        /* ===== إجراءات سريعة للتاجر ===== */
+        window.toggleActive = async function (id) {
+            const p = allProducts.find(x => x.id === id);
+            if (!p) return;
+            const next = !(p.is_active !== false);
+            try {
+                await updateDoc(doc(db, "products", id), { is_active: next });
+                p.is_active = next;
+                handleSearch();
+                SE.toast(next ? '✅ تم تفعيل المنتج' : '⏸️ تم إيقاف المنتج', next ? 'success' : 'info');
+            } catch (e) { console.error(e); SE.toast('❌ تعذّر تغيير الحالة', 'error'); }
+        };
+
+        window.quickStock = async function (id, delta) {
+            const p = allProducts.find(x => x.id === id);
+            if (!p) return;
+            const next = Math.max(0, (Number(p.stock) || 0) + delta);
+            try {
+                await updateDoc(doc(db, "products", id), { stock: next });
+                p.stock = next;
+                handleSearch();
+            } catch (e) { console.error(e); SE.toast('❌ تعذّر تحديث المخزون', 'error'); }
+        };
+
+        window.copyProductLink = function (id) {
+            const url = location.href.replace(/[^/]*$/, '') + 'product-details.html?id=' + encodeURIComponent(id);
+            SE.copy(url);
+        };
+
+        window.duplicateProduct = async function (id) {
+            const p = allProducts.find(x => x.id === id);
+            if (!p) return;
+            if (!confirm('إنشاء نسخة من هذا المنتج؟')) return;
+            try {
+                const copy = { ...p };
+                delete copy.id;
+                copy.name = (p.name || 'منتج') + ' (نسخة)';
+                copy.is_active = false;
+                copy.created = serverTimestamp();
+                await addDoc(collection(db, "products"), copy);
+                await loadProducts();
+                SE.toast('📄 تم إنشاء نسخة (معطّلة) — عدّلها ثم فعّلها', 'success', 3500);
+            } catch (e) { console.error(e); SE.toast('❌ تعذّر النسخ', 'error'); }
+        };
 
         async function deleteProduct(id) {
             if (confirm("هل أنت متأكد من حذف هذا المنتج نهائياً؟")) {

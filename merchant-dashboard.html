@@ -2,357 +2,466 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة القيادة | مركز التاجر </title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
-        body { font-family: 'Cairo', sans-serif; background-color: #f3f4f6; }
-        
-        /* تأثير الزجاج الاحترافي مع لمسة توهج ناعمة */
-        .glass-card { 
-            background: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6); 
-        }
-        
-        /* شريط تمرير مخصص وأنيق */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
     </style>
+    <meta name="theme-color" content="#0284c7">
+    <title>لوحة القيادة | مركز التاجر</title>
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=34">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/theme.css?v=34">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .kpi { position: relative; overflow: hidden; }
+        .kpi::after { content:''; position:absolute; inset-inline-end:-1rem; bottom:-1rem; width:6rem; height:6rem; border-radius:999px; opacity:.07; background:currentColor; }
+        .trend-up { color:#059669 } .trend-down { color:#e11d48 }
+        @media print { .se-noprint { display:none !important } }
+    </style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
-<body class="text-slate-900 flex h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-blue-50/30 relative">
+<body class="se-admin min-h-screen flex overflow-hidden">
 
-    <!-- الطبقة الضبابية الخلفية عند فتح القائمة في الهاتف -->
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-40 hidden md:hidden transition-all duration-300"></div>
+    <div id="shell"></div>
 
-    <!-- 1. شريط التنقل الجانبي الاحترافي (Sidebar) -->
-    <aside id="sidebar" class="fixed inset-y-0 right-0 w-68 bg-white/90 backdrop-blur-xl border-l border-slate-200/80 shadow-xl shadow-slate-900/5 flex flex-col z-50 transform translate-x-full transition-transform duration-300 ease-out md:translate-x-0 md:static md:h-full">
-        <!-- شعار المنصة -->
-        <div class="p-6 border-b border-slate-100/80 flex items-center gap-3.5">
-            <div class="w-11 h-11 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-lg shadow-blue-600/20 transform rotate-3">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-            </div>
-            <div>
-                <h1 class="text-lg font-black text-slate-900 leading-none">مركز التاجر</h1>
-                <p id="sidebarStoreName" class="text-xs text-blue-600 font-extrabold mt-1 truncate max-w-[130px]">جاري التحميل...</p>
-            </div>
-        </div>
-        
-        <!-- روابط التنقل -->
-        <nav class="flex-grow p-4 space-y-1.5 overflow-y-auto">
-            <a href="merchant-dashboard.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-black bg-gradient-to-l from-blue-50 to-indigo-50/50 text-blue-600 border-r-4 border-blue-600 shadow-sm transition-all duration-200">
-                <span class="text-base">📊</span> لوحة القيادة
-            </a>
-            <a href="products.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">📦</span> إدارة المنتجات
-            </a>
-            <a href="orders.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">🛒</span> الطلبات الواردة
-            </a>
-            <a href="shipping.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">🚚</span> إدارة الشحن
-            </a>
-            <a href="settings.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">⚙️</span> الإعدادات
-            </a>
-        </nav>
-        
-        <!-- زر تسجيل الخروج -->
-        <div class="p-4 border-t border-slate-100">
-            <button onclick="logout()" class="w-full text-right px-4 py-3 rounded-xl text-sm text-red-500 hover:bg-red-50/60 transition-all duration-200 font-black flex items-center gap-3">
-                <span>🚪</span> تسجيل الخروج
-            </button>
-        </div>
-    </aside>
-
-    <!-- 2. منطقة المحتوى الرئيسية -->
     <div class="flex-grow flex flex-col min-w-0 overflow-hidden">
-        
-        <!-- الهيدر للموبايل فقط -->
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/60 p-4 flex items-center justify-between md:hidden z-30 shadow-sm">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-md">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                </div>
-                <span id="mobileStoreName" class="font-black text-slate-800 text-sm truncate max-w-[160px]">جاري التحميل...</span>
-            </div>
-            <button onclick="toggleSidebar()" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-all active:scale-95">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
-        </header>
+        <div id="shell-topbar"></div>
 
-        <!-- المحتوى الداخلي للوحة التحكم -->
-        <main class="flex-grow overflow-y-auto p-4 md:p-8 relative">
-            
-            <!-- عنوان الصفحة الترحيبي -->
-            <div class="mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <main class="flex-grow overflow-y-auto p-4 md:p-6 space-y-5">
+
+            <!-- الترويسة + فلتر المدة -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">نظرة عامة على الأداء</h2>
-                    <p class="text-slate-500 text-xs md:text-sm font-semibold mt-1">مرحباً بك مجدداً في لوحة تحكم متجرك الذكي.</p>
+                    <h2 class="text-xl md:text-2xl font-black tracking-tight">👋 <span id="greet">مرحباً</span></h2>
+                    <p class="se-muted text-xs font-bold mt-1">إليك ملخّص أداء متجرك <span id="rangeLabel">خلال آخر 7 أيام</span>.</p>
                 </div>
-                <!-- ويدجت التاريخ الحالي يضفي طابع الحداثة -->
-                <div class="self-start sm:self-center bg-white/60 backdrop-blur border border-slate-200 px-4 py-1.5 rounded-full text-xs font-bold text-slate-500 shadow-sm">
-                    📅 اليوم النشط
-                </div>
-            </div>
-
-            <!-- شبكة كروت الإحصائيات الفخمة -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
-                <!-- كارت 1 -->
-                <div class="glass-card p-5 md:p-6 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
-                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
-                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 text-xl shadow-inner font-normal">📥</div>
-                    <p class="text-xs md:text-sm font-extrabold text-slate-500">الطلبات الواردة (قيد الانتظار)</p>
-                    <h3 class="text-3xl font-black text-slate-900 mt-1 tracking-tight" id="incomingOrders">0</h3>
-                </div>
-                
-                <!-- كارت 2 -->
-                <div class="glass-card p-5 md:p-6 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
-                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-4 text-xl shadow-inner font-normal">✅</div>
-                    <p class="text-xs md:text-sm font-extrabold text-slate-500">الطلبات المكتملة</p>
-                    <h3 class="text-3xl font-black text-slate-900 mt-1 tracking-tight" id="completedOrders">0</h3>
-                </div>
-                
-                <!-- كارت 3 مميز بلون متدرج -->
-                <div class="glass-card p-5 md:p-6 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group border-b-4 border-indigo-500 sm:col-span-2 md:col-span-1">
-                    <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
-                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-4 text-xl shadow-inner font-normal">📦</div>
-                    <p class="text-xs md:text-sm font-extrabold text-slate-500">المنتجات في المخزن</p>
-                    <h3 class="text-3xl font-black text-indigo-600 mt-1 tracking-tight" id="totalStock">0</h3>
-                </div>
-            </div>
-
-            <!-- صندوق المبيعات والرسم البياني الباهر -->
-            <div class="glass-card p-5 md:p-6 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-                    <div>
-                        <h3 class="font-black text-slate-800 text-base md:text-lg">تقرير المبيعات الإجمالي</h3>
-                        <p class="text-xs text-slate-400 font-semibold mt-0.5">آخر 7 أيام عمل للمتجر بالعملة المحلية (د.ج)</p>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <div class="flex gap-1 se-surface p-1 rounded-xl border" style="border-color:var(--se-border)">
+                        <button onclick="setRange(7)" id="r7" class="text-[11px] font-black px-3 py-1.5 rounded-lg">7 أيام</button>
+                        <button onclick="setRange(30)" id="r30" class="text-[11px] font-black px-3 py-1.5 rounded-lg">30 يوم</button>
+                        <button onclick="setRange(90)" id="r90" class="text-[11px] font-black px-3 py-1.5 rounded-lg">90 يوم</button>
                     </div>
-                    <span class="self-start sm:self-center bg-emerald-50 text-emerald-700 font-bold px-3 py-1 rounded-lg text-xs">
-                        📈 تحديث فوري
-                    </span>
+                    <button onclick="refreshAll()" id="refreshBtn" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px]">🔄 تحديث</button>
+                    <button onclick="exportCsv()" class="se-btn se-btn-primary !px-3 !py-2 !text-[11px]">⬇️ تصدير CSV</button>
                 </div>
-                <div class="h-64 md:h-76 w-full"><canvas id="salesChart"></canvas></div>
             </div>
+
+            <!-- تنبيهات ذكية -->
+            <div id="alertsBox" class="space-y-2"></div>
+
+            <!-- بطاقات الأداء -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="se-card kpi p-4 text-emerald-600">
+                    <div class="flex items-center justify-between"><span class="text-lg">💰</span><span id="revTrend" class="text-[10px] font-black"></span></div>
+                    <p class="text-[11px] font-extrabold se-muted mt-2">صافي المبيعات</p>
+                    <h3 id="kpiRevenue" class="text-lg md:text-2xl font-black mt-0.5" style="color:var(--se-text)">0 د.ج</h3>
+                </div>
+                <div class="se-card kpi p-4 text-blue-600">
+                    <div class="flex items-center justify-between"><span class="text-lg">🧾</span><span id="ordTrend" class="text-[10px] font-black"></span></div>
+                    <p class="text-[11px] font-extrabold se-muted mt-2">إجمالي الطلبات</p>
+                    <h3 id="kpiOrders" class="text-lg md:text-2xl font-black mt-0.5" style="color:var(--se-text)">0</h3>
+                </div>
+                <div class="se-card kpi p-4 text-indigo-600">
+                    <div class="flex items-center justify-between"><span class="text-lg">📈</span></div>
+                    <p class="text-[11px] font-extrabold se-muted mt-2">متوسط قيمة الطلب</p>
+                    <h3 id="kpiAov" class="text-lg md:text-2xl font-black mt-0.5" style="color:var(--se-text)">0 د.ج</h3>
+                </div>
+                <div class="se-card kpi p-4 text-amber-600">
+                    <div class="flex items-center justify-between"><span class="text-lg">✅</span></div>
+                    <p class="text-[11px] font-extrabold se-muted mt-2">نسبة الطلبات المؤكدة</p>
+                    <h3 id="kpiRate" class="text-lg md:text-2xl font-black mt-0.5" style="color:var(--se-text)">0%</h3>
+                </div>
+            </div>
+
+            <!-- صف ثانٍ: مؤشرات تشغيلية -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <a href="orders.html" class="se-card p-4 flex items-center gap-3 se-hover-lift">
+                    <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-lg flex-shrink-0">📥</div>
+                    <div class="min-w-0"><p class="text-[11px] font-extrabold se-muted">بانتظار التأكيد</p><h4 id="kpiPending" class="text-lg font-black">0</h4></div>
+                </a>
+                <a href="orders.html" class="se-card p-4 flex items-center gap-3 se-hover-lift">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg flex-shrink-0">📦</div>
+                    <div class="min-w-0"><p class="text-[11px] font-extrabold se-muted">طلبات مكتملة</p><h4 id="kpiCompleted" class="text-lg font-black">0</h4></div>
+                </a>
+                <a href="products.html" class="se-card p-4 flex items-center gap-3 se-hover-lift">
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg flex-shrink-0">🏷️</div>
+                    <div class="min-w-0"><p class="text-[11px] font-extrabold se-muted">منتجات نشطة</p><h4 id="kpiProducts" class="text-lg font-black">0</h4></div>
+                </a>
+                <a href="products.html" class="se-card p-4 flex items-center gap-3 se-hover-lift">
+                    <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg flex-shrink-0">⚠️</div>
+                    <div class="min-w-0"><p class="text-[11px] font-extrabold se-muted">مخزون منخفض</p><h4 id="kpiLowStock" class="text-lg font-black">0</h4></div>
+                </a>
+            </div>
+
+            <!-- الرسوم البيانية -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="se-card p-4 md:p-5 lg:col-span-2">
+                    <div class="flex items-center justify-between gap-2 mb-4 flex-wrap">
+                        <div><h3 class="font-black text-sm">تقرير المبيعات</h3><p class="text-[11px] se-muted font-bold mt-0.5">القيمة الإجمالية للطلبات المؤكدة (د.ج)</p></div>
+                        <span class="se-badge se-badge-green">📈 مباشر</span>
+                    </div>
+                    <div class="h-56 md:h-64"><canvas id="salesChart"></canvas></div>
+                </div>
+                <div class="se-card p-4 md:p-5">
+                    <h3 class="font-black text-sm mb-1">توزيع حالات الطلبات</h3>
+                    <p class="text-[11px] se-muted font-bold mb-3">يساعدك على متابعة جودة التأكيد</p>
+                    <div class="h-48 flex items-center justify-center"><canvas id="statusChart"></canvas></div>
+                    <div id="statusLegend" class="grid grid-cols-3 gap-1 mt-3 text-center"></div>
+                </div>
+            </div>
+
+            <!-- أفضل المنتجات + الولايات -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="se-card p-4 md:p-5">
+                    <h3 class="font-black text-sm mb-3">🏆 المنتجات الأكثر مبيعاً</h3>
+                    <div id="topProducts" class="space-y-2"></div>
+                </div>
+                <div class="se-card p-4 md:p-5">
+                    <h3 class="font-black text-sm mb-3">📍 أفضل الولايات</h3>
+                    <div id="topWilayas" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <!-- أحدث الطلبات مع إجراءات سريعة -->
+            <div class="se-card p-4 md:p-5">
+                <div class="flex items-center justify-between mb-3 gap-2 flex-wrap">
+                    <h3 class="font-black text-sm">🕒 أحدث الطلبات</h3>
+                    <a href="orders.html" class="text-[11px] font-black text-blue-600">عرض الكل ←</a>
+                </div>
+                <div id="recentOrders" class="space-y-2"></div>
+            </div>
+
         </main>
     </div>
-<script type="module">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="assets/js/config.js?v=34"></script>
+    <script src="assets/js/app.js?v=34"></script>
+    <script src="assets/js/subscription.js?v=34"></script>
+    <script src="assets/js/merchant-shell.js?v=34"></script>
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, doc, getDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, query, where, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // ⚠️ إعدادات مشروع Firebase الخاص بك
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
-            measurementId: "G-PGLFSTBVTH"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.SE_CONFIG.firebase);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        let salesChartInstance = null;
         let currentMerchant = null;
+        let allOrders = [], allProducts = [];
+        let rangeDays = 7;
+        let salesChart = null, statusChart = null;
 
-        window.toggleSidebar = toggleSidebar;
-        window.logout = logout;
+        /* ============ أدوات ============ */
+        // الطلبات تُحفظ بـ created_at (وبعضها القديم بـ created) — ندعم الاثنين
+        function orderDate(o) {
+            const raw = o.created_at || o.created || null;
+            if (!raw) return null;
+            if (raw.toDate) return raw.toDate();
+            const d = new Date(raw);
+            return isNaN(d) ? null : d;
+        }
+        // قيمة الطلب: نعتمد الحقول المحفوظة، ومع القديم نحسبها من المنتج
+        function orderValue(o, priceMap) {
+            if (o.total_price != null) return Number(o.total_price) || 0;
+            const unit = o.unit_price != null ? Number(o.unit_price) : (priceMap[o.product_ordered] || 0);
+            return unit * (Number(o.quantity) || 1);
+        }
+        const money = n => (Number(n) || 0).toLocaleString('en-US') + ' د.ج';
+        const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('translate-x-full');
-            overlay.classList.toggle('hidden');
+        window.setRange = function (d) {
+            rangeDays = d;
+            ['7', '30', '90'].forEach(x => {
+                const el = document.getElementById('r' + x);
+                if (!el) return;
+                const on = String(d) === x;
+                el.className = 'text-[11px] font-black px-3 py-1.5 rounded-lg ' + (on ? 'bg-blue-600 text-white shadow-sm' : 'se-muted');
+            });
+            document.getElementById('rangeLabel').textContent = `خلال آخر ${d} يوم`;
+            if (allOrders.length || allProducts.length) render();
+        };
+
+        /* ============ جلب البيانات ============ */
+        window.refreshAll = async function () {
+            const btn = document.getElementById('refreshBtn');
+            btn.disabled = true; btn.textContent = '⏳ جاري التحديث...';
+            try {
+                const mid = currentMerchant.id;
+                const [ordSnap, prodSnap] = await Promise.all([
+                    getDocs(query(collection(db, 'orders'), where('merchant', '==', mid))),
+                    getDocs(query(collection(db, 'products'), where('user_id', '==', mid)))
+                ]);
+                allOrders = ordSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+                allProducts = prodSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+                // دعم التجار الذين تُحفظ طلباتهم بـ user_id بدل merchant
+                if (allOrders.length === 0) {
+                    const alt = await getDocs(query(collection(db, 'orders'), where('user_id', '==', mid)));
+                    allOrders = alt.docs.map(d => ({ id: d.id, ...d.data() }));
+                }
+                SHELL.setStatus(true, 'متصل — آخر تحديث ' + new Date().toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' }));
+                render();
+            } catch (e) {
+                console.error(e);
+                SHELL.setStatus(false, 'تعذّر جلب البيانات ❌');
+            } finally {
+                btn.disabled = false; btn.textContent = '🔄 تحديث';
+            }
+        };
+
+        /* ============ العرض ============ */
+        function render() {
+            const priceMap = {};
+            allProducts.forEach(p => priceMap[p.id] = Number(p.price) || 0);
+
+            const now = new Date();
+            const start = new Date(now); start.setDate(now.getDate() - (rangeDays - 1)); start.setHours(0, 0, 0, 0);
+            const prevStart = new Date(start); prevStart.setDate(start.getDate() - rangeDays);
+
+            const inRange = allOrders.filter(o => { const d = orderDate(o); return d && d >= start; });
+            const inPrev = allOrders.filter(o => { const d = orderDate(o); return d && d >= prevStart && d < start; });
+            const isPaid = o => o.status === 'completed';
+
+            const revenue = inRange.filter(isPaid).reduce((s, o) => s + orderValue(o, priceMap), 0);
+            const prevRevenue = inPrev.filter(isPaid).reduce((s, o) => s + orderValue(o, priceMap), 0);
+            const paidCount = inRange.filter(isPaid).length;
+
+            document.getElementById('kpiRevenue').textContent = money(revenue);
+            document.getElementById('kpiOrders').textContent = inRange.length;
+            document.getElementById('kpiAov').textContent = money(paidCount ? Math.round(revenue / paidCount) : 0);
+            document.getElementById('kpiRate').textContent = inRange.length ? Math.round(paidCount / inRange.length * 100) + '%' : '0%';
+            trend('revTrend', revenue, prevRevenue);
+            trend('ordTrend', inRange.length, inPrev.length);
+
+            const pending = allOrders.filter(o => (o.status || 'pending') === 'pending').length;
+            document.getElementById('kpiPending').textContent = pending;
+            document.getElementById('kpiCompleted').textContent = allOrders.filter(isPaid).length;
+            document.getElementById('kpiProducts').textContent = allProducts.filter(p => p.is_active !== false).length;
+
+            const low = allProducts.filter(p => p.stock !== undefined && Number(p.stock) <= 5);
+            document.getElementById('kpiLowStock').textContent = low.length;
+
+            SHELL.setPending(pending);
+
+            renderAlerts(pending, low);
+            renderSalesChart(inRange, priceMap, start);
+            renderStatusChart();
+            renderTopProducts(priceMap);
+            renderTopWilayas();
+            renderRecent(priceMap);
         }
 
-        // 🔒 نظام حماية وفحص الصلاحيات الموحد لمنع الطرد العشوائي
-        const ALLOWED_ROLE = 'merchant'; 
-
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.replace('login.html');
-                return;
-            }
-            
-            try {
-                // ⏳ ننتظر جلب البيانات من السيرفر بالكامل أولاً
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
-                
-                if (!userDoc.exists()) {
-                    console.error("المستند غير موجود في الفايرستور لهذا الـ UID");
-                    await forceLogout();
-                    return;
-                }
-
-                const userData = userDoc.data();
-                const userRole = userData.role;
-
-                // التحقق من الرتبة (مع إعطاء الأدمن حق الدخول الشامل دائماً)
-                if (userRole !== ALLOWED_ROLE && userRole !== 'admin') {
-                    alert(`عذراً، لا تملك الصلاحية لدخول هذه اللوحة. رتبتك الحالية هي: (${userRole || 'مستخدم عادي'})`);
-                    
-                    const routes = {
-                        'admin': 'admin-dashboard.html',
-                        'reseller': 'admin-control.html',
-                        'merchant': 'merchant-dashboard.html',
-                        'user': 'index.html'
-                    };
-                    window.location.replace(routes[userRole] || 'index.html');
-                    return;
-                }
-
-                // فحص تفعيل حساب التاجر
-                if (userRole === 'merchant' && userData.is_approved !== true) {
-                    alert("حسابك قيد المراجعة! لا يمكنك الدخول إلى لوحة التحكم حتى يتم تفعيل حسابك من الإدارة.");
-                    await forceLogout();
-                    return;
-                }
-
-                // الحساب سليم ومطابق للرتبة المطلوبة! تشغيل الواجهة
-                currentMerchant = { id: user.uid, ...userData };
-                const storeName = currentMerchant.name || 'متجر غير مسمى';
-                document.getElementById('sidebarStoreName').textContent = storeName;
-                document.getElementById('mobileStoreName').textContent = storeName;
-                
-                // جلب الإحصائيات وبناء المخطط
-                await fetchDashboardStats();
-
-            } catch (err) {
-                console.error("خطأ أثناء التحقق من الصلاحيات:", err);
-                alert("تأخرت قاعدة البيانات في الرد، يرجى تحديث الصفحة.");
-            }
-        });
-
-        async function forceLogout() {
-            await signOut(auth);
-            window.location.replace('login.html');
+        function trend(id, cur, prev) {
+            const el = document.getElementById(id);
+            if (!prev) { el.textContent = cur ? 'جديد' : ''; el.className = 'text-[10px] font-black se-muted'; return; }
+            const pct = Math.round((cur - prev) / prev * 100);
+            el.textContent = (pct >= 0 ? '▲ ' : '▼ ') + Math.abs(pct) + '%';
+            el.className = 'text-[10px] font-black ' + (pct >= 0 ? 'trend-up' : 'trend-down');
         }
 
-        async function fetchDashboardStats() {
-            try {
-                const merchantId = currentMerchant.id;
-
-                // 1. حساب الطلبات الواردة (قيد الانتظار)
-                const pendingQuery = query(collection(db, "orders"), where("merchant", "==", merchantId), where("status", "==", "pending"));
-                const pendingSnapshot = await getDocs(pendingQuery);
-                document.getElementById('incomingOrders').innerText = pendingSnapshot.size;
-
-                // 2. حساب الطلبات المكتملة
-                const completedQuery = query(collection(db, "orders"), where("merchant", "==", merchantId), where("status", "==", "completed"));
-                const completedSnapshot = await getDocs(completedQuery);
-                document.getElementById('completedOrders').innerText = completedSnapshot.size;
-
-                // 3. حساب إجمالي المنتجات في المخزن
-                const productsQuery = query(collection(db, "products"), where("user_id", "==", merchantId));
-                const productsSnapshot = await getDocs(productsQuery);
-                
-                let totalStockCount = 0;
-                productsSnapshot.forEach((doc) => {
-                    totalStockCount += Number(doc.data().stock) || 0;
-                });
-                document.getElementById('totalStock').innerText = totalStockCount;
-
-                // 4. بناء وعرض مخطط المبيعات
-                await updateSalesChart(merchantId, completedSnapshot);
-
-            } catch (error) {
-                console.error("حدث خطأ أثناء جلب الإحصائيات من Firestore:", error);
-            }
+        function renderAlerts(pending, low) {
+            const box = document.getElementById('alertsBox');
+            const items = [];
+            if (pending > 0) items.push(`<a href="orders.html" class="flex items-center gap-2 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl px-4 py-3 text-xs font-black"><span>🔔</span> لديك ${pending} طلب بانتظار التأكيد — سارع بمعالجتها.</a>`);
+            if (low.length) items.push(`<a href="products.html" class="flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl px-4 py-3 text-xs font-black"><span>⚠️</span> ${low.length} منتج بمخزون منخفض: ${low.slice(0, 3).map(p => esc(p.name)).join('، ')}${low.length > 3 ? '...' : ''}</a>`);
+            if (!allProducts.length) items.push(`<a href="products.html" class="flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-800 rounded-2xl px-4 py-3 text-xs font-black"><span>🚀</span> ابدأ بإضافة أول منتج لمتجرك!</a>`);
+            box.innerHTML = items.join('');
         }
 
-        async function updateSalesChart(merchantId, completedSnapshot) {
-            const daysOfWeek = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-            const labels = [];
-            const salesData = [];
-            const dateMap = {};
-
-            for (let i = 6; i >= 0; i--) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
-                const dateStr = d.toISOString().split('T')[0]; 
-                const dayName = daysOfWeek[d.getDay()];
-                
-                labels.push(dayName);
-                salesData.push(0); 
-                dateMap[dateStr] = labels.length - 1; 
+        function renderSalesChart(orders, priceMap, start) {
+            const buckets = {}, labels = [], data = [];
+            const step = rangeDays > 30 ? 7 : 1;
+            for (let i = 0; i < rangeDays; i += step) {
+                const d = new Date(start); d.setDate(start.getDate() + i);
+                const key = d.toISOString().slice(0, 10);
+                buckets[key] = labels.length;
+                labels.push(d.toLocaleDateString('ar-DZ', { day: 'numeric', month: 'short' }));
+                data.push(0);
             }
-
-            try {
-                const prodQuery = query(collection(db, "products"), where("user_id", "==", merchantId));
-                const prodSnapshot = await getDocs(prodQuery);
-                const productsPriceMap = {};
-                prodSnapshot.forEach(doc => {
-                    productsPriceMap[doc.id] = Number(doc.data().price || 0);
-                });
-
-                completedSnapshot.forEach(orderDoc => {
-                    const order = orderDoc.data();
-                    if (order.created) {
-                        const timestamp = order.created.toDate ? order.created.toDate() : new Date(order.created);
-                        const orderDateStr = timestamp.toISOString().split('T')[0];
-                        
-                        if (dateMap[orderDateStr] !== undefined) {
-                            const price = productsPriceMap[order.product_ordered] || 0;
-                            const qty = Number(order.quantity || 1);
-                            salesData[dateMap[orderDateStr]] += (price * qty);
-                        }
-                    }
-                });
-            } catch (err) {
-                console.error("خطأ أثناء معالجة بيانات المخطط البياني:", err);
-            }
+            orders.filter(o => o.status === 'completed').forEach(o => {
+                const d = orderDate(o); if (!d) return;
+                const diff = Math.floor((d - start) / 86400000);
+                const idx = Math.floor(diff / step);
+                if (idx >= 0 && idx < data.length) data[idx] += orderValue(o, priceMap);
+            });
 
             const ctx = document.getElementById('salesChart').getContext('2d');
-            if (salesChartInstance) {
-                salesChartInstance.destroy();
-            }
-
-            salesChartInstance = new Chart(ctx, {
-                type: 'line', 
-                data: { 
-                    labels: labels, 
-                    datasets: [{ 
-                        label: 'إجمالي المداخيل (د.ج)', 
-                        data: salesData, 
-                        borderColor: '#2563eb', 
-                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                        fill: true,
-                        tension: 0.4 
-                    }] 
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false,
+            if (salesChart) salesChart.destroy();
+            const grad = ctx.createLinearGradient(0, 0, 0, 220);
+            grad.addColorStop(0, 'rgba(2,132,199,.35)');
+            grad.addColorStop(1, 'rgba(2,132,199,0)');
+            salesChart = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets: [{ label: 'المبيعات (د.ج)', data, borderColor: '#0284c7', backgroundColor: grad, fill: true, tension: .4, pointRadius: 3, borderWidth: 3 }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => money(c.parsed.y) } } },
                     scales: {
-                        y: { beginAtZero: true, ticks: { font: { family: 'Cairo' } } },
-                        x: { ticks: { font: { family: 'Cairo' } } }
-                    },
-                    plugins: {
-                        legend: { labels: { font: { family: 'Cairo', weight: 'bold' } } }
+                        y: { beginAtZero: true, ticks: { font: { family: 'Cairo' }, callback: v => v >= 1000 ? (v / 1000) + 'k' : v }, grid: { color: 'rgba(148,163,184,.15)' } },
+                        x: { ticks: { font: { family: 'Cairo' }, maxRotation: 0, autoSkip: true, maxTicksLimit: 7 }, grid: { display: false } }
                     }
                 }
             });
         }
 
-        async function logout() { 
-            try {
-                await forceLogout();
-            } catch (err) {
-                console.error("خطأ أثناء تسجيل الخروج:", err);
-            }
+        function renderStatusChart() {
+            const counts = { pending: 0, completed: 0, cancelled: 0 };
+            allOrders.forEach(o => { const s = o.status || 'pending'; if (counts[s] !== undefined) counts[s]++; });
+            const ctx = document.getElementById('statusChart').getContext('2d');
+            if (statusChart) statusChart.destroy();
+            const total = counts.pending + counts.completed + counts.cancelled;
+            statusChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['قيد الانتظار', 'مكتملة', 'ملغاة'],
+                    datasets: [{ data: [counts.pending, counts.completed, counts.cancelled], backgroundColor: ['#f59e0b', '#10b981', '#f43f5e'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { display: false } } }
+            });
+            document.getElementById('statusLegend').innerHTML = [
+                ['قيد الانتظار', counts.pending, '#f59e0b'], ['مكتملة', counts.completed, '#10b981'], ['ملغاة', counts.cancelled, '#f43f5e']
+            ].map(([l, v, c]) => `<div><div class="text-sm font-black" style="color:${c}">${v}</div><div class="text-[9px] font-bold se-muted">${l}</div></div>`).join('')
+              + (total === 0 ? '<div class="col-span-3 text-[11px] se-muted font-bold mt-2">لا توجد طلبات بعد</div>' : '');
         }
+
+        function renderTopProducts(priceMap) {
+            const map = {};
+            allOrders.filter(o => o.status === 'completed').forEach(o => {
+                const key = o.product_ordered || o.product_name || '—';
+                const nm = o.product_name || (allProducts.find(p => p.id === o.product_ordered) || {}).name || 'منتج محذوف';
+                if (!map[key]) map[key] = { name: nm, qty: 0, rev: 0 };
+                map[key].qty += Number(o.quantity) || 1;
+                map[key].rev += orderValue(o, priceMap);
+            });
+            const list = Object.values(map).sort((a, b) => b.rev - a.rev).slice(0, 5);
+            const max = list.length ? list[0].rev || 1 : 1;
+            document.getElementById('topProducts').innerHTML = list.length ? list.map((p, i) => `
+                <div class="flex items-center gap-3">
+                    <span class="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 text-[11px] font-black flex items-center justify-center flex-shrink-0">${i + 1}</span>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between gap-2"><span class="text-[11px] font-black truncate">${esc(p.name)}</span><span class="text-[11px] font-black flex-shrink-0">${money(p.rev)}</span></div>
+                        <div class="h-1.5 rounded-full bg-slate-200/60 mt-1 overflow-hidden"><div class="h-full rounded-full" style="width:${Math.max(6, p.rev / max * 100)}%;background:var(--se-primary)"></div></div>
+                        <div class="text-[10px] se-muted font-bold mt-0.5">${p.qty} قطعة مباعة</div>
+                    </div>
+                </div>`).join('') : '<p class="text-[11px] se-muted font-bold text-center py-6">لا توجد مبيعات مكتملة بعد.</p>';
+        }
+
+        function renderTopWilayas() {
+            const map = {};
+            allOrders.forEach(o => {
+                let w = o.wilaya;
+                if (!w && o.address) { const m = String(o.address).match(/ولاية:\s*([^|]+)/); if (m) w = m[1].trim(); }
+                if (!w) return;
+                map[w] = (map[w] || 0) + 1;
+            });
+            const list = Object.entries(map).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            const max = list.length ? list[0][1] : 1;
+            document.getElementById('topWilayas').innerHTML = list.length ? list.map(([w, c]) => `
+                <div class="flex items-center gap-3">
+                    <span class="text-base flex-shrink-0">📍</span>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between gap-2"><span class="text-[11px] font-black truncate">${esc(w)}</span><span class="text-[11px] font-black flex-shrink-0">${c} طلب</span></div>
+                        <div class="h-1.5 rounded-full bg-slate-200/60 mt-1 overflow-hidden"><div class="h-full rounded-full bg-emerald-500" style="width:${Math.max(6, c / max * 100)}%"></div></div>
+                    </div>
+                </div>`).join('') : '<p class="text-[11px] se-muted font-bold text-center py-6">لا توجد بيانات ولايات بعد.</p>';
+        }
+
+        function renderRecent(priceMap) {
+            const list = allOrders.slice().sort((a, b) => (orderDate(b) || 0) - (orderDate(a) || 0)).slice(0, 6);
+            const chip = s => s === 'completed' ? '<span class="se-badge se-badge-green">مكتمل</span>'
+                : s === 'cancelled' ? '<span class="se-badge se-badge-red">ملغى</span>'
+                : '<span class="se-badge" style="background:rgba(245,158,11,.14);color:#b45309">قيد الانتظار</span>';
+            document.getElementById('recentOrders').innerHTML = list.length ? list.map(o => {
+                const st = o.status || 'pending';
+                const d = orderDate(o);
+                return `
+                <div class="se-surface rounded-2xl p-3 flex flex-col sm:flex-row sm:items-center gap-2 border" style="border-color:var(--se-border)">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-xs font-black truncate">${esc(o.customer_name || 'زبون')}</span>
+                            ${chip(st)}
+                        </div>
+                        <div class="text-[10px] se-muted font-bold mt-1 truncate">
+                            ${esc(o.product_name || '—')} • ${esc(o.wilaya || '')} • ${d ? d.toLocaleDateString('ar-DZ') : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <span class="text-xs font-black">${money(orderValue(o, priceMap))}</span>
+                        <a href="tel:${esc(o.phone_number || '')}" class="se-btn se-btn-ghost !px-2.5 !py-1.5 !text-[11px]" title="اتصال">📞</a>
+                        ${st === 'pending' ? `
+                            <button onclick="setOrderStatus('${o.id}','completed')" class="se-btn se-btn-accent !px-2.5 !py-1.5 !text-[11px]" title="تأكيد">✓</button>
+                            <button onclick="setOrderStatus('${o.id}','cancelled')" class="se-btn se-btn-ghost !px-2.5 !py-1.5 !text-[11px] text-rose-500" title="إلغاء">✕</button>` : ''}
+                    </div>
+                </div>`;
+            }).join('') : '<p class="text-[11px] se-muted font-bold text-center py-6">لا توجد طلبات بعد.</p>';
+        }
+
+        /* ============ إجراء سريع: تغيير حالة الطلب ============ */
+        window.setOrderStatus = async function (id, status) {
+            const label = status === 'completed' ? 'تأكيد' : 'إلغاء';
+            if (!confirm(`هل تريد ${label} هذا الطلب؟`)) return;
+            try {
+                await updateDoc(doc(db, 'orders', id), { status });
+                const o = allOrders.find(x => x.id === id);
+                if (o) o.status = status;
+                render();
+                SE.toast(`✅ تم ${label} الطلب بنجاح`, 'success');
+            } catch (e) {
+                console.error(e);
+                SE.toast('❌ تعذّر تحديث الطلب', 'error');
+            }
+        };
+
+        /* ============ تصدير CSV ============ */
+        window.exportCsv = function () {
+            if (!allOrders.length) return SE.toast('لا توجد طلبات للتصدير', 'error');
+            const priceMap = {}; allProducts.forEach(p => priceMap[p.id] = Number(p.price) || 0);
+            const head = ['رقم الطلب', 'التاريخ', 'الزبون', 'الهاتف', 'الولاية', 'العنوان', 'المنتج', 'الكمية', 'الإجمالي', 'الحالة'];
+            const rows = allOrders.map(o => {
+                const d = orderDate(o);
+                return [o.order_ref || o.id, d ? d.toLocaleDateString('en-CA') : '', o.customer_name || '', o.phone_number || '',
+                    o.wilaya || '', (o.address || '').replace(/[\n\r]+/g, ' '), o.product_name || '', o.quantity || 1,
+                    orderValue(o, priceMap), o.status || 'pending'];
+            });
+            const csv = [head, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `orders-${new Date().toISOString().slice(0, 10)}.csv`;
+            a.click(); URL.revokeObjectURL(a.href);
+            SE.toast('⬇️ تم تصدير ' + rows.length + ' طلب', 'success');
+        };
+        /* ============ القشرة + المصادقة الموحّدة ============ */
+        SHELL.mount('dashboard', 'لوحة القيادة');
+        (async function () {
+            const m = await SHELL.guard({ auth, db, onAuthStateChanged, getDoc, doc, signOut });
+            if (!m) return;
+            currentMerchant = m;
+            document.getElementById('greet').textContent = 'مرحباً، ' + (m.name || 'متجر');
+            setRange(7);
+            await refreshAll();
+        })();
     </script>
 </body>
 </html>

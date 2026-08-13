@@ -2,252 +2,497 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SouqiExpress | وجهتك الأولى للتسوق والبيع الذكي</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Cairo) -->
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
+    <title>كيف تعمل المنصة؟ | SouqiExpress — افتح متجرك الإلكتروني في الجزائر</title>
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=34">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/theme.css?v=34">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    <meta name="description" content="سوقي إكسبريس: افتح متجرك الإلكتروني في الجزائر باشتراك 90,000 د.ج شهرياً. لوحة تحكم كاملة، ربط مع شركات التوصيل، الدفع عند الاستلام، وبكسل فيسبوك وتيك توك.">
+    <meta property="og:title" content="افتح متجرك الإلكتروني في الجزائر | SouqiExpress">
+    <meta property="og:description" content="لوحة تحكم كاملة، ربط مع Yalidine و ZR Express، الدفع عند الاستلام، وتصدير طلباتك إلى Google Sheets. اشتراك شهري 90,000 د.ج.">
+    <script src="assets/js/config.js?v=34"></script>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
     <style>
-        body { font-family: 'Cairo', sans-serif; }
+        .step-line::before{content:'';position:absolute;top:2.75rem;right:1.6rem;width:2px;height:calc(100% - 1rem);
+            background:linear-gradient(180deg,var(--se-primary),transparent);opacity:.25}
+        .step-line:last-child::before{display:none}
+        @media(max-width:767px){.step-line::before{right:1.35rem}}
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="overflow-x-hidden">
 
-    <!-- 1. Header & Navbar -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center gap-2">
-            <!-- الشعار بالأزرق الملكي -->
-            <div class="text-xl sm:text-2xl font-black text-blue-700 tracking-wide font-sans whitespace-nowrap">
-                Souqi<span class="text-blue-500">Express</span>
+    <!-- الهيدر -->
+    <header class="se-surface shadow-sm sticky top-0 z-50 border-b">
+        <nav class="container mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center gap-2">
+            <a href="index.html" class="flex items-center gap-2 flex-shrink-0">
+                <div class="w-9 h-9 rounded-xl overflow-hidden bg-white shadow-sm p-0.5">
+                    <img id="brandLogo" src="" alt="SouqiExpress" class="w-full h-full object-cover rounded-lg">
+                </div>
+                <span class="text-lg sm:text-xl font-black tracking-wide whitespace-nowrap" style="color:var(--se-primary-900)">Souqi<span style="color:var(--se-primary)">Express</span></span>
+            </a>
+            <div class="hidden md:flex items-center gap-6 font-bold text-sm">
+                <a href="#how" class="se-muted hover:text-blue-700 transition">كيف تعمل؟</a>
+                <a href="#tools" class="se-muted hover:text-blue-700 transition">أدوات التاجر</a>
+                <a href="#why" class="se-muted hover:text-blue-700 transition">لماذا نحن؟</a>
+                <a href="#pricing" class="se-muted hover:text-blue-700 transition">الاشتراك</a>
+                <a href="#faq" class="se-muted hover:text-blue-700 transition">أسئلة شائعة</a>
             </div>
-            <div class="hidden md:flex space-x-reverse space-x-8 font-semibold">
-                <a href="#features" class="text-gray-600 hover:text-blue-700 transition">المميزات</a>
-                <a href="#how-it-works" class="text-gray-600 hover:text-blue-700 transition">كيف نعمل؟</a>
-                <a href="#cta" class="text-gray-600 hover:text-blue-700 transition">انضم إلينا</a>
-            </div>
-            <div>
-                <!-- تم إصلاح الزر هنا ليكون متجاوباً تماماً مع الهواتف ولا ينكسر -->
-                <a href="index.html" class="bg-blue-700 text-white px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg text-xs sm:text-sm md:text-base font-bold hover:bg-blue-800 transition shadow-md shadow-blue-200 whitespace-nowrap inline-block text-center">
-                    ابدأ التسوق
-                </a>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <button data-se-theme-toggle class="se-btn se-btn-ghost !px-2.5 !py-2" title="الوضع الليلي"><i data-se-theme-icon class="fa-solid fa-moon"></i></button>
+                <a href="login.html" class="se-btn se-btn-primary !text-xs sm:!text-sm whitespace-nowrap">افتح متجرك</a>
             </div>
         </nav>
     </header>
 
-    <!-- 2. Hero Section -->
-    <section class="relative bg-gradient-to-br from-white to-blue-50/40 py-20 lg:py-32 overflow-hidden">
-        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-            <div class="text-center md:text-right space-y-6">
-                <span class="bg-blue-100 text-blue-800 text-sm font-extrabold px-4 py-1.5 rounded-full inline-block">منصة تجارة إلكترونية متعددة التجار</span>
-                <h1 class="text-4xl lg:text-6xl font-black text-gray-900 leading-tight">
-                    وجهتك الأولى <br>
-                    <span class="text-blue-700 font-sans tracking-tight">SouqiExpress</span>
+    <!-- Hero -->
+    <section class="py-8 sm:py-12 lg:py-20 px-4" style="background:linear-gradient(180deg, rgba(2,132,199,.10), transparent)">
+        <div class="container mx-auto grid md:grid-cols-2 gap-7 md:gap-10 items-center">
+            <div class="text-center md:text-right space-y-5">
+                <span class="se-badge se-badge-green !text-[11px] !px-4 !py-2">🇩🇿 منصة جزائرية 100%</span>
+                <h1 class="text-[26px] sm:text-3xl lg:text-5xl font-black leading-[1.35]">
+                    بِع على الإنترنت<br>
+                    <span style="color:var(--se-primary)">بدون موقع، بدون مبرمج،<br>وبدون تعقيد تقني.</span>
                 </h1>
-                <p class="text-lg text-gray-600 max-w-lg mx-auto md:mx-0">
-                    المنصة الأسهل لربط أفضل التجار بأذكى المتسوقين في مكان واحد. كل ما تحتاجه من منتجات مميزة، يصلك بلمح البصر وبأمان تام.
+                <p class="se-muted text-sm sm:text-base font-bold leading-relaxed max-w-xl mx-auto md:mx-0">
+                    سوقي إكسبريس تعطيك متجراً إلكترونياً جاهزاً ولوحة تحكم كاملة لإدارة منتجاتك وطلباتك
+                    وشحنك — كل ذلك من هاتفك. أنت تركّز على البيع، ونحن نتكفّل بالتقنية.
                 </p>
-                <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4 pt-4">
-                    <a href="index.html" class="bg-blue-700 text-white text-center px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-800 transition shadow-lg shadow-blue-700/30">
-                        <i class="fas fa-shopping-bag ml-2"></i> ابدأ التسوق الآن
-                    </a>
-                    <a href="login.html" class="bg-slate-800 text-white text-center px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-900 transition shadow-lg shadow-slate-800/30">
-                        <i class="fas fa-store ml-2"></i> انضم كتاجر معنا
-                    </a>
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-1">
+                    <a href="login.html" class="se-btn se-btn-primary !text-sm !py-3.5 !px-6 w-full sm:w-auto">🚀 افتح متجرك الآن</a>
+                    <a href="#how" class="se-btn se-btn-ghost !text-sm !py-3.5 !px-6 w-full sm:w-auto">شاهد كيف تعمل</a>
+                </div>
+                <div class="grid grid-cols-3 gap-2 pt-4 max-w-md mx-auto md:mx-0">
+                    <div class="se-card p-3 text-center"><div class="text-lg font-black" style="color:var(--se-primary)">58</div><div class="text-[9px] sm:text-[10px] font-bold se-muted leading-tight">ولاية</div></div>
+                    <div class="se-card p-3 text-center"><div class="text-lg font-black text-emerald-600">COD</div><div class="text-[9px] sm:text-[10px] font-bold se-muted leading-tight">دفع عند<br>الاستلام</div></div>
+                    <div class="se-card p-3 text-center"><div class="text-base font-black text-amber-500">90k</div><div class="text-[9px] sm:text-[10px] font-bold se-muted leading-tight">د.ج / شهر</div></div>
                 </div>
             </div>
-            <div class="relative flex justify-center">
-                <div class="w-72 h-72 lg:w-96 lg:h-96 bg-gradient-to-tr from-blue-600 to-sky-400 rounded-full opacity-20 blur-3xl absolute top-10"></div>
-                <div class="bg-white p-6 rounded-2xl shadow-2xl border border-gray-100 max-w-sm relative z-10 transform hover:scale-105 transition duration-300">
-                    <div class="flex items-center justify-between mb-4">
-                        <span class="text-sm font-bold text-gray-400 font-sans">SouqiExpress Panel</span>
-                        <span class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
+            <div class="relative">
+                <div class="absolute inset-0 rounded-[36px] rotate-3 scale-105" style="background:rgba(2,132,199,.10)"></div>
+                <div class="se-card relative p-5 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black">📊 لوحة القيادة</span>
+                        <span class="se-badge se-badge-green">مباشر</span>
                     </div>
-                    <div class="space-y-4">
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <span class="text-xs text-gray-500 block">إجمالي المبيعات اليوم</span>
-                            <span class="text-2xl font-black text-gray-800">د.ج 145,200</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="se-surface rounded-xl p-3 border" style="border-color:var(--se-border)">
+                            <div class="text-[10px] font-bold se-muted">مبيعات اليوم</div>
+                            <div class="text-base font-black text-emerald-600">48,600 د.ج</div>
                         </div>
-                        <div class="flex gap-2">
-                            <div class="bg-blue-50 p-3 rounded-lg flex-1 text-center">
-                                <i class="fas fa-box text-blue-700 mb-1"></i>
-                                <span class="text-xs block text-gray-600">طلب جديد</span>
-                                <span class="font-bold text-blue-800">+24</span>
-                            </div>
-                            <div class="bg-slate-50 p-3 rounded-lg flex-1 text-center">
-                                <i class="fas fa-users text-slate-700 mb-1"></i>
-                                <span class="text-xs block text-gray-600">متجر نشط</span>
-                                <span class="font-bold text-slate-800">+150</span>
-                            </div>
+                        <div class="se-surface rounded-xl p-3 border" style="border-color:var(--se-border)">
+                            <div class="text-[10px] font-bold se-muted">طلبات جديدة</div>
+                            <div class="text-base font-black" style="color:var(--se-primary)">7</div>
                         </div>
+                    </div>
+                    <div class="se-surface rounded-xl p-3 border space-y-2" style="border-color:var(--se-border)">
+                        <div class="flex items-center justify-between text-[11px] font-bold">
+                            <span>أمين ب. — الجزائر</span><span class="se-badge se-badge-green">مؤكّد</span>
+                        </div>
+                        <div class="flex items-center justify-between text-[11px] font-bold">
+                            <span>سارة م. — وهران</span><span class="se-badge" style="background:rgba(245,158,11,.15);color:#b45309">بانتظار</span>
+                        </div>
+                        <div class="flex items-center justify-between text-[11px] font-bold">
+                            <span>ياسين ك. — سطيف</span><span class="se-badge se-badge-blue">🚚 في الطريق</span>
+                        </div>
+                    </div>
+                    <p class="text-[10px] se-muted font-bold text-center">صورة توضيحية للوحة التحكم</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- المشكلة/الحل -->
+    <section class="container mx-auto px-4 py-10 sm:py-12">
+        <div class="text-center mb-8">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-black">البيع أونلاين في الجزائر صعب… لكن ليس معنا</h2>
+            <p class="se-subtitle max-w-2xl mx-auto">هذه العقبات التي توقف أغلب التجار — وكيف نحلّها لك.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+            <div class="se-card p-5 border-r-4 border-rose-400">
+                <h3 class="font-black text-sm mb-3 text-rose-600">😓 بدوننا</h3>
+                <ul class="space-y-2 text-xs font-bold se-muted leading-relaxed">
+                    <li>• تدفع آلاف الدنانير لمبرمج وموقع واستضافة</li>
+                    <li>• تدير الطلبات في دفتر أو رسائل فيسبوك</li>
+                    <li>• تكتب بيانات كل زبون يدوياً لشركة التوصيل</li>
+                    <li>• لا تعرف أي إعلان جلب لك ربحاً وأيها أضاع مالك</li>
+                    <li>• تنسى المخزون فتبيع منتجاً نفد فعلاً</li>
+                </ul>
+            </div>
+            <div class="se-card p-5 border-r-4 border-emerald-400">
+                <h3 class="font-black text-sm mb-3 text-emerald-600">🚀 مع سوقي إكسبريس</h3>
+                <ul class="space-y-2 text-xs font-bold leading-relaxed">
+                    <li>• متجر جاهز خلال دقائق، بدون أي تكلفة تقنية</li>
+                    <li>• كل الطلبات في لوحة واحدة منظّمة</li>
+                    <li>• إرسال الطلب لشركة التوصيل بضغطة واحدة</li>
+                    <li>• بكسل فيسبوك وتيك توك يقيس أرباح كل إعلان</li>
+                    <li>• المخزون يُخصم تلقائياً عند تأكيد كل طلب</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- كيف تعمل -->
+    <section id="how" class="py-10 sm:py-14 px-4 scroll-mt-20" style="background:rgba(148,163,184,.07)">
+        <div class="container mx-auto max-w-3xl">
+            <div class="text-center mb-10">
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-black">كيف تبدأ؟ 4 خطوات فقط</h2>
+                <p class="se-subtitle">من التسجيل إلى أول طلب — كل شيء من هاتفك.</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="step-line relative flex gap-4">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black flex-shrink-0 z-10" style="background:rgba(2,132,199,.12);color:var(--se-primary)">1</div>
+                    <div class="pt-1">
+                        <h3 class="font-black text-sm mb-1">أنشئ حسابك واشترك</h3>
+                        <p class="text-xs se-muted font-bold leading-relaxed">
+                            اسمك، رقم هاتفك، بريدك الإلكتروني وكلمة مرور — لا شيء آخر.
+                            بعدها يراجع فريقنا طلبك ويُفعّل متجرك بعد تأكيد اشتراكك الشهري
+                            (<span class="font-black" style="color:var(--se-primary)">90,000 د.ج</span>).
+                            هذه المراجعة اليدوية هي ما تحمي سمعة المنصة وتجعل الزبائن يثقون بمتجرك.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step-line relative flex gap-4">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black flex-shrink-0 z-10" style="background:rgba(2,132,199,.12);color:var(--se-primary)">2</div>
+                    <div class="pt-1">
+                        <h3 class="font-black text-sm mb-1">أضف منتجاتك وحدّد أسعار الشحن</h3>
+                        <p class="text-xs se-muted font-bold leading-relaxed">
+                            صوّر منتجك من هاتفك وارفعه مباشرة (حتى 10 صور)، وأضف السعر والكمية والألوان والمقاسات.
+                            ثم حدّد سعر التوصيل لكل ولاية — أو استعمل <span class="font-black">التسعير الجماعي</span>
+                            لضبط الـ58 ولاية دفعة واحدة.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step-line relative flex gap-4">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black flex-shrink-0 z-10" style="background:rgba(2,132,199,.12);color:var(--se-primary)">3</div>
+                    <div class="pt-1">
+                        <h3 class="font-black text-sm mb-1">شارك رابط متجرك واستقبل الطلبات</h3>
+                        <p class="text-xs se-muted font-bold leading-relaxed">
+                            لك رابط متجر خاص وصفحة هبوط جاهزة للإعلانات. انشرها على فيسبوك وتيك توك وإنستغرام.
+                            الزبون يطلب بالدفع عند الاستلام، ويصلك الطلب فوراً في لوحتك.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step-line relative flex gap-4">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black flex-shrink-0 z-10" style="background:rgba(16,185,129,.14);color:#059669">4</div>
+                    <div class="pt-1">
+                        <h3 class="font-black text-sm mb-1">أكّد الطلب وأرسله للتوصيل</h3>
+                        <p class="text-xs se-muted font-bold leading-relaxed">
+                            اتصل بالزبون (أو راسله على واتساب من نفس الشاشة)، أكّد الطلب فيُخصم المخزون تلقائياً،
+                            ثم أرسله لشركة التوصيل بضغطة — ويصلك رقم التتبّع. الشركة تجمع المال منه وتحوّله لك.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. Features Section -->
-    <section id="features" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
-                <h2 class="text-3xl font-black text-gray-900">لماذا تختار <span class="font-sans text-blue-700">SouqiExpress</span>؟</h2>
-                <p class="text-gray-500">نحن لا نوفر مجرد منصة بيع، بل نبني بيئة تجارية متكاملة تضمن راحة المشتري ونمو التاجر.</p>
+    <!-- أدوات التاجر -->
+    <section id="tools" class="container mx-auto px-4 py-10 sm:py-14 scroll-mt-20">
+        <div class="text-center mb-10">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-black">كل ما تحتاجه لإدارة تجارتك</h2>
+            <p class="se-subtitle max-w-2xl mx-auto">أدوات تُستعمل في المنصات العالمية — مجهّزة لك وللسوق الجزائري.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="se-card p-5 se-hover-lift">
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-xl mb-3" style="background:rgba(2,132,199,.12)">📊</div>
+                <h3 class="font-black text-sm mb-1">لوحة قيادة بالأرقام</h3>
+                <p class="text-xs se-muted font-bold leading-relaxed">مبيعاتك، متوسط قيمة الطلب، نسبة التأكيد، أفضل منتجاتك وأفضل الولايات — مع مقارنة بالفترة السابقة.</p>
             </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Feature 1 -->
-                <div class="bg-gray-50 p-6 rounded-2xl hover:shadow-xl transition group border border-gray-100">
-                    <div class="w-12 h-12 bg-blue-50 text-blue-700 rounded-xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-blue-700 group-hover:text-white transition duration-300">
-                        <i class="fas fa-th-large"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">تنوع لا محدود</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">آلاف المنتجات من مختلف التصنيفات (إلكترونيات، ملابس، خدمات) من بائعين متعددين وموثوقين.</p>
+            <div class="se-card p-5 se-hover-lift">
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-xl mb-3" style="background:rgba(16,185,129,.12)">🚚</div>
+                <h3 class="font-black text-sm mb-1">ربط مع شركات التوصيل</h3>
+                <p class="text-xs se-muted font-bold leading-relaxed">Yalidine و ZR Express و Maystro و NOEST و Ecotrack. أرسل الطرد وتتبّعه من لوحتك — أو صدّر الطلبات كملف جاهز.</p>
+            </div>
+            <div class="se-card p-5 se-hover-lift">
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-xl mb-3" style="background:rgba(99,102,241,.12)">🎯</div>
+                <h3 class="font-black text-sm mb-1">بكسل فيسبوك وتيك توك</h3>
+                <p class="text-xs se-muted font-bold leading-relaxed">ضع معرّف البكسل مرة واحدة، وتُسجَّل كل الأحداث تلقائياً حتى الشراء — لتعرف أي إعلان يربح فعلاً.</p>
+            </div>
+            <div class="se-card p-5 se-hover-lift">
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-xl mb-3" style="background:rgba(15,157,88,.12)">📗</div>
+                <h3 class="font-black text-sm mb-1">تصدير إلى Google Sheets</h3>
+                <p class="text-xs se-muted font-bold leading-relaxed">طلباتك تصل تلقائياً إلى جدولك بأعمدة منظّمة — للمحاسبة أو المشاركة مع فريقك.</p>
+            </div>
+            <div class="se-card p-5 se-hover-lift">
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-xl mb-3" style="background:rgba(244,63,94,.12)">🛡️</div>
+                <h3 class="font-black text-sm mb-1">حماية من الطلبات الوهمية</h3>
+                <p class="text-xs se-muted font-bold leading-relaxed">تقييد الطلبات حسب الاتصال، كشف التعبئة الآلية، ومصيدة للبوتات — لتحمي وقتك ورسوم شحنك.</p>
+            </div>
+            <div class="se-card p-5 se-hover-lift">
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-xl mb-3" style="background:rgba(245,158,11,.14)">👥</div>
+                <h3 class="font-black text-sm mb-1">قاعدة زبائنك</h3>
+                <p class="text-xs se-muted font-bold leading-relaxed">تُبنى تلقائياً من طلباتك: تعرف زبونك الوفي ⭐ ومن يُلغي كثيراً ⚠️ قبل أن تشحن له.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- لماذا نحن -->
+    <section id="why" class="py-10 sm:py-14 px-4 scroll-mt-20" style="background:rgba(148,163,184,.07)">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-8">
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-black">لماذا تختار سوقي إكسبريس؟</h2>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-4">
+                <div class="se-card p-5 flex gap-4">
+                    <span class="text-2xl flex-shrink-0">💸</span>
+                    <div><h3 class="font-black text-sm mb-1">اشتراك واحد يغنيك عن كل شيء</h3>
+                    <p class="text-xs se-muted font-bold leading-relaxed">لا مبرمج ولا استضافة ولا تصميم ولا صيانة — كلها مشمولة في اشتراكك الشهري.</p></div>
                 </div>
-                <!-- Feature 2 -->
-                <div class="bg-gray-50 p-6 rounded-2xl hover:shadow-xl transition group border border-gray-100">
-                    <div class="w-12 h-12 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-sky-600 group-hover:text-white transition duration-300">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">توصيل سريع ومرن</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">نظام تتبع ذكي يضمن وصول شحناتك إلى باب منزلك في أسرع وقت مع خيارات دفع مريحة عند الاستلام.</p>
+                <div class="se-card p-5 flex gap-4">
+                    <span class="text-2xl flex-shrink-0">📱</span>
+                    <div><h3 class="font-black text-sm mb-1">كل شيء من هاتفك</h3>
+                    <p class="text-xs se-muted font-bold leading-relaxed">اللوحة مصمّمة للهاتف أولاً. أدِر متجرك وأنت في السوق أو في الطريق.</p></div>
                 </div>
-                <!-- Feature 3 -->
-                <div class="bg-gray-50 p-6 rounded-2xl hover:shadow-xl transition group border border-gray-100">
-                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-green-600 group-hover:text-white transition duration-300">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">بيئة آمنة وموثوقة</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">تشفير وحماية كاملة لبيانات المشترين، ونظام مراجعات شفاف يضمن لك جودة المنتج قبل الشراء.</p>
+                <div class="se-card p-5 flex gap-4">
+                    <span class="text-2xl flex-shrink-0">🇩🇿</span>
+                    <div><h3 class="font-black text-sm mb-1">مصمّمة للسوق الجزائري</h3>
+                    <p class="text-xs se-muted font-bold leading-relaxed">الدفع عند الاستلام، الـ58 ولاية، التوصيل للمنزل أو المكتب، وواجهة عربية كاملة.</p></div>
                 </div>
-                <!-- Feature 4 -->
-                <div class="bg-gray-50 p-6 rounded-2xl hover:shadow-xl transition group border border-gray-100">
-                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl font-bold mb-4 group-hover:bg-indigo-600 group-hover:text-white transition duration-300">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">لوحة تحكم ذكية للتجار</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">راقب مخزونك، تتبع أرباحك ومبيعاتك، وأدر متجرك بالكامل بسهولة واحترافية من مكان واحد.</p>
+                <div class="se-card p-5 flex gap-4">
+                    <span class="text-2xl flex-shrink-0">🔒</span>
+                    <div><h3 class="font-black text-sm mb-1">بياناتك ملكك</h3>
+                    <p class="text-xs se-muted font-bold leading-relaxed">تُصدّر طلباتك وزبائنك متى شئت. لا نحتجز بياناتك ولا نبيعها.</p></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. How it Works Section -->
-    <section id="how-it-works" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
-                <h2 class="text-3xl font-black text-gray-900">كيف يعمل <span class="font-sans text-blue-700">SouqiExpress</span>؟</h2>
-                <p class="text-gray-500">سواء كنت متسوقاً يبحث عن الجودة أو تاجرًا يريد تنمية مبيعاته، التجربة معنا غاية في السهولة.</p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- للمتسوقين -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 class="text-2xl font-bold text-blue-700 mb-6 flex items-center">
-                        <i class="fas fa-shopping-cart ml-3"></i> للمتسوقين
-                    </h3>
-                    <div class="space-y-6 relative border-r-2 border-blue-100 pr-6 mr-2">
-                        <div class="relative">
-                            <span class="absolute -right-9 top-0 bg-blue-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</span>
-                            <h4 class="font-bold text-gray-800">تصفح واختر</h4>
-                            <p class="text-sm text-gray-500">اختر من بين آلاف المنتجات المتاحة من مختلف المتاجر.</p>
-                        </div>
-                        <div class="relative">
-                            <span class="absolute -right-9 top-0 bg-blue-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span>
-                            <h4 class="font-bold text-gray-800">أكد طلبك</h4>
-                            <p class="text-sm text-gray-500">أضف المنتجات للسلة وأدخل معلومات التوصيل بضغطة زر.</p>
-                        </div>
-                        <div class="relative">
-                            <span class="absolute -right-9 top-0 bg-blue-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">3</span>
-                            <h4 class="font-bold text-gray-800">استلم وادفع</h4>
-                            <p class="text-sm text-gray-500">استلم شحنتك عند باب المنزل وادفع نقداً بكل أريحية.</p>
-                        </div>
+    <!-- الاشتراك -->
+    <section id="pricing" class="container mx-auto px-4 py-10 sm:py-14 scroll-mt-20">
+        <div class="text-center mb-8">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-black">اشتراك واحد… كل الأدوات</h2>
+            <p class="se-subtitle max-w-2xl mx-auto">بدون عمولة على مبيعاتك. مهما بعت، تدفع نفس المبلغ.</p>
+        </div>
+
+        <div class="max-w-md mx-auto">
+            <div class="se-card overflow-hidden relative">
+                <div class="absolute top-0 inset-x-0 h-1.5" style="background:linear-gradient(90deg,var(--se-primary),#10b981)"></div>
+
+                <div class="p-5 sm:p-7 text-center border-b" style="border-color:var(--se-border)">
+                    <span class="se-badge se-badge-blue !text-[11px] !px-4 !py-1.5">خطة التاجر</span>
+                    <div class="mt-4 flex items-end justify-center gap-1.5 flex-wrap">
+                        <span class="text-4xl sm:text-5xl font-black" style="color:var(--se-primary)">90,000</span>
+                        <span class="text-base font-black se-muted mb-1">د.ج</span>
                     </div>
+                    <p class="text-xs font-black se-muted mt-1">شهرياً · تُجدَّد كل شهر</p>
+                    <p class="text-[11px] font-bold text-emerald-600 mt-2">✓ بدون أي عمولة على مبيعاتك</p>
                 </div>
 
-                <!-- للتجار -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
-                        <i class="fas fa-user-tie ml-3"></i> للتجار والبائعين
-                    </h3>
-                    <div class="space-y-6 relative border-r-2 border-slate-200 pr-6 mr-2">
-                        <div class="relative">
-                            <span class="absolute -right-9 top-0 bg-slate-800 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">1</span>
-                            <h4 class="font-bold text-gray-800">أنشئ حساب متجرك</h4>
-                            <p class="text-sm text-gray-500">سجل كبائع، املأ معلومات متجرك وابدأ فوراً في دقيقتين.</p>
-                        </div>
-                        <div class="relative">
-                            <span class="absolute -right-9 top-0 bg-slate-800 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">2</span>
-                            <h4 class="font-bold text-gray-800">اعرض منتجاتك</h4>
-                            <p class="text-sm text-gray-500">ارفع صور المنتجات، حدد الأسعار والكميات المتاحة لديك.</p>
-                        </div>
-                        <div class="relative">
-                            <span class="absolute -right-9 top-0 bg-slate-800 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">3</span>
-                            <h4 class="font-bold text-gray-800">احصد الأرباح</h4>
-                            <p class="text-sm text-gray-500">استقبل الطلبات، اشحن لزبائنك، واستلم مستحقاتك بشكل آمن.</p>
-                        </div>
+                <div class="p-5 sm:p-7 space-y-2.5">
+                    <div class="flex items-start gap-2.5"><span class="text-emerald-500 font-black flex-shrink-0">✓</span><span class="text-xs font-bold">متجر إلكتروني كامل برابط خاص بك</span></div>
+                    <div class="flex items-start gap-2.5"><span class="text-emerald-500 font-black flex-shrink-0">✓</span><span class="text-xs font-bold">عدد <b>غير محدود</b> من المنتجات والطلبات</span></div>
+                    <div class="flex items-start gap-2.5"><span class="text-emerald-500 font-black flex-shrink-0">✓</span><span class="text-xs font-bold">لوحة قيادة بالأرقام والرسوم البيانية</span></div>
+                    <div class="flex items-start gap-2.5"><span class="text-emerald-500 font-black flex-shrink-0">✓</span><span class="text-xs font-bold">ربط مع Yalidine · ZR Express · Maystro · NOEST · Ecotrack</span></div>
+                    <div class="flex items-start gap-2.5"><span class="text-emerald-500 font-black flex-shrink-0">✓</span><span class="text-xs font-bold">بكسل فيسبوك وتيك توك لقياس إعلاناتك</span></div>
+                    <div class="flex items-start gap-2.5"><span class="text-emerald-500 font-black flex-shrink-0">✓</span><span class="text-xs font-bold">صفحة هبوط جاهزة للإعلانات</span></div>
+                    <div class="flex items-start gap-2.5"><span class="text-emerald-500 font-black flex-shrink-0">✓</span><span class="text-xs font-bold">تصدير الطلبات إلى Google Sheets</span></div>
+                    <div class="flex items-start gap-2.5"><span class="text-emerald-500 font-black flex-shrink-0">✓</span><span class="text-xs font-bold">حماية من الطلبات الوهمية وقاعدة زبائن</span></div>
+                    <div class="flex items-start gap-2.5"><span class="text-emerald-500 font-black flex-shrink-0">✓</span><span class="text-xs font-bold">تحديثات وصيانة مستمرة بلا تكلفة إضافية</span></div>
+
+                    <a href="login.html" class="se-btn se-btn-primary w-full !py-4 !text-sm mt-4">🚀 اشترك وافتح متجرك</a>
+                    <p class="text-[10px] se-muted font-bold text-center">يبدأ اشتراكك (30 يوماً) فور تفعيل حسابك من مسوّق معتمد</p>
+                    <p class="text-[10px] se-muted font-bold text-center">عند انتهائه تبقى كل بياناتك محفوظة — تجدّده بضغطة واحدة</p>
+                </div>
+            </div>
+
+            <div class="se-card p-4 mt-4 text-center">
+                <p class="text-xs font-bold leading-relaxed se-muted">
+                    💡 <span class="font-black" style="color:var(--se-text)">احسبها معنا:</span>
+                    موقع مخصّص يكلّفك مرة واحدة مئات الآلاف، ثم استضافة وصيانة ومبرمج كل شهر.
+                    هنا تدفع مبلغاً واحداً معلوماً وتحصل على كل شيء جاهزاً ومُحدَّثاً.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- الأسئلة الشائعة -->
+    <section id="faq" class="container mx-auto px-4 py-10 sm:py-14 max-w-3xl scroll-mt-20">
+        <div class="text-center mb-8">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-black">أسئلة يسألها كل تاجر</h2>
+        </div>
+        <div class="space-y-3">
+            <details class="se-card p-4 group">
+                <summary class="font-black text-sm cursor-pointer flex justify-between items-center gap-3">
+                    <span>كم تكلفة الاشتراك؟ وهل هناك رسوم خفية؟</span><span class="se-muted group-open:rotate-180 transition">▾</span></summary>
+                <p class="text-xs se-muted font-bold leading-relaxed mt-3">
+                    الاشتراك <span class="font-black" style="color:var(--se-primary)">90,000 د.ج شهرياً</span>، ويشمل كل شيء:
+                    المتجر، لوحة التحكم، عدد غير محدود من المنتجات والطلبات، الربط مع شركات التوصيل،
+                    البكسل، وصفحة الهبوط. <span class="font-black">لا عمولة على مبيعاتك</span> ولا رسوم خفية —
+                    مهما بعت، تدفع نفس المبلغ فقط.
+                </p>
+            </details>
+            <details class="se-card p-4 group">
+                <summary class="font-black text-sm cursor-pointer flex justify-between items-center gap-3">
+                    <span>كيف أستلم أموالي؟</span><span class="se-muted group-open:rotate-180 transition">▾</span></summary>
+                <p class="text-xs se-muted font-bold leading-relaxed mt-3">
+                    عبر الدفع عند الاستلام: شركة التوصيل تجمع المبلغ من الزبون عند تسليم الطرد،
+                    ثم تحوّله إليك حسب سياسة الشركة التي تتعامل معها. المنصة لا تتدخّل في أموالك.
+                </p>
+            </details>
+            <details class="se-card p-4 group">
+                <summary class="font-black text-sm cursor-pointer flex justify-between items-center gap-3">
+                    <span>ماذا يحدث عند انتهاء اشتراكي الشهري؟</span><span class="se-muted group-open:rotate-180 transition">▾</span></summary>
+                <p class="text-xs se-muted font-bold leading-relaxed mt-3">
+                    <span class="font-black" style="color:var(--se-text)">لا تفقد شيئاً.</span>
+                    منتجاتك وطلباتك وزبائنك وإعداداتك تبقى محفوظة كما هي بالكامل.
+                    ما يحدث فقط هو أن لوحة التحكم تُقفل مؤقتاً، ونوجّهك إلى
+                    <a href="resellers_list.html?reason=renew" class="font-black underline" style="color:var(--se-primary)">قائمة المسوقين المعتمدين</a>
+                    لتختار من يجدّد لك الاشتراك بضغطة واتساب واحدة. بمجرد التجديد يعود متجرك للعمل فوراً بنفس بياناتك.
+                    كما ننبّهك داخل لوحتك قبل <span class="font-black">5 أيام</span> من موعد الانتهاء.
+                </p>
+            </details>
+            <details class="se-card p-4 group">
+                <summary class="font-black text-sm cursor-pointer flex justify-between items-center gap-3">
+                    <span>لا أفهم في التقنية — هل أستطيع استعمالها؟</span><span class="se-muted group-open:rotate-180 transition">▾</span></summary>
+                <p class="text-xs se-muted font-bold leading-relaxed mt-3">
+                    نعم. إن كنت تستعمل فيسبوك فستستعمل المنصة. كل شيء بالعربية وبأزرار واضحة،
+                    ولا يوجد أي كود أو إعداد معقّد. تضيف منتجاً كما تنشر صورة.
+                </p>
+            </details>
+            <details class="se-card p-4 group">
+                <summary class="font-black text-sm cursor-pointer flex justify-between items-center gap-3">
+                    <span>كم يستغرق تفعيل حسابي؟</span><span class="se-muted group-open:rotate-180 transition">▾</span></summary>
+                <p class="text-xs se-muted font-bold leading-relaxed mt-3">
+                    بعد التسجيل يراجع فريقنا حسابك يدوياً ثم يُفعّله. هذه الخطوة تمنع الحسابات
+                    الوهمية وتحافظ على ثقة الزبائن في كل متاجر المنصة — بما فيها متجرك.
+                </p>
+            </details>
+            <details class="se-card p-4 group">
+                <summary class="font-black text-sm cursor-pointer flex justify-between items-center gap-3">
+                    <span>هل أحتاج ربطاً مع شركة توصيل؟</span><span class="se-muted group-open:rotate-180 transition">▾</span></summary>
+                <p class="text-xs se-muted font-bold leading-relaxed mt-3">
+                    ليس شرطاً. تستطيع إدارة الشحن يدوياً كالمعتاد، أو تصدير طلباتك كملف ترفعه في
+                    لوحة الشركة. والربط بالمفاتيح متاح إن أردت الإرسال والتتبّع الآلي.
+                </p>
+            </details>
+            <details class="se-card p-4 group">
+                <summary class="font-black text-sm cursor-pointer flex justify-between items-center gap-3">
+                    <span>هل أبقى مالك متجري وزبائني؟</span><span class="se-muted group-open:rotate-180 transition">▾</span></summary>
+                <p class="text-xs se-muted font-bold leading-relaxed mt-3">
+                    بالتأكيد. منتجاتك وطلباتك وقاعدة زبائنك ملكك، وتستطيع تصديرها في أي وقت
+                    بصيغة CSV أو إلى Google Sheets.
+                </p>
+            </details>
+        </div>
+    </section>
+
+    <!-- تحميل التطبيق -->
+    <section id="app" class="container mx-auto px-4 py-10 sm:py-12">
+        <div class="se-card p-5 sm:p-8 max-w-4xl mx-auto" style="background:linear-gradient(120deg, rgba(2,132,199,.10), rgba(16,185,129,.08))">
+            <div class="grid md:grid-cols-2 gap-6 items-center">
+                <div class="text-center md:text-right space-y-4">
+                    <span class="se-badge se-badge-blue !text-[11px] !px-4 !py-2">📲 تطبيق الهاتف</span>
+                    <h2 class="text-xl sm:text-2xl md:text-3xl font-black leading-snug">
+                        حمّل تطبيق سوقي إكسبريس<br>
+                        <span style="color:var(--se-primary)">على هاتفك في ثانية واحدة</span>
+                    </h2>
+                    <p class="se-muted text-sm font-bold leading-relaxed">
+                        بدون Play Store وبدون مساحة تقريباً. اضغط الزر ويُضاف التطبيق
+                        إلى شاشة هاتفك مباشرة — يفتح بملء الشاشة ويعمل حتى مع ضعف الاتصال.
+                    </p>
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
+                        <button type="button" data-se-install class="se-btn se-btn-primary !text-sm !py-3.5 !px-6 w-full sm:w-auto">
+                            <i class="fa-solid fa-download"></i>
+                            <span data-se-install-label>تحميل التطبيق الآن</span>
+                        </button>
+                        <a href="index.html" class="se-btn se-btn-ghost !text-sm !py-3.5 !px-6 w-full sm:w-auto">🛍️ تصفّح المنصة</a>
                     </div>
+                    <p id="se-install-hint" class="text-[11px] se-muted font-bold"></p>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="se-card p-4 text-center"><div class="text-2xl mb-1">⚡</div><div class="text-xs font-black">فتح فوري</div><div class="text-[10px] se-muted font-bold mt-1">أسرع من المتصفح</div></div>
+                    <div class="se-card p-4 text-center"><div class="text-2xl mb-1">📦</div><div class="text-xs font-black">أقل من 1 ميغا</div><div class="text-[10px] se-muted font-bold mt-1">لا يملأ هاتفك</div></div>
+                    <div class="se-card p-4 text-center"><div class="text-2xl mb-1">🔄</div><div class="text-xs font-black">تحديث تلقائي</div><div class="text-[10px] se-muted font-bold mt-1">دائماً آخر نسخة</div></div>
+                    <div class="se-card p-4 text-center"><div class="text-2xl mb-1">🏠</div><div class="text-xs font-black">أيقونة على الشاشة</div><div class="text-[10px] se-muted font-bold mt-1">كأي تطبيق عادي</div></div>
+                </div>
+            </div>
+            <div class="grid sm:grid-cols-3 gap-3 mt-6 pt-5 border-t" style="border-color:var(--se-border)">
+                <div class="se-surface rounded-xl p-3 border text-center" style="border-color:var(--se-border)">
+                    <div class="text-xs font-black mb-1"><i class="fa-brands fa-android text-emerald-600"></i> أندرويد / Chrome</div>
+                    <div class="text-[10px] se-muted font-bold leading-relaxed">اضغط الزر أعلاه، أو ⋮ ← «تثبيت التطبيق»</div>
+                </div>
+                <div class="se-surface rounded-xl p-3 border text-center" style="border-color:var(--se-border)">
+                    <div class="text-xs font-black mb-1"><i class="fa-brands fa-apple"></i> iPhone / Safari</div>
+                    <div class="text-[10px] se-muted font-bold leading-relaxed">زر المشاركة ⬆️ ← «إضافة إلى الشاشة الرئيسية»</div>
+                </div>
+                <div class="se-surface rounded-xl p-3 border text-center" style="border-color:var(--se-border)">
+                    <div class="text-xs font-black mb-1"><i class="fa-solid fa-laptop"></i> الحاسوب</div>
+                    <div class="text-[10px] se-muted font-bold leading-relaxed">أيقونة التثبيت في شريط العنوان أو ⋮ ← «تثبيت»</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 5. Call To Action (CTA) -->
-    <section id="cta" class="py-20 bg-gradient-to-r from-blue-800 to-blue-700 text-white relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-        <div class="container mx-auto px-6 text-center relative z-10 space-y-6 max-w-3xl">
-            <h2 class="text-3xl lg:text-5xl font-black leading-tight">جاهز لتجربة تجارة إلكترونية فريدة؟</h2>
-            <p class="text-blue-100 text-lg opacity-90">
-                سواء كنت تبحث عن منتج فريد لشرائه، أو تريد مكاناً يضمن لك بيع منتجاتك والوصول لآلاف الزبائن؛ <span class="font-sans font-bold">SouqiExpress</span> هو شريكك المثالي.
+    <!-- دعوة أخيرة -->
+    <section id="cta" class="container mx-auto px-4 pb-16">
+        <div class="se-card p-5 sm:p-8 md:p-12 text-center space-y-4 sm:space-y-5" style="background:linear-gradient(120deg, rgba(2,132,199,.12), rgba(16,185,129,.12))">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-black">متجرك ينتظرك — والتسجيل يستغرق دقيقتين</h2>
+            <p class="se-muted text-sm font-bold max-w-2xl mx-auto leading-relaxed">
+                كل يوم تتأخر فيه هو زبون يشتري من غيرك. اشترك اليوم،
+                أضف أول منتج، وشارك رابط متجرك — واستقبل أول طلب هذا الأسبوع.
             </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-                <a href="index.html" class="bg-white text-blue-700 px-8 py-4 rounded-xl font-black text-lg hover:bg-gray-100 transition shadow-xl">
-                    سجل كمتسوق الآن
-                </a>
-                <a href="login.html" class="bg-slate-900 text-white px-8 py-4 rounded-xl font-black text-lg hover:bg-slate-950 transition shadow-xl border border-slate-800">
-                    ابدأ البيع معنا كبائع
-                </a>
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="login.html" class="se-btn se-btn-primary !text-sm !py-3.5 !px-6 w-full sm:w-auto">🚀 افتح متجري الآن</a>
+                <a href="index.html" class="se-btn se-btn-ghost !text-sm !py-3.5 !px-6 w-full sm:w-auto">🛍️ تصفّح المنصة أولاً</a>
             </div>
+            <p class="text-[11px] se-muted font-bold">90,000 د.ج / شهر · بدون عمولة على مبيعاتك · إلغاء متى شئت</p>
         </div>
     </section>
 
-    <!-- 6. New: Download App Section (قسم تحميل التطبيق في آخر الصفحة) -->
-    <section class="py-16 bg-white border-t border-gray-100">
-        <div class="container mx-auto px-6 text-center space-y-6 max-w-2xl">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-50 text-blue-700 rounded-2xl text-2xl mb-2 shadow-sm">
-                <i class="fas fa-mobile-alt"></i>
+    <!-- الفوتر -->
+    <footer class="bg-slate-950 text-slate-400 py-10 border-t border-slate-900">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-5">
+            <div class="text-xl font-black text-white">Souqi<span class="text-sky-400">Express</span></div>
+            <div class="flex flex-wrap justify-center gap-4 text-sm font-bold">
+                <a href="index.html" class="hover:text-white transition">المتجر</a>
+                <a href="cart.html" class="hover:text-white transition">سلة المشتريات</a>
+                <a href="wishlist.html" class="hover:text-white transition">المفضلة</a>
+                <a href="login.html" class="hover:text-white transition">دخول التجار</a>
             </div>
-            <h3 class="text-2xl sm:text-3xl font-black text-gray-900">حمل تطبيق <span class="font-sans text-blue-700">SouqiExpress</span> الآن!</h3>
-            <p class="text-gray-500 text-sm sm:text-base leading-relaxed">
-                تسوق أسرع، وتابع طلباتك ومبيعاتك أولاً بأول من خلال تطبيق أندرويد الرسمي المخصص للهواتف الذكية.
-            </p>
-            <div class="pt-4 flex justify-center">
-                <a href="https://www.appcreator24.com/app4120055-s7hxf5" target="_blank" class="inline-flex items-center gap-3 bg-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-800 transition shadow-lg shadow-blue-700/20 w-full sm:w-auto justify-center">
-                    <i class="fab fa-android text-2xl"></i>
-                    <span>تحميل التطبيق للأندرويد (APK)</span>
-                </a>
-            </div>
+            <div id="aboutSocial" class="flex items-center gap-2"></div>
         </div>
-    </section>
-
-    <!-- 7. Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-12 border-t border-gray-800">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-xl font-black text-white font-sans">
-                Souqi<span class="text-blue-500">Express</span>
-            </div>
-            <div class="flex space-x-reverse space-x-6 text-sm">
-                <a href="#" class="hover:text-white transition">الشروط والأحكام</a>
-                <a href="#" class="hover:text-white transition">سياسة الخصوصية</a>
-                <a href="#" class="hover:text-white transition">اتصل بنا</a>
-            </div>
-            <div class="text-sm font-sans">
-                &copy; 2026 SouqiExpress.
-            </div>
-        </div>
+        <p class="text-center text-xs mt-6 text-slate-500">&copy; 2026 SouqiExpress — جميع الحقوق محفوظة.</p>
     </footer>
 
+    <script src="assets/js/app.js?v=34"></script>
+    <script>
+        document.getElementById('brandLogo').src = SE_CONFIG.logo;
+        const s = SE_CONFIG.social || {};
+        document.getElementById('aboutSocial').innerHTML = [
+            s.facebook ? `<a href="${s.facebook}" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-blue-600 text-slate-300 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-facebook-f"></i></a>` : '',
+            s.instagram ? `<a href="${s.instagram}" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-pink-600 text-slate-300 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-instagram"></i></a>` : '',
+            s.tiktok ? `<a href="${s.tiktok}" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-black text-slate-300 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-tiktok"></i></a>` : ''
+        ].join('');
+    </script>
 </body>
 </html>

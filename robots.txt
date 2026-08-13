@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /admin-dashboard.html
+Disallow: /merchant-dashboard.html
+Disallow: /approve-vendors.html
+Disallow: /orders.html
+Disallow: /settings.html
+Disallow: /customers.html
+Disallow: /landing-preview.html
+Disallow: /shipping.html
+Disallow: /products.html
+
+Sitemap: sitemap.xml

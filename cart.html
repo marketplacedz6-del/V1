@@ -2,58 +2,418 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="Image/favicon.png">
-    <title>ستتوفر قريباً | SouqiExpress </title>
-    <!-- استدعاء Tailwind CSS للتصميم المتجاوب السريع -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        body { font-family: 'Cairo', sans-serif; }
-        .gradient-bg {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #064e3b 100%);
-        }
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
     </style>
+    <meta name="theme-color" content="#0284c7">
+    <title>سلة المشتريات | SouqiExpress</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=34">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/theme.css?v=34">
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="assets/js/config.js?v=34"></script>
+    <script src="assets/js/integrations.js?v=34"></script>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
-<body class="gradient-bg min-h-screen flex flex-col justify-between text-white p-4 relative overflow-hidden">
+<body class="min-h-screen flex flex-col">
 
-    <!-- جزيئات ضوئية جمالية في الخلفية -->
-    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px]"></div>
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl"></div>
-
-    <!-- الهيدر العلوي البسيط للشعار -->
-    <header class="w-full max-w-7xl mx-auto flex justify-center sm:justify-start pt-4 relative z-10">
-        <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md text-white px-4 py-2 rounded-2xl shadow-lg border border-white/10">
-            <span class="text-lg">🛒</span>
-            <span class="font-black tracking-wide text-sm sm:text-base">Souqi<span class="text-emerald-400">Express</span></span>
+    <!-- الهيدر -->
+    <header class="se-surface sticky top-0 z-40 border-b">
+        <div class="container mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+            <a href="index.html" class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl overflow-hidden bg-white shadow-sm p-0.5">
+                    <img src="" id="brandLogo" class="w-full h-full object-cover rounded-lg" alt="SouqiExpress">
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="font-black text-lg" style="color:var(--se-primary-900)">Souqi<span style="color:var(--se-primary)">Express</span></span>
+                    <span class="text-[9px] font-bold text-emerald-600 tracking-widest mt-0.5">سلة المشتريات</span>
+                </div>
+            </a>
+            <div class="flex items-center gap-2">
+                <button data-se-theme-toggle class="se-btn se-btn-ghost !px-3 !py-2" title="الوضع الليلي"><i data-se-theme-icon class="fa-solid fa-moon"></i></button>
+                <a href="index.html" class="se-btn se-btn-ghost"><i class="fa-solid fa-arrow-right"></i><span class="hidden sm:inline">مواصلة التسوق</span></a>
+            </div>
         </div>
     </header>
 
-    <!-- المحتوى الرئيسي للموقع المنتصف تماماً ليلائم الهاتف والكمبيوتر -->
-    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 max-w-2xl mx-auto relative z-10 py-12">
-        <!-- أيقونة تعبيرية متحركة بذكاء -->
-        <div class="text-6xl sm:text-7xl mb-6 animate-bounce duration-1000 select-none">🚀</div>
-        
-        <!-- الرسالة الأساسية واضحة وبخط عريض فخم -->
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-wide mb-3">
-            ستتوفر هذه الصفحة <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300 drop-shadow">قريباً!</span>
-        </h1>
-        
-        <p class="text-blue-100/70 text-sm sm:text-base font-medium leading-relaxed mb-8">
-            نحن نعمل بجد في الخلفية لتجهيز هذه الميزة من أجلك. ترقبوا الإطلاق قريباً جداً لتجربة تسوق ذكية وخرافية للتجار والزبائن!
-        </p>
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-black mb-1">سلة المشتريات 🛒</h1>
+        <p class="se-muted text-xs font-bold mb-6">راجع منتجاتك ثم أكمل بيانات التوصيل — الدفع عند الاستلام.</p>
 
-        <!-- زر الرجوع الفخم للصفحة الرئيسية لتفادي ضياع المستخدم -->
-        <a href="index.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-black text-xs sm:text-sm px-6 py-3.5 rounded-2xl transition transform active:scale-95 shadow-lg shadow-emerald-500/20 hover:from-emerald-600 hover:to-green-700">
-            ↩️ العودة للصفحة الرئيسية
-        </a>
+        <!-- سلة فارغة -->
+        <div id="emptyState" class="se-card p-12 text-center space-y-4 hidden">
+            <div class="text-6xl">🛒</div>
+            <h2 class="text-xl font-black">سلتك فارغة حالياً</h2>
+            <p class="se-muted text-sm font-bold">اكتشف آلاف المنتجات المميزة وأضفها لسلتك بضغطة واحدة.</p>
+            <a href="index.html#shop-section" class="se-btn se-btn-primary">ابدأ التسوق الآن <i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+
+        <div id="cartLayout" class="grid grid-cols-1 lg:grid-cols-3 gap-6 hidden">
+            <!-- قائمة المنتجات -->
+            <section class="lg:col-span-2 space-y-4">
+                <div id="cartItems" class="space-y-4"></div>
+                <button onclick="clearCart()" class="se-btn se-btn-ghost text-rose-500 border-rose-200"><i class="fa-solid fa-trash"></i> إفراغ السلة بالكامل</button>
+            </section>
+
+            <!-- ملخص الطلب ونموذج التوصيل -->
+            <aside class="space-y-4 lg:sticky lg:top-24 h-fit">
+                <div class="se-card p-5 space-y-3">
+                    <h3 class="font-black text-sm border-b pb-3" style="border-color:var(--se-border)">🧾 ملخص الطلب</h3>
+                    <div class="flex justify-between text-xs font-bold"><span class="se-muted">عدد القطع</span><span id="sumQty">0</span></div>
+                    <div class="flex justify-between text-xs font-bold"><span class="se-muted">الإجمالي الفرعي</span><span id="sumSubtotal">0</span></div>
+                    <div class="flex justify-between text-xs font-bold"><span class="se-muted">سعر التوصيل</span><span id="sumShipping" class="text-sky-600">يُحدد حسب الولاية</span></div>
+                    <hr style="border-color:var(--se-border)">
+                    <div class="flex justify-between font-black"><span>المجموع عند الاستلام</span><span id="sumTotal" class="text-emerald-600 text-lg">0</span></div>
+                </div>
+
+                <div class="se-card p-5 space-y-3">
+                    <h3 class="font-black text-sm border-b pb-3" style="border-color:var(--se-border)">📋 معلومات التوصيل</h3>
+                    <input id="cName" class="se-input" placeholder="الاسم الكامل *">
+                    <input id="cPhone" class="se-input text-right" dir="ltr" inputmode="tel" placeholder="رقم الهاتف * (06/05/07)">
+                    <select id="cWilaya" class="se-input" aria-label="اختر ولايتك"></select>
+                    <p id="wilayaWarning" class="hidden text-[11px] font-bold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl p-2.5 leading-relaxed">
+                        ⚠️ عذراً، التاجر لا يوفّر التوصيل لهذه الولاية حالياً. يرجى اختيار ولاية أخرى أو التواصل مع التاجر.
+                    </p>
+                    <input id="cPhone2" class="se-input text-right" dir="ltr" inputmode="tel" maxlength="10" placeholder="رقم هاتف ثانٍ (اختياري)">
+                    <input id="cCommune" class="se-input" placeholder="البلدية *">
+                    <input id="cAddress" class="se-input" placeholder="الحي، الشارع ورقم المنزل *">
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="se-surface rounded-2xl p-3 text-center cursor-pointer border-2 border-sky-500" id="lblHome">
+                            <input type="radio" name="dtype" value="home" checked class="hidden" onchange="recalc()">
+                            <div class="text-sm font-black">🏠 للمنزل</div>
+                            <div class="text-[11px] font-bold se-muted mt-1">حسب سعر الولاية</div>
+                        </label>
+                        <label class="se-surface rounded-2xl p-3 text-center cursor-pointer border-2 border-transparent opacity-70" id="lblDesk">
+                            <input type="radio" name="dtype" value="desk" class="hidden" onchange="recalc()">
+                            <div class="text-sm font-black">📦 للمكتب</div>
+                            <div class="text-[11px] font-bold se-muted mt-1">أرخص عادةً</div>
+                        </label>
+                    </div>
+                    <textarea id="cNote" rows="2" class="se-input" placeholder="ملاحظة للتاجر (اختياري)"></textarea>
+                    <button id="checkoutBtn" onclick="submitOrder()" class="se-btn se-btn-primary w-full !py-4 !text-sm">🛍️ تأكيد الطلب — الدفع عند الاستلام</button>
+                    <p class="text-[10px] se-muted font-bold text-center leading-relaxed">بالضغط على تأكيد الطلب فأنت توافق على أن يتم التواصل معك هاتفياً لتأكيد الشحن.</p>
+                </div>
+            </aside>
+        </div>
     </main>
 
-    <!-- حقوق المطور في الأسفل بوضوح وبساطة -->
-    <footer class="w-full text-center py-4 text-[10px] sm:text-xs font-bold text-slate-400/80 relative z-10 border-t border-white/5">
-        <p>&copy; 2026 <span class="text-white font-black">SouqiExpress</span>. جميع الحقوق محفوظة.</p>
+    <!-- نافذة النجاح -->
+    <div id="successModal" class="fixed inset-0 z-[70] bg-black/60 hidden items-center justify-center p-4">
+        <div class="se-card max-w-md w-full p-6 text-center space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 text-3xl rounded-full flex items-center justify-center mx-auto">🎉</div>
+            <h3 class="text-xl font-black">تم استلام طلبك بنجاح!</h3>
+            <p class="text-sm se-muted font-bold leading-relaxed">رقم طلبك: <span id="orderRef" class="text-sky-600 font-black">—</span><br>سيتواصل معك التاجر هاتفياً لتأكيد الشحن في أقرب وقت.</p>
+            <a href="index.html" class="se-btn se-btn-primary w-full">العودة للصفحة الرئيسية</a>
+        </div>
+    </div>
+
+    <footer class="se-surface border-t py-6 text-center text-xs font-bold se-muted mt-8">
+        © 2026 <span style="color:var(--se-primary)">SouqiExpress</span> — جميع الحقوق محفوظة.
     </footer>
 
+    <script src="assets/js/app.js?v=34"></script>
+    <script>
+        document.getElementById('brandLogo').src = SE_CONFIG.logo;
+        SE.mountTabbar('cart');
+
+        // تهيئة Firebase
+        let db = null;
+        try { firebase.initializeApp(SE_CONFIG.firebase); db = firebase.firestore(); } catch (e) { console.warn(e); }
+
+        let shippingRates = [];   // أسعار الشحن المجمّعة من تجار السلة
+        let selectedRate = null;
+        let merchantSettingsMap = {};
+        const pageOpenedAt = Date.now();
+
+        /* تعبئة قائمة الولايات */
+        function fillWilayas() {
+            const sel = document.getElementById('cWilaya');
+            sel.innerHTML = '<option value="">-- اختر ولاية التوصيل * --</option>' +
+                SE_WILAYAS.map((w, i) => `<option value="${w}">${String(i + 1).padStart(2, '0')} - ${w}</option>`).join('');
+            sel.onchange = onWilayaChange;
+        }
+
+        /* جلب أسعار الشحن لتجار المنتجات الموجودة في السلة */
+        async function loadRates() {
+            if (!db) return;
+            const merchants = [...new Set(SE.cart.all().map(i => i.merchant).filter(Boolean))];
+            shippingRates = [];
+            for (const m of merchants) {
+                try {
+                    const snap = await db.collection('shipping_rates').where('merchant', '==', m).where('is_active', '==', true).get();
+                    snap.forEach(d => shippingRates.push({ id: d.id, ...d.data() }));
+                } catch (e) { console.warn('shipping', e); }
+                try {
+                    const st = await SEI.loadMerchantSettings(db, m);
+                    if (st) {
+                        merchantSettingsMap[m] = st;
+                        SEI.initPixels(st);
+                        if (st.max_orders_ip) SEI.limits.maxPerIpPerDay = Number(st.max_orders_ip);
+                    }
+                } catch (e) { console.warn('settings', e); }
+            }
+            onWilayaChange();
+        }
+
+        function rateForWilaya(name) {
+            if (!name) return null;
+            /* تطبيع قوي لأسماء الولايات.
+               خطأ حقيقي وقع: التاجر حفظ «الجزائر العاصمة» بينما الزبون يختار
+               «الجزائر»، فلا يتطابقان → يُمنع الطلب. وكذلك اختلاف الهمزات
+               (أ/إ/آ)، والتاء المربوطة، وأل التعريف، والمسافات المزدوجة.
+               نوحّد كل ذلك حتى لا يخسر التاجر زبوناً بسبب حرف. */
+            const clean = v => String(v || '')
+                .replace(/ولاية/g, '')
+                .replace(/العاصمة/g, '')
+                .replace(/[\u0623\u0625\u0622]/g, '\u0627')   // أ إ آ → ا
+                .replace(/\u0629/g, '\u0647')                   // ة → ه
+                .replace(/\u0649/g, '\u064A')                   // ى → ي
+                .replace(/[\u064B-\u0652]/g, '')                // التشكيل
+                .replace(/[^\u0600-\u06FF\w]/g, '')            // رموز ومسافات
+                .trim();
+            // نأخذ أعلى سعر بين التجار حتى لا يخسر أحدهم
+            const matches = shippingRates.filter(r => clean(r.wilaya_name) === clean(name));
+            if (!matches.length) return null;
+            return {
+                wilaya_name: name,
+                home_price: Math.max(...matches.map(r => Number(r.home_price) || 0)),
+                desk_price: Math.max(...matches.map(r => Number(r.desk_price) || 0))
+            };
+        }
+
+        function onWilayaChange() {
+            const w = document.getElementById('cWilaya').value;
+            selectedRate = rateForWilaya(w);
+
+            // تنبيه الزبون فوراً إذا كانت الولاية غير مدعومة من التاجر
+            const warn = document.getElementById('wilayaWarning');
+            const btn = document.getElementById('checkoutBtn');
+            const unsupported = !!w && !selectedRate;
+            warn.classList.toggle('hidden', !unsupported);
+            btn.disabled = unsupported;
+            btn.classList.toggle('opacity-50', unsupported);
+
+            recalc();
+        }
+
+        function deliveryType() {
+            const el = document.querySelector('input[name="dtype"]:checked');
+            return el ? el.value : 'home';
+        }
+
+        function shippingCost() {
+            if (!selectedRate) return 0;
+            return deliveryType() === 'home' ? selectedRate.home_price : selectedRate.desk_price;
+        }
+
+        /* عرض عناصر السلة */
+        function renderCart() {
+            const items = SE.cart.all();
+            const empty = document.getElementById('emptyState');
+            const layout = document.getElementById('cartLayout');
+            empty.classList.toggle('hidden', items.length > 0);
+            layout.classList.toggle('hidden', items.length === 0);
+            if (!items.length) return;
+
+            document.getElementById('cartItems').innerHTML = items.map((it, idx) => `
+                <div class="se-card p-3 sm:p-4 flex gap-3 items-center se-reveal">
+                    <img src="${it.image || 'https://placehold.co/200x200?text=SouqiExpress'}" class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover bg-slate-100 flex-shrink-0" alt="">
+                    <div class="flex-1 min-w-0 space-y-1">
+                        <a href="product-details.html?id=${encodeURIComponent(it.id)}" class="font-black text-xs sm:text-sm se-line-clamp-2 hover:text-sky-600">${SE.escape(it.name)}</a>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${it.size ? `<span class="se-badge se-badge-blue">المقاس: ${SE.escape(it.size)}</span>` : ''}
+                            ${it.color ? `<span class="se-badge se-badge-blue">اللون: ${SE.escape(it.color)}</span>` : ''}
+                        </div>
+                        <div class="flex items-center justify-between gap-2 pt-1">
+                            <div class="inline-flex items-center rounded-xl border p-1" style="border-color:var(--se-border)">
+                                <button onclick="setQty(${idx}, -1)" class="w-7 h-7 font-black rounded-lg hover:bg-slate-100">-</button>
+                                <span class="w-8 text-center text-xs font-black">${it.qty}</span>
+                                <button onclick="setQty(${idx}, 1)" class="w-7 h-7 font-black rounded-lg hover:bg-slate-100">+</button>
+                            </div>
+                            <div class="text-left">
+                                <div class="font-black text-sm">${SE.money(it.price * it.qty)}</div>
+                                <div class="text-[10px] se-muted font-bold">${SE.money(it.price)} / الوحدة</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="removeItem(${idx})" class="text-rose-400 hover:text-rose-600 px-2 self-start" title="حذف"><i class="fa-solid fa-xmark"></i></button>
+                </div>`).join('');
+
+            SE.observeReveal();
+            recalc();
+        }
+
+        function recalc() {
+            const items = SE.cart.all();
+            const subtotal = SE.cart.total();
+            const ship = shippingCost();
+            document.getElementById('sumQty').textContent = items.reduce((s, i) => s + i.qty, 0) + ' قطعة';
+            document.getElementById('sumSubtotal').textContent = SE.money(subtotal);
+            document.getElementById('sumShipping').textContent = selectedRate ? SE.money(ship) : 'يُحدد حسب الولاية';
+            document.getElementById('sumTotal').textContent = SE.money(subtotal + ship);
+
+            const home = document.getElementById('lblHome'), desk = document.getElementById('lblDesk');
+            const isHome = deliveryType() === 'home';
+            home.className = `se-surface rounded-2xl p-3 text-center cursor-pointer border-2 ${isHome ? 'border-sky-500' : 'border-transparent opacity-70'}`;
+            desk.className = `se-surface rounded-2xl p-3 text-center cursor-pointer border-2 ${!isHome ? 'border-sky-500' : 'border-transparent opacity-70'}`;
+            if (selectedRate) {
+                home.querySelector('div:last-child').textContent = SE.money(selectedRate.home_price);
+                desk.querySelector('div:last-child').textContent = SE.money(selectedRate.desk_price);
+            }
+        }
+
+        window.setQty = function (idx, delta) {
+            const items = SE.cart.all();
+            SE.cart.setQty(idx, (items[idx].qty || 1) + delta);
+            renderCart();
+        };
+        window.removeItem = function (idx) { SE.cart.remove(idx); renderCart(); loadRates(); };
+        window.clearCart = function () {
+            if (!confirm('هل تريد إفراغ السلة بالكامل؟')) return;
+            SE.cart.clear(); renderCart();
+        };
+
+        /* إرسال الطلب */
+        window.submitOrder = async function () {
+            const name = document.getElementById('cName').value.trim();
+            const phone = document.getElementById('cPhone').value.trim();
+            const wilaya = document.getElementById('cWilaya').value;
+            const address = document.getElementById('cAddress').value.trim();
+            const phone2 = document.getElementById('cPhone2').value.trim();
+            const commune = document.getElementById('cCommune').value.trim();
+            const note = document.getElementById('cNote').value.trim();
+            const items = SE.cart.all();
+
+            if (!items.length) return SE.toast('السلة فارغة', 'error');
+            if (!name || name.length < 3) return SE.toast('⚠️ يرجى كتابة الاسم الكامل', 'error');
+            if (!/^0[5-7][0-9]{8}$/.test(phone)) return SE.toast('⚠️ رقم الهاتف غير صحيح (مثال: 0551234567)', 'error');
+            if (!wilaya) return SE.toast('⚠️ يرجى اختيار الولاية', 'error');
+            if (!selectedRate) return SE.toast('⚠️ التوصيل غير متوفر لهذه الولاية، يرجى اختيار ولاية أخرى', 'error', 3500);
+            if (phone2 && !/^0[5-7][0-9]{8}$/.test(phone2)) return SE.toast('⚠️ رقم الهاتف الثاني غير صحيح', 'error');
+            if (!commune || commune.length < 2) return SE.toast('⚠️ يرجى كتابة اسم البلدية', 'error');
+            if (!address || address.length < 5) return SE.toast('⚠️ يرجى كتابة العنوان بالتفصيل', 'error');
+
+            const btn = document.getElementById('checkoutBtn');
+            btn.disabled = true; btn.innerHTML = '⏳ جاري التحقق...';
+
+            // 🛡️ الحماية من البوتات وتقييد الطلبات حسب عنوان IP
+            const guard = await SEI.checkOrderAllowed(db, {
+                pageOpenedAt: pageOpenedAt,
+                honeypotValue: SEI.honeypotValue(document.getElementById('cartLayout'))
+            });
+            if (!guard.ok) {
+                btn.disabled = false; btn.innerHTML = '🛍️ تأكيد الطلب — الدفع عند الاستلام';
+                SE.toast('🛡️ ' + guard.reason, 'error', 5000);
+                return;
+            }
+            btn.innerHTML = '⏳ جاري إرسال الطلب...';
+            SEI.track('checkout', { value: SE.cart.total() + shippingCost(), qty: items.length });
+
+            const typeText = deliveryType() === 'home' ? 'توصيل للمنزل' : 'استلام من المكتب';
+            const fullAddress = `ولاية: ${wilaya} | بلدية: ${commune} | ${typeText} | ${address}${note ? ' | ملاحظة: ' + note : ''}`;
+            const ref = 'SE-' + Date.now().toString().slice(-8);
+
+            try {
+                if (!db) throw new Error('no-db');
+                // الشحن يُحسب مرة واحدة للطلب كله، ويُسجَّل على أول سطر فقط
+                // حتى لا يتضاعف عند شراء عدة منتجات في طلب واحد.
+                const shipTotal = shippingCost();
+                const batchOps = items.map((it, idx) => db.collection('orders').add({
+                    order_ref: ref,
+                    customer_name: name,
+                    phone_number: phone,
+                    phone_2: phone2,
+                    commune: commune,
+                    note: note,
+                    address_line: address,
+                    product_sku: it.sku || it.id,
+                    product_ordered: it.id,
+                    product_name: it.name || '',
+                    merchant: it.merchant || '',
+                    user_id: it.merchant || '',
+                    status: 'pending',
+                    address: fullAddress,
+                    wilaya: wilaya,
+                    delivery_type: deliveryType(),
+                    shipping_price: idx === 0 ? shipTotal : 0,
+                    selected_color: it.color || 'غير محدد',
+                    selected_size: it.size || 'غير محدد',
+                    quantity: it.qty,
+                    unit_price: it.price,
+                    total_price: it.price * it.qty,
+                    created_at: firebase.firestore.FieldValue.serverTimestamp()
+                }));
+                await Promise.all(batchOps);
+                await SEI.recordOrder(db, guard.ipHash);
+
+                // 📊 إرسال الطلبات إلى Google Sheets الخاص بكل تاجر
+                items.forEach((it, idx) => {
+                    const st = merchantSettingsMap[it.merchant];
+                    if (st && st.sheet_webhook) {
+                        SEI.sendToSheet(st.sheet_webhook, {
+                            order_id: ref,
+                            order_date: new Date().toLocaleDateString('en-CA'),
+                            customer_name: name,
+                            phone_1: phone,
+                            phone_2: phone2,
+                            wilaya: wilaya,
+                            commune: commune,
+                            delivery_type: deliveryType() === 'home' ? 'منزل' : 'مكتب',
+                            address: fullAddress,
+                            product_sku: it.sku || it.id,
+                            product_name: it.name,
+                            quantity: it.qty,
+                            unit_price: it.price,
+                            total_amount: it.price * it.qty + (idx === 0 ? shipTotal : 0),
+                            confirmation: 'قيد الانتظار',
+                            notes: [note, it.color ? 'اللون: ' + it.color : '', it.size ? 'المقاس: ' + it.size : '']
+                                   .filter(Boolean).join(' • ')
+                        });
+                    }
+                });
+
+                // 🎯 حدث الشراء للبكسلات
+                SEI.track('purchase', { value: SE.cart.total() + shippingCost(), qty: items.length });
+
+                document.getElementById('orderRef').textContent = ref;
+                const modal = document.getElementById('successModal');
+                modal.classList.remove('hidden'); modal.classList.add('flex');
+                SE.cart.clear();
+                renderCart();
+            } catch (e) {
+                console.error(e);
+                SE.toast('❌ تعذّر إرسال الطلب، تحقق من الاتصال وحاول مجدداً', 'error', 3500);
+            } finally {
+                btn.disabled = false; btn.innerHTML = '🛍️ تأكيد الطلب — الدفع عند الاستلام';
+            }
+        };
+
+        fillWilayas();
+        SEI.mountHoneypot(document.getElementById('cartLayout'));
+        renderCart();
+        loadRates();
+    </script>
 </body>
 </html>

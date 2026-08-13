@@ -2,68 +2,103 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المتجر الإلكتروني</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
+    <title>المتجر الإلكتروني | SouqiExpress</title>
+    <meta name="theme-color" content="#0284c7">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=34">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     
+    <link rel="stylesheet" href="assets/css/theme.css?v=34">
+    <script src="assets/js/config.js?v=34"></script>
+    <script src="assets/js/integrations.js?v=34"></script>
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #ffffff; }
+        body { font-family: 'Cairo', sans-serif; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #1e40af; border-radius: 10px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
-<body class="overflow-x-hidden text-gray-800">
+<body class="overflow-x-hidden">
 
     <!-- شاشة التحميل -->
-    <div id="page-loader" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-4 text-center">
+    <div id="page-loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 text-center" style="background:var(--se-bg)">
         <div class="animate-spin text-4xl mb-4 text-blue-600">🔄</div>
         <p class="font-bold text-gray-500">جاري تحميل المتجر...</p>
     </div>
 
     <!-- الشريط العلوي (Navbar) -->
-    <header class="sticky top-0 bg-white shadow-sm z-40 border-b border-gray-100 px-4 py-3">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3 md:gap-6 flex-1">
-                <button id="menu-btn" class="text-gray-700 text-xl hover:text-blue-600 transition p-1">
+    <header class="sticky top-0 se-surface shadow-sm z-40 border-b px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 md:gap-4">
+            <div class="flex items-center gap-2 md:gap-6 flex-1 min-w-0">
+                <button id="menu-btn" aria-label="القائمة" class="text-xl hover:text-blue-600 transition p-1 flex-shrink-0">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <div class="flex items-center gap-2">
-                    <div id="store-logo-container" class="w-8 h-8 rounded-full overflow-hidden bg-gray-100 hidden">
+                <div class="flex items-center gap-2 min-w-0">
+                    <div id="store-logo-container" class="w-8 h-8 rounded-full overflow-hidden bg-gray-100 hidden flex-shrink-0">
                         <img id="store-logo" src="" alt="Logo" class="w-full h-full object-cover">
                     </div>
-                    <span id="store-name" class="font-black text-lg md:text-xl text-gray-900 tracking-wide">جاري التحميل...</span>
+                    <span id="store-name" class="font-black text-sm sm:text-lg md:text-xl tracking-wide truncate">جاري التحميل...</span>
                 </div>
                 <div class="relative flex-1 max-w-xl hidden md:block">
-                    <input type="text" id="search-input" placeholder="ابحث عن منتج..." class="w-full bg-gray-100 text-sm rounded-full py-2 pr-10 pl-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
-                    <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input type="text" id="search-input" placeholder="ابحث عن منتج..." class="se-input !rounded-full !py-2 !pr-10 !pl-4">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 se-muted text-sm"></i>
                 </div>
             </div>
-            <div class="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
-                <span id="cart-total" class="font-bold text-sm text-gray-900">0 د.ج</span>
-                <i class="fa-solid fa-cart-shopping text-gray-700 text-sm"></i>
+            <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+                <button data-se-theme-toggle class="se-btn se-btn-ghost !px-2.5 !py-2" title="الوضع الليلي"><i data-se-theme-icon class="fa-solid fa-moon"></i></button>
+                <a href="wishlist.html" class="se-btn se-btn-ghost !px-2.5 !py-2 relative" title="المفضلة">
+                    <i class="fa-regular fa-heart"></i>
+                    <span data-se-wish-count class="absolute -top-2 -left-2 bg-rose-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
+                </a>
+                <a href="cart.html" class="se-btn se-btn-ghost !px-2.5 !py-2 relative" title="السلة">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span data-se-cart-total class="font-bold text-xs hidden lg:inline">0 د.ج</span>
+                    <span data-se-cart-count class="absolute -top-2 -left-2 bg-emerald-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
+                </a>
             </div>
         </div>
         <div class="relative w-full mt-2 md:hidden">
-            <input type="text" id="search-input-mobile" placeholder="ابحث عن منتج..." class="w-full bg-gray-100 text-sm rounded-full py-2 pr-10 pl-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
+            <input type="text" id="search-input-mobile" placeholder="ابحث عن منتج..." class="se-input !rounded-full !py-2 !pr-10 !pl-4">
             <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
         </div>
     </header>
 
     <!-- القائمة الجانبية (Sidebar) -->
-    <div id="sidebar" class="fixed inset-y-0 right-0 w-80 bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div id="sidebar" class="fixed inset-y-0 right-0 w-[85vw] max-w-xs z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col" style="background:var(--se-card)">
         <div class="p-6 border-b border-gray-100 flex flex-col items-center text-center relative">
             <button id="close-sidebar" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-lg"></i></button>
             <div class="w-20 h-20 rounded-full overflow-hidden bg-gray-50 border shadow-sm p-1 mb-3">
                 <img id="sidebar-logo" src="https://placehold.co/150" class="w-full h-full object-cover rounded-full">
             </div>
-            <h2 id="sidebar-store-name" class="font-black text-gray-900 text-lg">اسم المتجر</h2>
+            <h2 id="sidebar-store-name" class="font-black text-lg">اسم المتجر</h2>
         </div>
         <div class="flex-1 overflow-y-auto p-4 space-y-1">
             <a href="#" onclick="toggleSidebar(false)" class="flex items-center justify-between px-4 py-3 text-blue-600 font-bold bg-blue-50 rounded-xl">
@@ -96,7 +131,7 @@
         <!-- قسم التصنيفات النشطة للتاجر فقط -->
         <section id="categories-section" class="space-y-4">
             <div class="text-right">
-                <h2 class="text-2xl font-black text-gray-900">التصنيفات</h2>
+                <h2 class="text-2xl font-black ">التصنيفات</h2>
                 <p class="text-xs text-gray-400 font-medium mt-0.5">اكتشف تصنيفات منتجاتنا المتوفرة</p>
             </div>
             <div id="categories-container" class="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x no-scrollbar">
@@ -107,10 +142,10 @@
         <!-- قسم المنتجات -->
         <section class="space-y-6">
             <div class="text-right">
-                <h2 class="text-2xl font-black text-gray-900 flex items-center gap-2">مرحباً بك ❤️</h2>
+                <h2 class="text-2xl font-black flex items-center gap-2">مرحباً بك ❤️</h2>
                 <p class="text-xs text-gray-400 font-medium mt-0.5">اكتشف أفضل المنتجات بأفضل الأسعار🔥</p>
             </div>
-            <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                 <!-- المنتجات -->
             </div>
         </section>
@@ -119,9 +154,9 @@
 
     <!-- أسعار التوصيل -->
     <div id="shipping-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-lg rounded-3xl p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
+        <div class="se-card w-full max-w-lg p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
             <button onclick="closeShippingModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-lg"></i></button>
-            <h3 class="text-xl font-black text-gray-900 border-b pb-3 mb-4"><i class="fa-solid fa-truck text-blue-600 ml-2"></i>أسعار التوصيل المعتمدة</h3>
+            <h3 class="text-xl font-black border-b pb-3 mb-4"><i class="fa-solid fa-truck text-blue-600 ml-2"></i>أسعار التوصيل المعتمدة</h3>
             <div id="shipping-list" class="flex-1 overflow-y-auto space-y-3 pr-1">
                 <!-- جلب حقول التوصيل ديناميكياً للتاجر الحالي فقط -->
             </div>
@@ -129,11 +164,11 @@
     </div>
 
     <!-- الفوتر السفلي -->
-    <footer id="footer-section" class="bg-gray-50 border-t border-gray-100 mt-20 py-10 px-6 text-center md:text-right">
+    <footer id="footer-section" class="se-surface border-t mt-20 py-10 px-6 text-center md:text-right">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <div class="flex flex-col items-center md:items-end space-y-3">
                 <div class="flex items-center gap-2">
-                    <span id="footer-store-name" class="font-black text-gray-900 text-lg">اسم المتجر</span>
+                    <span id="footer-store-name" class="font-black text-lg">اسم المتجر</span>
                     <img id="footer-logo" src="" class="w-8 h-8 rounded-full object-cover hidden">
                 </div>
                 <p id="store-bio" class="text-xs text-gray-400 max-w-xs leading-relaxed">بائع معتمد في المنصة SouqiExpress.</p>
@@ -147,18 +182,9 @@
         </div>
     </footer>
 
+    <script src="assets/js/app.js?v=34"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:7b3a80ba4acea3e29c3ec3",
-            measurementId: "G-YX3PT078PG"
-        };
-
-        firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(window.SE_CONFIG.firebase);
         const db = firebase.firestore();
         
         const urlParams = new URLSearchParams(window.location.search);
@@ -222,6 +248,13 @@
                     const settingsSnapshot = await db.collection('merchant_settings').where('merchant', '==', merchantId).limit(1).get();
                     if (!settingsSnapshot.empty) {
                         const settings = settingsSnapshot.docs[0].data();
+
+                        // 🎯 تفعيل بكسل التاجر وتسجيل زيارة المتجر
+                        try {
+                            SEI.initPixels(settings);
+                            SEI.track('view', { name: 'Store Page' });
+                        } catch (e) { console.warn('pixel', e); }
+
                         const socialContainer = document.getElementById('sidebar-socials');
                         socialContainer.innerHTML = '';
                         
@@ -255,7 +288,7 @@
                                 shippingList.innerHTML += `
                                     <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-blue-200 transition flex flex-col gap-2">
                                         <div class="flex items-center justify-between border-b border-gray-200/60 pb-1.5">
-                                            <span class="font-bold text-gray-900 text-base flex items-center gap-2">
+                                            <span class="font-bold text-base flex items-center gap-2">
                                                 <i class="fa-solid fa-location-dot text-blue-600 text-sm"></i> ${stateName}
                                             </span>
                                         </div>
@@ -303,7 +336,7 @@
                     displayedCategoriesCount++;
 
                     catsContainer.innerHTML += `
-                        <div class="min-w-[170px] sm:min-w-[210px] h-64 relative rounded-2xl overflow-hidden snap-start shrink-0 group shadow-sm border border-gray-100">
+                        <div class="min-w-[140px] sm:min-w-[210px] h-52 sm:h-64 relative rounded-2xl overflow-hidden snap-start shrink-0 group shadow-sm">
                             <img src="${catImage}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
                                 <h3 class="text-white font-black text-sm sm:text-base text-right mb-2.5 leading-tight">${finalCatName}</h3>
@@ -348,32 +381,46 @@
                 let discountBadge = '';
                 if(oldPrice && oldPrice > currentPrice) {
                     const discountPercentage = Math.round(((oldPrice - currentPrice) / oldPrice) * 100);
-                    discountBadge = `<div class="absolute top-3 right-3 bg-red-500 text-white text-[11px] font-black px-2 py-0.5 rounded-full shadow-sm">-${discountPercentage}%</div>`;
+                    discountBadge = `<div class="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow-sm">-${discountPercentage}%</div>`;
                 }
 
                 return `
-                <div class="bg-white rounded-2xl overflow-hidden flex flex-col justify-between group transition-all duration-300 border border-gray-50 hover:shadow-md p-1">
+                <div class="se-card overflow-hidden flex flex-col justify-between group transition-all duration-300 p-1 se-hover-lift">
                     <div class="aspect-square w-full overflow-hidden relative rounded-xl bg-gray-50">
                         <img src="${productImg}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                         ${discountBadge}
+                        <button data-se-wish-id="${product.id}" onclick="storeToggleWish('${product.id}')" class="absolute top-2 left-2 w-8 h-8 rounded-full bg-white/90 shadow flex items-center justify-center text-slate-400 hover:scale-110 transition"><i class="fa-regular fa-heart"></i></button>
                     </div>
-                    <div class="pt-3 pb-2 px-1 flex flex-col items-center text-center space-y-1">
-                        <h3 class="font-semibold text-gray-800 text-sm md:text-base line-clamp-1 w-full">${product.name || 'منتج جديد'}</h3>
-                        <div class="flex items-center gap-0.5 text-amber-400 text-[11px]">
+                    <div class="pt-2.5 pb-1.5 px-1.5 flex flex-col items-center text-center space-y-1">
+                        <h3 class="font-semibold text-[11px] sm:text-sm md:text-base se-line-clamp-2 leading-snug w-full min-h-[2.1rem]">${product.name || 'منتج جديد'}</h3>
+                        <div class="flex items-center gap-0.5 text-amber-400 text-[9px] sm:text-[11px]">
                             <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                         </div>
-                        <div class="flex items-center justify-center gap-2 flex-wrap">
-                            <span class="text-blue-700 font-black text-sm md:text-base">${currentPrice.toLocaleString('fr-FR')} دج</span>
-                            ${oldPrice ? `<span class="text-gray-400 line-through text-xs">${oldPrice.toLocaleString('fr-FR')} دج</span>` : ''}
+                        <div class="flex items-baseline justify-center gap-x-1.5 gap-y-0.5 flex-wrap">
+                            <span class="font-black text-[13px] sm:text-base whitespace-nowrap" style="color:var(--se-primary)">${currentPrice.toLocaleString('fr-FR')} دج</span>
+                            ${oldPrice ? `<span class="se-muted line-through text-[10px] whitespace-nowrap">${oldPrice.toLocaleString('fr-FR')} دج</span>` : ''}
                         </div>
-                        <a href="product-details.html?id=${product.id}" class="w-full mt-2 bg-blue-600 text-white hover:bg-blue-700 text-xs font-bold py-2.5 rounded-xl shadow-sm transition-all block text-center">
-                            أطلب الآن
-                        </a>
+                        <div class="w-full mt-1.5 flex gap-1.5">
+                            <a href="product-details.html?id=${product.id}" class="flex-1 min-w-0 se-btn se-btn-primary !px-1 !py-2.5 !text-[11px] !gap-1">أطلب الآن</a>
+                            <button onclick="storeQuickAdd('${product.id}')" class="se-btn se-btn-ghost !px-0 !py-2.5 w-9 flex-shrink-0" title="أضف للسلة" aria-label="أضف للسلة"><i class="fa-solid fa-cart-plus"></i></button>
+                        </div>
                     </div>
                 </div>
                 `;
             }).join('');
+            SE.wishlist.sync();
         }
+
+        window.storeQuickAdd = function(id) {
+            const p = (window.productsList || []).find(x => x.id === id);
+            if (!p) return;
+            if (p.stock !== undefined && p.stock <= 0) return SE.toast('❌ هذا المنتج غير متوفر حالياً', 'error');
+            SE.cart.add(p, 1);
+        };
+        window.storeToggleWish = function(id) {
+            const p = (window.productsList || []).find(x => x.id === id);
+            if (p) SE.wishlist.toggle(p);
+        };
 
         function filterByCategory(catKey) {
             toggleSidebar(false);

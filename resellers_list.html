@@ -2,37 +2,116 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
     <title>دليل حسابات المسوقين</title>
     <!-- تضمين Tailwind CSS للتصميم المتجاوب والسريع -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=34">
     <!-- تضمين خط Cairo من Google Fonts لتنسيق النصوص العربية بشكل احترافي -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
     </style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
+    <link rel="stylesheet" href="assets/css/theme.css?v=34">
+    <script src="assets/js/config.js?v=34"></script>
+    <script src="assets/js/subscription.js?v=34"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="bg-slate-50 text-gray-800 min-h-screen flex flex-col antialiased">
+<body class="se-admin min-h-screen flex flex-col antialiased">
 
     <!-- شريط الرأس الاعلى -->
     <header class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50 backdrop-blur-md bg-white/90">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-                <div class="bg-emerald-600 text-white p-2 rounded-xl font-black shadow-md shadow-emerald-200 text-sm sm:text-base">DZ</div>
-                <h1 class="text-sm sm:text-base font-black text-gray-900 tracking-tight">شبكة المسوقين المعتمدين</h1>
-            </div>
-            <div class="text-[11px] sm:text-xs font-bold text-gray-500 bg-gray-100 px-2.5 py-1.5 rounded-xl border border-gray-200/50">
-                إجمالي المسوقين: <span id="resellersCount" class="text-emerald-600 font-black">0</span>
+            <a href="index.html" class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                <div class="bg-emerald-600 text-white w-8 h-8 sm:w-9 sm:h-9 rounded-xl font-black shadow-md shadow-emerald-200 text-xs sm:text-sm flex items-center justify-center flex-shrink-0">DZ</div>
+                <h1 class="text-[13px] sm:text-base font-black text-gray-900 tracking-tight truncate">شبكة المسوقين المعتمدين</h1>
+            </a>
+            <div class="text-[10px] sm:text-xs font-bold text-gray-500 bg-gray-100 px-2 sm:px-2.5 py-1.5 rounded-xl border border-gray-200/50 flex-shrink-0 whitespace-nowrap">
+                المسوقون: <span id="resellersCount" class="text-emerald-600 font-black">0</span>
             </div>
         </div>
     </header>
 
     <!-- المحتوى الرئيسي للموقع -->
-    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
-        
+    <main class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex-1 w-full">
+
+        <!-- لافتة السياق: لماذا أنت هنا؟ -->
+        <div id="ctxBanner" class="hidden mb-4 sm:mb-6 rounded-2xl sm:rounded-3xl p-4 sm:p-5 border shadow-sm">
+            <div class="flex items-start gap-3">
+                <div id="ctxIcon" class="text-2xl sm:text-3xl flex-shrink-0 leading-none">⛔</div>
+                <div class="min-w-0 flex-1">
+                    <h2 id="ctxTitle" class="font-black text-sm sm:text-base mb-1 leading-snug"></h2>
+                    <p id="ctxText" class="text-[11px] sm:text-xs font-bold leading-relaxed opacity-90"></p>
+                    <div id="ctxMeta" class="flex flex-wrap gap-1.5 mt-2.5"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- بطاقة سعر الاشتراك -->
+        <div class="mb-4 sm:mb-6 bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm p-4 sm:p-5">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <div class="text-[10px] sm:text-[11px] font-black text-gray-400 uppercase tracking-wider mb-0.5">اشتراك التاجر</div>
+                    <div class="flex items-baseline gap-1.5 flex-wrap">
+                        <span id="subPrice" class="text-2xl sm:text-3xl font-black text-emerald-600">90,000</span>
+                        <span class="text-xs sm:text-sm font-black text-gray-500">د.ج / شهر</span>
+                    </div>
+                    <p class="text-[10px] sm:text-[11px] font-bold text-gray-400 mt-1">بدون عمولة على مبيعاتك · يُجدَّد كل 30 يوماً</p>
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
+                    <div class="bg-slate-50 border border-slate-100 rounded-xl px-2 py-2 min-w-[62px]">
+                        <div class="text-base sm:text-lg">🏪</div><div class="text-[9px] font-black text-gray-500 mt-0.5">متجر كامل</div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 rounded-xl px-2 py-2 min-w-[62px]">
+                        <div class="text-base sm:text-lg">🚚</div><div class="text-[9px] font-black text-gray-500 mt-0.5">58 ولاية</div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 rounded-xl px-2 py-2 min-w-[62px]">
+                        <div class="text-base sm:text-lg">📊</div><div class="text-[9px] font-black text-gray-500 mt-0.5">لوحة تحكم</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- كيف تفعّل حسابك؟ -->
+        <div class="mb-4 sm:mb-6 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+            <div class="bg-white rounded-2xl border border-gray-100 p-3 sm:p-4 shadow-sm flex items-start gap-2.5">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-black flex items-center justify-center flex-shrink-0">1</span>
+                <div class="min-w-0"><div class="text-[11px] sm:text-xs font-black text-gray-800">اختر مسوّقاً</div><div class="text-[10px] font-bold text-gray-400 leading-relaxed mt-0.5">من عنده رصيد تفعيلات متاح</div></div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 p-3 sm:p-4 shadow-sm flex items-start gap-2.5">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-black flex items-center justify-center flex-shrink-0">2</span>
+                <div class="min-w-0"><div class="text-[11px] sm:text-xs font-black text-gray-800">تواصل معه واتساب</div><div class="text-[10px] font-bold text-gray-400 leading-relaxed mt-0.5">الرسالة جاهزة ببريدك</div></div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 p-3 sm:p-4 shadow-sm flex items-start gap-2.5">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-black flex items-center justify-center flex-shrink-0">3</span>
+                <div class="min-w-0"><div class="text-[11px] sm:text-xs font-black text-gray-800">ادخل لمتجرك</div><div class="text-[10px] font-bold text-gray-400 leading-relaxed mt-0.5">فوراً بعد التفعيل</div></div>
+            </div>
+        </div>
+
         <!-- حقل البحث السريع -->
-        <div class="mb-6 max-w-md mx-auto sm:mx-0">
-            <div class="relative">
+        <div class="mb-4 sm:mb-6">
+            <div class="relative max-w-md">
                 <input type="text" id="searchInput" placeholder="بحث باسم المسوق أو رقم هاتفه..." class="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3 text-xs sm:text-sm focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 shadow-sm font-bold transition text-right">
             </div>
         </div>
@@ -49,7 +128,7 @@
         </div>
 
         <!-- شبكة عرض كروت المسوقين -->
-        <div id="resellersGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 hidden">
+        <div id="resellersGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-6 hidden">
             <!-- الكروت سيتم توليدها برمجياً هنا عبر JavaScript -->
         </div>
 
@@ -57,10 +136,124 @@
 
     <!-- تذييل الصفحة -->
     <footer class="bg-white border-t border-gray-100 py-4 text-center text-[10px] sm:text-xs text-gray-400 font-bold mt-auto">
-        دليل المسوقين المعتمدين لمشروع المتجر الإلكتروني &copy; 2026
+        <div class="flex flex-wrap items-center justify-center gap-3 mb-2">
+            <a href="login.html" class="text-emerald-600 hover:text-emerald-700 font-black">↩ العودة لتسجيل الدخول</a>
+            <span class="text-gray-300">·</span>
+            <a href="about.html#pricing" class="text-gray-500 hover:text-gray-700 font-black">تفاصيل الاشتراك</a>
+            <span class="text-gray-300">·</span>
+            <a href="index.html" class="text-gray-500 hover:text-gray-700 font-black">المتجر</a>
+        </div>
+        دليل المسوقين المعتمدين لمنصة SouqiExpress &copy; 2026
     </footer>
 
     <!-- ربط الصفحة بقاعدة بيانات Firebase وجلب البيانات فورياً -->
+    <!-- سياق الصفحة والسعر: سكربت عادي (ليس module) حتى يعمل حتى لو تعذّر تحميل Firebase -->
+    <script>
+    (function () {
+        /* ---------- تهريب HTML لمنع XSS ---------- */
+    const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+
+    /* ---------- سياق الزيارة: لماذا وصل المستخدم إلى هنا؟ ---------- */
+    const params = new URLSearchParams(location.search);
+    let notice = {};
+    try { notice = JSON.parse(sessionStorage.getItem('se_sub_notice') || '{}') || {}; } catch (e) {}
+    const ctxReason = params.get('reason') || notice.reason || '';
+
+    function fmtDate(v) {
+        if (window.SE_SUB) return window.SE_SUB.formatDate(v);
+        const d = new Date(v); return isNaN(d) ? '—' : d.toLocaleDateString('ar-DZ');
+    }
+
+    function waMessage() {
+        const who = notice.name ? ` (${notice.name})` : '';
+        const mail = notice.email ? `\nبريدي: ${notice.email}` : '';
+        if (ctxReason === 'expired' || ctxReason === 'renew') {
+            return `مرحباً، أنا تاجر${who} على منصة SouqiExpress وانتهى اشتراكي الشهري. أريد تجديده من فضلك.${mail}`;
+        }
+        if (ctxReason === 'new') {
+            return `مرحباً، أنشأت حساب تاجر جديد${who} على منصة SouqiExpress وأريد تفعيله وبدء اشتراكي الشهري.${mail}`;
+        }
+        return `مرحباً، أريد تفعيل حسابي كتاجر${who} على منصة SouqiExpress.${mail}`;
+    }
+
+    function renderContext() {
+        const box = document.getElementById('ctxBanner');
+        if (!ctxReason) return;
+
+        const cfg = {
+            expired: {
+                icon: '⛔', cls: 'bg-red-50 border-red-100 text-red-800',
+                title: 'انتهى اشتراكك الشهري',
+                text: notice.end
+                    ? `انتهى اشتراكك بتاريخ ${fmtDate(notice.end)}. متجرك ومنتجاتك وطلباتك وزبائنك محفوظة بالكامل — اختر مسوّقاً من القائمة أدناه ليجدّد لك الاشتراك، وسيعود حسابك للعمل فوراً.`
+                    : 'انتهت مدة اشتراكك الشهري. بياناتك محفوظة بالكامل — اختر مسوّقاً من القائمة أدناه ليجدّد لك الاشتراك.'
+            },
+            renew: {
+                icon: '🔄', cls: 'bg-amber-50 border-amber-100 text-amber-800',
+                title: 'تجديد الاشتراك الشهري',
+                text: 'اختر مسوّقاً معتمداً من القائمة وتواصل معه عبر واتساب لتجديد اشتراكك قبل انتهائه.'
+            },
+            pending: {
+                icon: '⏳', cls: 'bg-amber-50 border-amber-100 text-amber-800',
+                title: 'حسابك لم يُفعَّل بعد',
+                text: 'حسابك مُسجَّل لكنه ينتظر التفعيل. اختر مسوّقاً معتمداً من القائمة أدناه ليفعّل لك الحساب ويبدأ اشتراكك الشهري.'
+            },
+            new: {
+                icon: '🎉', cls: 'bg-emerald-50 border-emerald-100 text-emerald-800',
+                title: 'مرحباً بك! بقيت خطوة واحدة',
+                text: 'تم إنشاء حسابك بنجاح. اختر الآن مسوّقاً معتمداً من القائمة أدناه، تواصل معه عبر واتساب، وسيفعّل لك حسابك ليبدأ اشتراكك الشهري.'
+            }
+        }[ctxReason];
+
+        if (!cfg) return;
+        box.className = 'mb-4 sm:mb-6 rounded-2xl sm:rounded-3xl p-4 sm:p-5 border shadow-sm ' + cfg.cls;
+        document.getElementById('ctxIcon').textContent = cfg.icon;
+        document.getElementById('ctxTitle').textContent = cfg.title;
+        document.getElementById('ctxText').textContent = cfg.text;
+
+        const meta = [];
+        if (notice.name) meta.push(`<span class="bg-white/70 border border-black/10 px-2 py-1 rounded-lg text-[10px] font-black">👤 ${esc(notice.name)}</span>`);
+        if (notice.email) meta.push(`<span class="bg-white/70 border border-black/10 px-2 py-1 rounded-lg text-[10px] font-black" dir="ltr">${esc(notice.email)}</span>`);
+        if (notice.activated_by_name) meta.push(`<span class="bg-white/70 border border-black/10 px-2 py-1 rounded-lg text-[10px] font-black">مسوّقك السابق: ${esc(notice.activated_by_name)}</span>`);
+        document.getElementById('ctxMeta').innerHTML = meta.join('');
+    }
+
+    function renderPrice() {
+        const cfgSub = (window.SE_CONFIG && window.SE_CONFIG.subscription) || {};
+        const el = document.getElementById('subPrice');
+        if (el && cfgSub.price) el.textContent = Number(cfgSub.price).toLocaleString('en-US');
+    }
+
+
+    // إتاحتها للسكربت الوحدة (module) أدناه
+    window.esc = esc;
+    window.ctxReason = ctxReason;
+    window.waMessage = waMessage;
+    window.subNotice = notice;
+
+    /* حارس: إن تعذّر تحميل Firebase (شبكة/حجب) لا نترك المستخدم أمام دوّامة تحميل أبدية */
+    function watchdog() {
+        setTimeout(() => {
+            const ls = document.getElementById('loadingState');
+            if (ls && !ls.classList.contains('hidden') && !window.__resellersLoaded) {
+                ls.innerHTML = '<div class="max-w-sm mx-auto bg-red-50 border border-red-100 rounded-2xl p-5">'
+                    + '<div class="text-3xl mb-2">📡</div>'
+                    + '<p class="text-red-700 font-black text-xs sm:text-sm mb-1">تعذّر تحميل قائمة المسوقين</p>'
+                    + '<p class="text-red-500 font-bold text-[11px] leading-relaxed mb-3">تحقّق من اتصالك بالإنترنت ثم أعد المحاولة.</p>'
+                    + '<button onclick="location.reload()" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-black px-4 py-2 rounded-xl transition">🔄 إعادة المحاولة</button>'
+                    + '</div>';
+            }
+        }, 12000);
+    }
+
+    function start() { renderContext(); renderPrice(); watchdog(); }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+    else start();
+    })();
+    </script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -78,7 +271,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let allResellers = []; 
+        let allResellers = [];
 
         async function loadResellersData() {
             const loadingState = document.getElementById('loadingState');
@@ -94,23 +287,30 @@
                 });
 
                 // الترتيب الذكي: الأكثر تفعيلاً أولاً (current_activations تنازلياً)
+                // الترتيب: من عنده رصيد متاح أولاً، ثم الأكثر تفعيلاً (خبرة)
                 allResellers.sort((a, b) => {
-                    const activeA = a.current_activations || 0;
-                    const activeB = b.current_activations || 0;
-                    
-                    if (activeB !== activeA) {
-                        return activeB - activeA;
-                    }
+                    const remA = Math.max(0, (a.max_activations || 0) - (a.current_activations || 0));
+                    const remB = Math.max(0, (b.max_activations || 0) - (b.current_activations || 0));
+                    if ((remB > 0) !== (remA > 0)) return remB > 0 ? 1 : -1;
+                    const actA = a.current_activations || 0, actB = b.current_activations || 0;
+                    if (actB !== actA) return actB - actA;
                     return (b.max_activations || 0) - (a.max_activations || 0);
                 });
                 
+                window.__resellersLoaded = true;
                 countSpan.textContent = allResellers.length;
                 loadingState.classList.add('hidden');
                 renderResellersCards(allResellers);
 
             } catch (error) {
                 console.error("حدث خطأ أثناء تحميل بيانات المسوقين:", error);
-                loadingState.innerHTML = `<p class="text-red-500 font-bold text-xs sm:text-sm">❌ فشل الاتصال بقاعدة البيانات. يرجى التحقق من الصلاحيات.</p>`;
+                window.__resellersLoaded = true;
+                loadingState.innerHTML = `<div class="max-w-sm mx-auto bg-red-50 border border-red-100 rounded-2xl p-5">
+                    <div class="text-3xl mb-2">❌</div>
+                    <p class="text-red-700 font-black text-xs sm:text-sm mb-1">فشل الاتصال بقاعدة البيانات</p>
+                    <p class="text-red-500 font-bold text-[11px] leading-relaxed mb-3">تحقّق من اتصالك أو من صلاحيات القراءة على مجموعة users.</p>
+                    <button onclick="location.reload()" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-black px-4 py-2 rounded-xl transition">🔄 إعادة المحاولة</button>
+                </div>`;
             }
         }
 
@@ -129,58 +329,55 @@
             resellersGrid.innerHTML = '';
 
             list.forEach(res => {
-                const avatarUrl = res.avatar || 'https://placehold.co/150x150?text=👤';
-                const name = res.name || 'مسوق بدون اسم';
-                const phone = res.phone || '';
-                
-                const maxActivations = res.max_activations !== undefined ? res.max_activations : 0;
-                const currentActivations = res.current_activations !== undefined ? res.current_activations : 0;
-                
-                const cleanPhone = phone.replace(/\D/g, ''); 
+                const avatarUrl = res.avatar || 'https://placehold.co/150x150?text=%F0%9F%91%A4';
+                const name = esc(res.name || 'مسوق بدون اسم');
+                const phone = String(res.phone || '');
+
+                const maxActivations = Number(res.max_activations || 0);
+                const currentActivations = Number(res.current_activations || 0);
+                const remaining = Math.max(0, maxActivations - currentActivations);
+
+                const cleanPhone = phone.replace(/\D/g, '');
+                const waPhone = cleanPhone.startsWith('0') ? '213' + cleanPhone.slice(1) : cleanPhone;
 
                 resellersGrid.innerHTML += `
-                    <div class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center text-center transition hover:shadow-md hover:border-gray-200/80 relative overflow-hidden group">
-                        
-                        <!-- تاغ النشاط / الترتيب المميز -->
-                        <div class="absolute top-4 right-4 flex items-center gap-1 bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full text-[9px] font-black border border-emerald-100">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            نشط
+                    <div class="bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center text-center transition hover:shadow-md hover:border-gray-200/80 relative overflow-hidden group">
+
+                        <div class="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 flex items-center gap-1 ${remaining > 0 ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-gray-50 text-gray-400 border-gray-100'} px-1.5 sm:px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-black border">
+                            <span class="w-1.5 h-1.5 rounded-full ${remaining > 0 ? 'bg-emerald-500 animate-pulse' : 'bg-gray-300'}"></span>
+                            ${remaining > 0 ? 'متاح' : 'ممتلئ'}
                         </div>
 
-                        <!-- الصورة الشخصية للمسوق -->
-                        <div class="relative w-20 h-20 sm:w-22 sm:h-22 mb-3 mt-2">
-                            <img src="${avatarUrl}" alt="${name}" class="w-full h-full rounded-full object-cover border-4 border-gray-50 shadow-inner group-hover:border-emerald-50 transition duration-300">
+                        <div class="relative w-14 h-14 sm:w-20 sm:h-20 mb-2 sm:mb-3 mt-4 sm:mt-2">
+                            <img src="${esc(avatarUrl)}" alt="${name}" loading="lazy" onerror="this.src='https://placehold.co/150x150?text=%F0%9F%91%A4'" class="w-full h-full rounded-full object-cover border-2 sm:border-4 border-gray-50 shadow-inner group-hover:border-emerald-50 transition duration-300">
                         </div>
-                        
-                        <!-- إسم المسوق ورقم الهاتف -->
-                        <h3 class="font-black text-gray-800 text-sm sm:text-base mb-0.5 line-clamp-1">${name}</h3>
-                        <p class="text-[10px] sm:text-xs font-mono text-gray-400 font-bold mb-4" dir="ltr">${phone ? phone : 'رقم الهاتف غير محدد'}</p>
-                        
-                        <!-- صندوق الأرصدة والنشاطات -->
-                        <div class="grid grid-cols-2 gap-2 w-full bg-slate-50 border border-slate-100 p-2.5 rounded-2xl mb-4 text-right">
-                            <div class="flex flex-col justify-center border-l border-slate-200/60 pl-1">
-                                <span class="text-[9px] font-bold text-gray-400 block mb-0.5">الرصيد الكلي</span>
-                                <span class="text-xs font-black text-blue-600 font-mono">${maxActivations} <span class="text-[9px] text-gray-400 font-normal">حساب</span></span>
+
+                        <h3 class="font-black text-gray-800 text-[11px] sm:text-sm md:text-base mb-0.5 line-clamp-1 w-full px-1">${name}</h3>
+                        <p class="text-[9px] sm:text-xs font-mono text-gray-400 font-bold mb-2.5 sm:mb-4 truncate w-full px-1" dir="ltr">${phone ? esc(phone) : 'بدون رقم'}</p>
+
+                        <div class="grid grid-cols-2 gap-1 sm:gap-2 w-full bg-slate-50 border border-slate-100 p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl mb-2.5 sm:mb-4">
+                            <div class="flex flex-col justify-center border-l border-slate-200/60">
+                                <span class="text-[8px] sm:text-[9px] font-bold text-gray-400 block">الرصيد</span>
+                                <span class="text-[11px] sm:text-xs font-black text-blue-600 font-mono">${maxActivations}</span>
                             </div>
-                            <div class="flex flex-col justify-center pr-2">
-                                <span class="text-[9px] font-bold text-gray-400 block mb-0.5">تم تفعيلها</span>
-                                <span class="text-xs font-black text-emerald-600 font-mono">${currentActivations} <span class="text-[9px] text-gray-400 font-normal">حساب</span></span>
+                            <div class="flex flex-col justify-center">
+                                <span class="text-[8px] sm:text-[9px] font-bold text-gray-400 block">المتبقّي</span>
+                                <span class="text-[11px] sm:text-xs font-black ${remaining > 0 ? 'text-emerald-600' : 'text-red-500'} font-mono">${remaining}</span>
                             </div>
                         </div>
 
-                        <!-- زر التواصل الفوري عبر الواتساب (معدل للتحقق من الرصيد) -->
                         <div class="w-full mt-auto">
                             ${!cleanPhone ? `
-                                <button disabled class="w-full bg-gray-50 text-gray-400 font-bold py-2.5 px-4 rounded-xl text-xs cursor-not-allowed border border-gray-100">
-                                    🚫 لا يوجد رقم مسجل
+                                <button disabled class="w-full bg-gray-50 text-gray-400 font-bold py-2 sm:py-2.5 px-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs cursor-not-allowed border border-gray-100">
+                                    🚫 لا يوجد رقم
                                 </button>
-                            ` : (currentActivations >= maxActivations) ? `
-                                <button disabled class="w-full bg-red-50 text-red-400 border border-red-100 font-bold py-2.5 px-4 rounded-xl text-xs cursor-not-allowed flex items-center justify-center gap-1.5 shadow-sm">
-                                    ⚠️ رصيد المسوق نفذ
+                            ` : (remaining <= 0) ? `
+                                <button disabled class="w-full bg-red-50 text-red-400 border border-red-100 font-bold py-2 sm:py-2.5 px-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs cursor-not-allowed flex items-center justify-center gap-1">
+                                    ⚠️ الرصيد نفد
                                 </button>
                             ` : `
-                                <a href="https://wa.me/${cleanPhone}?text=مرحباً، أريد تفعيل حسابي كتاجر على منصة SouqiExpress" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/10">
-                                    💬 أطلب تفعيل حسابك
+                                <a href="https://wa.me/${waPhone}?text=${encodeURIComponent(waMessage())}" target="_blank" rel="noopener" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold py-2 sm:py-2.5 px-2 rounded-lg sm:rounded-xl text-[10px] sm:text-xs transition flex items-center justify-center gap-1 shadow-md shadow-emerald-600/10">
+                                    <i class="fa-brands fa-whatsapp"></i> ${ctxReason === 'expired' || ctxReason === 'renew' ? 'جدّد اشتراكي' : 'فعّل حسابي'}
                                 </a>
                             `}
                         </div>

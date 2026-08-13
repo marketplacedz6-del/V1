@@ -1,0 +1,117 @@
+rules_version = '2';
+
+/* =========================================================
+   SouqiExpress — قواعد أمان Firestore
+
+   ⚠️ لماذا هذا الملف ضروري؟
+   المنصة HTML ثابتة بلا خادم، فكل فحوص الواجهة (الاشتراك، الصلاحيات)
+   يمكن تجاوزها بأدوات المطوّر في المتصفح. هذه القواعد هي الحماية
+   *الحقيقية* الوحيدة. بدونها يستطيع أي شخص تعديل بيانات أي تاجر.
+
+   كيف تُطبَّق؟
+   Firebase Console → Firestore Database → Rules → الصق → Publish
+   ========================================================= */
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /* ---------- دوال مساعدة ---------- */
+    function signedIn() {
+      return request.auth != null;
+    }
+    function me() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    function isAdmin() {
+      return signedIn() && me().role == 'admin';
+    }
+    function isReseller() {
+      return signedIn() && me().role == 'reseller';
+    }
+    /* الحقول التي لا يجوز للتاجر تعديلها في مستنده بنفسه.
+       بدون هذا يستطيع تمديد اشتراكه مجاناً أو ترقية نفسه لأدمن. */
+    function protectedUserFields() {
+      return ['role', 'is_approved', 'subscription_start', 'subscription_end',
+              'subscription_months', 'max_activations', 'current_activations',
+              'activated_by', 'activated_by_name'];
+    }
+    function touchesProtected() {
+      return request.resource.data.diff(resource.data)
+             .affectedKeys().hasAny(protectedUserFields());
+    }
+
+    /* ---------- المستخدمون ---------- */
+    match /users/{uid} {
+      // القراءة عامة: المتجر يعرض اسم التاجر، وصفحة المسوّقين تعرض القائمة
+      allow read: if true;
+
+      // إنشاء الحساب: لنفسك فقط، وبصلاحيات دنيا (لا يمكن أن تجعل نفسك أدمن)
+      allow create: if signedIn()
+                    && request.auth.uid == uid
+                    && request.resource.data.role in ['merchant', 'user']
+                    && request.resource.data.is_approved == false
+                    && !('subscription_end' in request.resource.data);
+
+      // التعديل: الأدمن والمسوّق يديران الاشتراكات؛
+      // والتاجر يعدّل بياناته الشخصية فقط دون الحقول المحمية
+      allow update: if isAdmin()
+                    || isReseller()
+                    || (signedIn() && request.auth.uid == uid && !touchesProtected());
+
+      allow delete: if isAdmin();
+    }
+
+    /* ---------- المنتجات ---------- */
+    match /products/{id} {
+      allow read: if true;                       // المتجر عام
+      allow create: if signedIn() && request.resource.data.user_id == request.auth.uid;
+      allow update, delete: if isAdmin()
+                            || (signedIn() && resource.data.user_id == request.auth.uid);
+    }
+
+    /* ---------- الطلبات ---------- */
+    match /orders/{id} {
+      // الزبون يطلب بلا حساب (الدفع عند الاستلام) — لذا الإنشاء مفتوح،
+      // لكن الحالة تبدأ "pending" إجبارياً حتى لا يُنشئ أحد طلباً "مكتملاً".
+      allow create: if request.resource.data.status == 'pending'
+                    && request.resource.data.quantity is number
+                    && request.resource.data.quantity > 0
+                    && request.resource.data.unit_price is number
+                    && request.resource.data.unit_price >= 0;
+
+      // القراءة والتعديل: صاحب الطلب (التاجر) أو الأدمن فقط
+      allow read, update, delete: if isAdmin()
+                                  || (signedIn() && resource.data.merchant == request.auth.uid);
+    }
+
+    /* ---------- أسعار الشحن ---------- */
+    match /shipping_rates/{id} {
+      allow read: if true;                       // السلة تحتاجها قبل تسجيل الدخول
+      allow create: if signedIn() && request.resource.data.merchant == request.auth.uid;
+      allow update, delete: if isAdmin()
+                            || (signedIn() && resource.data.merchant == request.auth.uid);
+    }
+
+    /* ---------- إعدادات التاجر ---------- */
+    match /merchant_settings/{uid} {
+      allow read: if true;                       // البكسل وصفحة الهبوط تُقرأ علناً
+      allow write: if isAdmin() || (signedIn() && request.auth.uid == uid);
+    }
+
+    /* ---------- حدّ الطلبات (مكافحة الطلبات الوهمية) ---------- */
+    match /order_limits/{id} {
+      allow read, write: if true;                // مفاتيح مجهّلة (hash) بلا بيانات شخصية
+    }
+
+    /* ---------- التصنيفات ---------- */
+    match /categories/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    /* ---------- المنع الافتراضي ---------- */
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

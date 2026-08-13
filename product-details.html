@@ -2,16 +2,45 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
     <title>معاينة المنتج والشراء - SouqiExpress</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="اطلب منتجك الآن من سوقي إكسبريس مع الدفع عند الاستلام وتوصيل لكل الولايات الجزائرية.">
+    <meta name="theme-color" content="#0284c7">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=34">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/theme.css?v=34">
+    <script src="assets/js/config.js?v=34"></script>
+    <script src="assets/js/integrations.js?v=34"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
     <style>
-        body { font-family: 'Tajawal', sans-serif; }
+        body { font-family: 'Cairo', 'Tajawal', sans-serif; }
         input[-webkit-outer-spin-button], input[type=number]::-webkit-inner-spin-button {
             -webkit-appearance: none; margin: 0;
         }
@@ -32,19 +61,31 @@
             animation: shimmer 2s infinite;
         }
     </style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
-<body class="bg-slate-50/50 text-black min-h-screen flex flex-col relative pb-16">
+<body class="min-h-screen flex flex-col relative overflow-x-hidden">
 
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 py-4 shadow-sm">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <button onclick="copyProductLink()" class="flex items-center gap-2 hover:opacity-80 transition active:scale-95 focus:outline-none" title="اضغط لنسخ رابط المنتج">
-                <span class="text-2xl">🏪</span>
-                <span class="font-black text-xl tracking-tight text-blue-600">Souqi<span class="text-black">Express</span></span>
-            </button>
-            <div id="merchant-store" class="flex items-center gap-2">
-                <span id="merchant-name-display" class="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded-full">جاري تحميل المتجر...</span>
+    <header class="se-surface border-b sticky top-0 z-40 px-3 sm:px-4 py-3 shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center gap-2">
+            <a href="index.html" class="flex items-center gap-1.5 hover:opacity-80 transition active:scale-95 flex-shrink-0" title="العودة للرئيسية">
+                <span class="text-xl sm:text-2xl">🏪</span>
+                <span class="font-black text-base sm:text-xl tracking-tight" style="color:var(--se-primary)">Souqi<span style="color:var(--se-text)">Express</span></span>
+            </a>
+            <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <!-- اسم المتجر: يختفي على الشاشات الصغيرة جداً لتفادي تزاحم الشريط -->
+                <div id="merchant-store" class="hidden sm:flex items-center gap-2 min-w-0">
+                    <span id="merchant-name-display" class="text-xs font-bold se-muted bg-slate-100 px-3 py-1 rounded-full truncate max-w-[140px]">جاري تحميل المتجر...</span>
+                </div>
+                <button data-se-theme-toggle class="se-btn se-btn-ghost !px-2.5 !py-2 flex-shrink-0" title="الوضع الليلي"><i data-se-theme-icon class="fa-solid fa-moon"></i></button>
+                <button onclick="shareProduct()" class="se-btn se-btn-ghost !px-2.5 !py-2 flex-shrink-0 sm:hidden" title="مشاركة"><i class="fa-solid fa-share-nodes"></i></button>
+                <a href="cart.html" class="se-btn se-btn-ghost !px-2.5 !py-2 relative flex-shrink-0">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span data-se-cart-count class="absolute -top-2 -left-2 bg-emerald-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
+                </a>
             </div>
         </div>
+        <!-- شريط المتجر للهواتف: سطر منفصل بدل تزاحم الهيدر -->
+        <div id="merchant-store-mobile" class="sm:hidden max-w-6xl mx-auto mt-2 hidden"></div>
     </header>
 
     <div id="loading-screen" class="flex-grow flex flex-col items-center justify-center p-12 text-slate-500 font-bold">
@@ -55,9 +96,9 @@
     <main id="product-content" class="max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-8 flex-grow hidden">
         
         <div class="space-y-4">
-            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden relative aspect-square shadow-sm flex items-center justify-center">
-                <button onclick="prevImage()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black w-10 h-10 rounded-full border border-slate-200 shadow flex items-center justify-center font-bold text-lg z-10 transition">❯</button>
-                <button onclick="nextImage()" class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black w-10 h-10 rounded-full border border-slate-200 shadow flex items-center justify-center font-bold text-lg z-10 transition">❮</button>
+            <div class="se-card overflow-hidden relative aspect-square flex items-center justify-center">
+                <button onclick="prevImage()" aria-label="الصورة السابقة" class="se-navbtn right-3">❯</button>
+                <button onclick="nextImage()" aria-label="الصورة التالية" class="se-navbtn left-3">❮</button>
                 
                 <img id="product-main-image" src="" alt="صورة المنتج" class="w-full h-full object-cover transition-all duration-300">
             </div>
@@ -65,90 +106,121 @@
         </div>
 
         <div class="space-y-6">
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-sm space-y-4">
+            <div class="se-card p-4 sm:p-5 md:p-6 space-y-4">
                 <div class="flex justify-between items-center flex-wrap gap-2">
                     <span id="product-availability-badge" class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">🔥 متوفر حالياً</span>
-                    <button onclick="shareProduct()" class="flex items-center gap-1 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition active:scale-95">
-                        <span>مشاركة المنتج</span> 🔗
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button id="wishBtn" onclick="toggleWish()" class="flex items-center gap-1 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition active:scale-95">
+                            <i class="fa-regular fa-heart"></i> <span>المفضلة</span>
+                        </button>
+                        <button onclick="shareProduct()" class="flex items-center gap-1 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full transition active:scale-95">
+                            <span>مشاركة</span> 🔗
+                        </button>
+                    </div>
                 </div>
-                <h1 id="product-title" class="text-xl md:text-2xl font-black text-slate-900">...</h1>
+                <h1 id="product-title" class="text-lg sm:text-xl md:text-2xl font-black">...</h1>
                 <div class="flex items-baseline gap-2">
-                    <span id="product-price-display" class="text-2xl font-black text-blue-600">0 د.ج</span>
+                    <span id="product-price-display" class="text-2xl font-black" style="color:var(--se-primary)">0 د.ج</span>
                 </div>
-                <p id="product-description" class="text-sm text-slate-600 leading-relaxed">...</p>
+                <p id="product-description" class="text-sm se-muted leading-relaxed">...</p>
+                <div id="stock-line" class="text-xs font-bold"></div>
+                <div class="grid grid-cols-3 gap-2 pt-1">
+                    <div class="se-surface rounded-xl p-2 text-center"><div class="text-base">🚚</div><div class="text-[10px] font-bold se-muted mt-0.5">توصيل سريع</div></div>
+                    <div class="se-surface rounded-xl p-2 text-center"><div class="text-base">💵</div><div class="text-[10px] font-bold se-muted mt-0.5">دفع عند الاستلام</div></div>
+                    <div class="se-surface rounded-xl p-2 text-center"><div class="text-base">🔒</div><div class="text-[10px] font-bold se-muted mt-0.5">تاجر موثوق</div></div>
+                </div>
                 
-                <hr class="border-slate-100">
+                <hr style="border-color:var(--se-border)">
 
                 <div class="space-y-4">
                     <div id="sizes-wrapper" class="hidden">
-                        <span class="block text-xs font-bold text-slate-500 mb-2">الأحجام المتوفرة:</span>
+                        <span class="block text-xs font-bold se-muted mb-2">الأحجام المتوفرة:</span>
                         <div class="flex flex-wrap gap-2" id="sizes-options"></div>
                     </div>
 
                     <div id="colors-wrapper" class="hidden">
-                        <span class="block text-xs font-bold text-slate-500 mb-2">الألوان المتوفرة:</span>
+                        <span class="block text-xs font-bold se-muted mb-2">الألوان المتوفرة:</span>
                         <div class="flex flex-wrap gap-3" id="colors-options"></div>
                     </div>
 
                     <div>
-                        <span class="block text-xs font-bold text-slate-500 mb-2">الكمية المطلوبة:</span>
-                        <div class="inline-flex items-center border border-slate-200 rounded-xl bg-slate-50 p-1">
-                            <button onclick="updateQty(-1)" class="w-8 h-8 font-black text-lg text-slate-600 hover:bg-white rounded-lg transition">-</button>
-                            <input type="number" id="quantity" value="1" min="1" readonly class="w-12 text-center font-bold bg-transparent border-none focus:outline-none text-black">
-                            <button onclick="updateQty(1)" class="w-8 h-8 font-black text-lg text-slate-600 hover:bg-white rounded-lg transition">+</button>
+                        <span class="block text-xs font-bold se-muted mb-2">الكمية المطلوبة:</span>
+                        <div class="inline-flex items-center border rounded-xl p-1" style="border-color:var(--se-border)">
+                            <button onclick="updateQty(-1)" class="w-9 h-9 font-black text-lg se-muted rounded-lg transition hover:opacity-70">-</button>
+                            <input type="number" id="quantity" value="1" min="1" readonly class="w-12 text-center font-bold bg-transparent border-none focus:outline-none" style="color:var(--se-text)">
+                            <button onclick="updateQty(1)" class="w-9 h-9 font-black text-lg se-muted rounded-lg transition hover:opacity-70">+</button>
                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-1">
+                        <button id="add-cart-btn" onclick="addToCart()" class="se-btn se-btn-ghost !py-3.5"><i class="fa-solid fa-cart-plus"></i> أضف للسلة</button>
+                        <a href="#shipping-form-container" class="se-btn se-btn-accent !py-3.5">⚡ اطلب فوراً</a>
                     </div>
                 </div>
             </div>
 
-            <div id="shipping-form-container" class="bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-sm space-y-4">
-                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+            <div id="shipping-form-container" class="se-card p-4 sm:p-5 md:p-6 space-y-4 scroll-mt-24">
+                <h3 class="text-base font-bold flex items-center gap-2 border-b pb-3" style="border-color:var(--se-border)">
                     📋 معلومات الشحن وتأكيد الطلب
                 </h3>
                 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-2">الاسم الكامل للزبون *</label>
-                    <input type="text" id="cust-name" placeholder="اكتب اسمك الكامل هنا" class="w-full p-3 text-sm border border-slate-200 bg-slate-50 rounded-xl focus:bg-white focus:border-blue-500 focus:outline-none font-medium text-black">
+                    <label class="block text-xs font-bold se-muted mb-2">الاسم الكامل للزبون *</label>
+                    <input type="text" id="cust-name" placeholder="اكتب اسمك الكامل هنا" class="se-input">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-2">رقم الهاتف *</label>
-                    <input type="number" id="cust-phone" placeholder="06XXXXXXXX" class="w-full p-3 text-sm border border-slate-200 bg-slate-50 rounded-xl focus:bg-white focus:border-blue-500 focus:outline-none font-bold tracking-wide text-black text-right" dir="ltr">
+                    <label class="block text-xs font-bold se-muted mb-2">رقم الهاتف *</label>
+                    <input type="tel" id="cust-phone" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="06XXXXXXXX" class="se-input text-right" dir="ltr">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-2">ولاية الإقامة *</label>
-                    <select id="wilaya-select" onchange="handleWilayaChange()" class="w-full p-3 text-sm border border-slate-200 bg-slate-50 rounded-xl focus:bg-white focus:border-blue-500 focus:outline-none font-bold text-black cursor-pointer">
+                    <label class="block text-xs font-bold se-muted mb-2">ولاية الإقامة *</label>
+                    <select id="wilaya-select" onchange="handleWilayaChange()" class="se-input cursor-pointer">
                         <option value="">⏳ جاري جلب الولايات المدعومة لهذا المنتج...</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 mb-2">تأكيد العنوان الكامل كتابةً *</label>
-                    <input type="text" id="cust-address" placeholder="اسم البلدية، الحي، الشارع ورقم المنزل" class="w-full p-3 text-sm border border-slate-200 bg-slate-50 rounded-xl focus:bg-white focus:border-blue-500 focus:outline-none font-medium text-black">
+                    <label class="block text-xs font-bold se-muted mb-2">رقم هاتف ثانٍ (اختياري)</label>
+                    <input type="tel" id="cust-phone2" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="يُستعمل إن تعذّر الاتصال بالأول" class="se-input text-right" dir="ltr">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold se-muted mb-2">البلدية *</label>
+                    <input type="text" id="cust-commune" placeholder="اسم البلدية" class="se-input">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold se-muted mb-2">العنوان الكامل *</label>
+                    <input type="text" id="cust-address" placeholder="الحي، الشارع ورقم المنزل" class="se-input">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold se-muted mb-2">ملاحظة (اختياري)</label>
+                    <input type="text" id="cust-note" placeholder="أي تفاصيل تريد إخبار التاجر بها" class="se-input">
                 </div>
 
                 <div id="delivery-method-container" class="space-y-2 pt-2 hidden">
-                    <span class="block text-xs font-bold text-slate-600 mb-1">خيارات الشحن المتاحة للولاية:</span>
+                    <span class="block text-xs font-bold se-muted mb-1">خيارات الشحن المتاحة للولاية:</span>
                     <div class="grid grid-cols-2 gap-3">
-                        <label class="border border-blue-600 bg-blue-50/50 rounded-xl p-3 flex flex-col justify-center items-center cursor-pointer text-center" id="label-delivery-home">
+                        <label class="se-delivery is-active" id="label-delivery-home">
                             <input type="radio" name="delivery_type" value="home" checked onchange="calculateFinalTotal()" class="hidden">
-                            <span class="text-sm font-bold text-slate-900">🏠 للمنزل</span>
-                            <span id="price-home-display" class="text-xs font-extrabold text-blue-600 mt-1">0 د.ج</span>
+                            <span class="text-sm font-bold">🏠 للمنزل</span>
+                            <span id="price-home-display" class="text-xs font-extrabold mt-1" style="color:var(--se-primary)">0 د.ج</span>
                         </label>
-                        <label class="border border-slate-200 bg-white rounded-xl p-3 flex flex-col justify-center items-center cursor-pointer text-center" id="label-delivery-desk">
+                        <label class="se-delivery" id="label-delivery-desk">
                             <input type="radio" name="delivery_type" value="desk" onchange="calculateFinalTotal()" class="hidden">
-                            <span class="text-sm font-bold text-slate-900">📦 للمكتب</span>
-                            <span id="price-desk-display" class="text-xs font-extrabold text-slate-500 mt-1">0 د.ج</span>
+                            <span class="text-sm font-bold">📦 للمكتب</span>
+                            <span id="price-desk-display" class="text-xs font-extrabold se-muted mt-1">0 د.ج</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-2 text-sm font-bold text-slate-700">
-                    <div class="flex justify-between"><span>الإجمالي الفرعي:</span><span id="bill-subtotal" class="text-black">0 د.ج</span></div>
+                <div class="se-surface rounded-2xl p-4 space-y-2 text-sm font-bold">
+                    <div class="flex justify-between"><span>الإجمالي الفرعي:</span><span id="bill-subtotal">0 د.ج</span></div>
                     <div class="flex justify-between"><span>سعر التوصيل:</span><span id="bill-shipping" class="text-blue-600">0 د.ج</span></div>
-                    <hr class="border-slate-200 my-1">
+                    <hr class="my-1" style="border-color:var(--se-border)">
                     <div class="flex justify-between text-base font-black"><span>المبلغ الإجمالي عند الاستلام:</span><span id="bill-total" class="text-emerald-600 text-lg">0 د.ج</span></div>
                 </div>
 
@@ -157,6 +229,10 @@
                 </button>
             </div>
         </div>
+        <section id="related-section" class="lg:col-span-2 hidden">
+            <h2 class="text-lg font-black mb-4">🛍️ منتجات قد تعجبك أيضاً</h2>
+            <div id="related-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div>
+        </section>
     </main>
 
     <div id="toast-notification" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg transition-all duration-300 transform translate-y-10 opacity-0 pointer-events-none flex items-center gap-2">
@@ -164,37 +240,28 @@
     </div>
 
     <div id="success-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl transform scale-95 transition-transform duration-300">
+        <div class="se-card max-w-md w-full p-6 text-center space-y-4 shadow-2xl transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
             <div class="w-16 h-16 bg-emerald-100 text-emerald-600 text-3xl rounded-full flex items-center justify-center mx-auto animate-bounce">🎉</div>
-            <h3 class="text-xl font-black text-slate-900">شكراً لك على ثقتك!</h3>
-            <p class="text-sm text-slate-600 leading-relaxed font-medium">تم تسجيل طلبك بنجاح في النظام. <br><span class="text-blue-600 font-bold">سيتواصل معك التاجر في أقرب وقت ممكن</span> عبر الهاتف لتأكيد الشحن وإرسال طردك.</p>
+            <h3 class="text-xl font-black">شكراً لك على ثقتك!</h3>
+            <p class="text-sm se-muted leading-relaxed font-medium">تم تسجيل طلبك بنجاح في النظام. <br><span class="text-blue-600 font-bold">سيتواصل معك التاجر في أقرب وقت ممكن</span> عبر الهاتف لتأكيد الشحن وإرسال طردك.</p>
             <button onclick="closeSuccessModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition shadow-md">حسناً، مفهوم</button>
         </div>
     </div>
 
-    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-slate-500 text-xs font-bold space-y-4">
+    <footer class="se-surface border-t py-6 mt-12 text-center se-muted text-xs font-bold space-y-4">
         <p>© 2026 جميع الحقوق محفوظة - SouqiExpress</p>
         <div id="social-footer-links" class="flex flex-wrap justify-center gap-3 px-4"></div>
     </footer>
 
     <img id="merchantAvatar" src="" alt="" class="hidden"> 
-    <a id="whatsapp-floating-btn" href="#" target="_blank" class="fixed bottom-4 right-4 z-50 bg-emerald-500 hover:bg-emerald-600 text-white font-black px-4 py-3 rounded-full shadow-lg hidden items-center gap-2 text-sm transition hover:scale-105" dir="ltr">
+    <a id="whatsapp-floating-btn" href="#" target="_blank" class="fixed bottom-4 right-4 z-50 bg-emerald-500 hover:bg-emerald-600 text-white font-black px-4 py-3 rounded-full shadow-lg hidden items-center gap-2 text-sm transition hover:scale-105 se-noprint" style="margin-bottom:env(safe-area-inset-bottom)" dir="ltr">
         <span>WhatsApp</span>
         <span class="text-lg">💬</span>
     </a>
 
+    <script src="assets/js/app.js?v=34"></script>
     <script>
-        // إعدادات البيئة الحقيقية لـ Walid Shop
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
-            measurementId: "G-PGLFSTBVTH"
-        };
-        
+        const firebaseConfig = window.SE_CONFIG.firebase;
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
@@ -207,47 +274,84 @@
         let currentImgIndex = 0;
         let selectedSize = "";
         let selectedColor = "";
+        let merchantSettings = null;
+        const pageOpenedAt = Date.now();
+
+        // مساحة سفلية للأزرار العائمة على الهاتف
+        document.body.classList.add('se-has-floating');
 
         if (!productId) {
-            document.getElementById('loading-screen').innerHTML = "❌ خطأ: لم يتم تحديد معرّف منتج في الرابط. يرجى تمرير ?id=RECORD_ID";
+            document.getElementById('loading-screen').innerHTML = `
+                <div class="text-center space-y-3">
+                    <div class="text-5xl">🔎</div>
+                    <p class="font-black">لم يتم تحديد المنتج المطلوب</p>
+                    <p class="text-xs se-muted font-bold">الرابط غير مكتمل أو انتهت صلاحيته.</p>
+                    <a href="index.html" class="se-btn se-btn-primary">العودة للمتجر</a>
+                </div>`;
         } else {
             loadFullProductData();
         }
 
         // دالة نسخ الرابط وإظهار التنبيه
-        function copyProductLink() {
-            const currentUrl = window.location.href;
-            navigator.clipboard.writeText(currentUrl).then(() => {
-                showToastNotification();
-            }).catch(err => {
-                console.error('فشل نسخ الرابط تلقائياً: ', err);
-            });
-        }
+        function copyProductLink() { SE.copy(window.location.href); }
 
         // دالة مشاركة المنتج الرسمية (Native Share) أو النسخ الاحتياطي
         function shareProduct() {
-            if (navigator.share) {
-                navigator.share({
-                    title: currentProduct ? currentProduct.name : 'منتج مميز على SouqiExpress',
-                    text: `شاهد هذا المنتج الرائع على SouqiExpress!`,
-                    url: window.location.href
-                }).catch(console.error);
-            } else {
-                copyProductLink();
+            SE.share(currentProduct ? currentProduct.name : 'منتج مميز على SouqiExpress');
+        }
+
+        /* المفضلة */
+        function toggleWish() {
+            if (!currentProduct) return;
+            SE.wishlist.toggle(currentProduct);
+            refreshWishBtn();
+        }
+        function refreshWishBtn() {
+            if (!currentProduct) return;
+            const on = SE.wishlist.has(currentProduct.id);
+            const btn = document.getElementById('wishBtn');
+            btn.querySelector('i').className = (on ? 'fa-solid' : 'fa-regular') + ' fa-heart';
+            btn.classList.toggle('text-rose-500', on);
+        }
+
+        /* الإضافة للسلة */
+        function addToCart() {
+            if (!currentProduct) return;
+            if (currentProduct.is_active === false || (currentProduct.stock !== undefined && currentProduct.stock <= 0)) {
+                return SE.toast('❌ هذا المنتج غير متوفر حالياً', 'error');
             }
+            const qty = parseInt(document.getElementById('quantity').value) || 1;
+            SE.cart.add(currentProduct, qty, selectedSize, selectedColor);
+            SEI.track('addToCart', { id: currentProduct.id, name: currentProduct.name, value: currentProduct.price * qty, qty: qty });
+        }
+
+        /* منتجات ذات صلة */
+        async function loadRelated() {
+            if (!currentProduct) return;
+            try {
+                let snap;
+                if (currentProduct.category) {
+                    snap = await db.collection('products').where('is_active','==',true).where('category','==',currentProduct.category).limit(9).get();
+                } else {
+                    snap = await db.collection('products').where('is_active','==',true).limit(9).get();
+                }
+                const list = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.id !== currentProduct.id).slice(0, 4);
+                if (!list.length) return;
+                document.getElementById('related-section').classList.remove('hidden');
+                document.getElementById('related-grid').innerHTML = list.map(p => {
+                    const img = Array.isArray(p.image) ? p.image[0] : (p.image || 'https://placehold.co/400x400?text=SouqiExpress');
+                    return `<a href="product-details.html?id=${encodeURIComponent(p.id)}" class="se-card overflow-hidden se-hover-lift block">
+                        <div class="h-32 sm:h-40 bg-slate-100 overflow-hidden"><img src="${img}" loading="lazy" class="w-full h-full object-cover"></div>
+                        <div class="p-3 text-center space-y-1">
+                            <div class="text-[11px] font-bold se-line-clamp-2">${SE.escape(p.name || '')}</div>
+                            <div class="text-xs font-black">${SE.money(p.price)}</div>
+                        </div></a>`;
+                }).join('');
+            } catch (e) { console.warn('related', e); }
         }
 
         // إظهار وإخفاء إشعار النسخ بسلاسة
-        function showToastNotification() {
-            const toast = document.getElementById('toast-notification');
-            toast.classList.remove('translate-y-10', 'opacity-0', 'pointer-events-none');
-            toast.classList.add('translate-y-0', 'opacity-100');
-            
-            setTimeout(() => {
-                toast.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
-                toast.classList.remove('translate-y-0', 'opacity-100');
-            }, 2500);
-        }
+        function showToastNotification() { SE.toast('📋 تم نسخ رابط المنتج بنجاح', 'success'); }
 
         async function loadFullProductData() {
             try {
@@ -263,8 +367,11 @@
                 document.getElementById('loading-screen').classList.add('hidden');
                 document.getElementById('product-content').classList.remove('hidden');
 
+                document.title = `${currentProduct.name} | SouqiExpress`;
                 document.getElementById('product-title').innerText = currentProduct.name;
-                document.getElementById('product-price-display').innerText = `${currentProduct.price} د.ج`;
+                document.getElementById('product-price-display').innerText = SE.money(currentProduct.price);
+                SE.recent.push(currentProduct);
+                refreshWishBtn();
                 document.getElementById('product-description').innerText = currentProduct.description || "لا يوجد وصف لهذا المنتج.";
 
                 // التعرف على هوية التاجر المالك
@@ -281,14 +388,24 @@
                     const merchantStore = document.getElementById('merchant-store');
                     if (merchantStore) {
                         merchantStore.innerHTML = `
-                            <span id="merchant-name-display" class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full">🏪 ${storeName}</span>
-                            <a href="store.html?merchantId=${merchantId}" class="shimmer-btn text-xs font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105 inline-flex items-center gap-1">
+                            <span class="text-xs font-bold bg-slate-100 px-3 py-1 rounded-full truncate max-w-[140px]" style="color:var(--se-text)">🏪 ${SE.escape(storeName)}</span>
+                            <a href="store.html?merchantId=${encodeURIComponent(merchantId)}" class="shimmer-btn text-xs font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105 inline-flex items-center gap-1 flex-shrink-0">
                                 زيارة المتجر
                             </a>
                         `;
                     }
+                    // نسخة الهاتف في سطر مستقل حتى لا يتزاحم الشريط العلوي
+                    const mobileBar = document.getElementById('merchant-store-mobile');
+                    if (mobileBar) {
+                        mobileBar.classList.remove('hidden');
+                        mobileBar.innerHTML = `
+                            <div class="flex items-center justify-between gap-2 bg-slate-100 rounded-xl px-3 py-2">
+                                <span class="text-[11px] font-bold truncate" style="color:var(--se-text)">🏪 ${SE.escape(storeName)}</span>
+                                <a href="store.html?merchantId=${encodeURIComponent(merchantId)}" class="text-[11px] font-black text-white bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-1.5 rounded-lg flex-shrink-0">زيارة المتجر</a>
+                            </div>`;
+                    }
                 } else {
-                    document.getElementById('merchant-store').innerHTML = `<span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">متجر المنصة الرسمي</span>`;
+                    document.getElementById('merchant-store').innerHTML = `<span class="text-xs font-bold se-muted bg-slate-100 px-3 py-1 rounded-full">متجر المنصة الرسمي</span>`;
                 }
 
                 // فحص حالة توفر المنتج والمخزون
@@ -296,7 +413,16 @@
                 const submitBtn = document.getElementById('submit-order-btn');
                 const shippingForm = document.getElementById('shipping-form-container');
 
+                const stockLine = document.getElementById('stock-line');
+                if (currentProduct.stock !== undefined) {
+                    if (currentProduct.stock > 5) stockLine.innerHTML = '<span class="se-badge se-badge-green">✅ متوفر في المخزن</span>';
+                    else if (currentProduct.stock > 0) stockLine.innerHTML = `<span class="se-badge" style="background:rgba(245,158,11,.14);color:#b45309">🔥 أسرع! بقي ${currentProduct.stock} قطع فقط</span>`;
+                    else stockLine.innerHTML = '<span class="se-badge se-badge-red">❌ نفدت الكمية</span>';
+                }
+
                 if (currentProduct.is_active === false || (currentProduct.stock !== undefined && currentProduct.stock <= 0)) {
+                    const addBtn = document.getElementById('add-cart-btn');
+                    if (addBtn) { addBtn.disabled = true; addBtn.classList.add('opacity-50'); }
                     availabilityBadge.className = "bg-red-50 text-red-600 text-xs font-bold px-3 py-1 rounded-full";
                     availabilityBadge.innerText = "❌ غير متوفر حالياً";
                     submitBtn.disabled = true;
@@ -314,14 +440,14 @@
                 initCarousel();
 
                 // معالجة المقاسات والألوان
-                if(currentProduct.sizes) {
+                const sizesArr = SE.parseOptions(currentProduct.sizes);
+                if (sizesArr.length) {
                     document.getElementById('sizes-wrapper').classList.remove('hidden');
-                    const sizesArr = currentProduct.sizes.split(/[\s,]+/);
                     const container = document.getElementById('sizes-options');
                     container.innerHTML = "";
                     sizesArr.forEach((sz, idx) => {
                         const btn = document.createElement('button');
-                        btn.className = `px-4 py-2 text-xs font-bold border rounded-xl transition ${idx === 0 ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-slate-200 bg-white hover:border-slate-400'}`;
+                        btn.className = 'se-chip' + (idx === 0 ? ' is-active' : '');
                         btn.innerText = sz;
                         btn.onclick = () => selectSize(btn);
                         container.appendChild(btn);
@@ -329,14 +455,14 @@
                     });
                 }
 
-                if(currentProduct.colors) {
+                const colorsArr = SE.parseOptions(currentProduct.colors);
+                if (colorsArr.length) {
                     document.getElementById('colors-wrapper').classList.remove('hidden');
-                    const colorsArr = currentProduct.colors.split(/[\s,]+/);
                     const container = document.getElementById('colors-options');
                     container.innerHTML = "";
                     colorsArr.forEach((col, idx) => {
                         const btn = document.createElement('button');
-                        btn.className = `px-4 py-2 text-xs font-bold border rounded-xl transition ${idx === 0 ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-slate-200 bg-white hover:border-slate-400'}`;
+                        btn.className = 'se-chip' + (idx === 0 ? ' is-active' : '');
                         btn.innerText = col;
                         btn.onclick = () => selectColor(btn);
                         container.appendChild(btn);
@@ -347,8 +473,18 @@
                 if (merchantId) {
                     await loadShippingRates(merchantId);
                     await loadMerchantSocialSettings(merchantId);
+
+                    // 🎯 تفعيل بكسلات التاجر + تتبّع مشاهدة المنتج
+                    merchantSettings = await SEI.loadMerchantSettings(db, merchantId);
+                    if (merchantSettings) {
+                        SEI.initPixels(merchantSettings);
+                        if (merchantSettings.max_orders_ip) SEI.limits.maxPerIpPerDay = Number(merchantSettings.max_orders_ip);
+                    }
                 }
+                SEI.track('view', { id: currentProduct.id, name: currentProduct.name, value: currentProduct.price });
+                SEI.mountHoneypot(document.getElementById('shipping-form-container'));
                 calculateFinalTotal();
+                loadRelated();
 
             } catch (error) {
                 console.error(error);
@@ -364,7 +500,7 @@
             productImagesUrls.forEach((url, idx) => {
                 const isActive = idx === currentImgIndex;
                 const thumb = document.createElement('button');
-                thumb.className = `w-14 h-14 rounded-xl border-2 overflow-hidden bg-white transition p-0.5 ${isActive ? 'border-blue-600 shadow-sm' : 'border-slate-200 opacity-70'}`;
+                thumb.className = 'se-thumb' + (isActive ? ' is-active' : '');
                 thumb.innerHTML = `<img src="${url}" class="w-full h-full object-cover rounded-lg">`;
                 thumb.onclick = () => { currentImgIndex = idx; initCarousel(); };
                 thumbContainer.appendChild(thumb);
@@ -385,17 +521,17 @@
 
         function selectSize(btn) {
             Array.from(btn.parentNode.children).forEach(b => {
-                b.className = "px-4 py-2 text-xs font-bold border border-slate-200 bg-white hover:border-slate-400 rounded-xl transition";
+                b.className = "se-chip";
             });
-            btn.className = "px-4 py-2 text-xs font-bold border border-blue-600 bg-blue-50 text-blue-700 rounded-xl transition";
+            btn.className = "se-chip is-active";
             selectedSize = btn.innerText;
         }
 
         function selectColor(btn) {
             Array.from(btn.parentNode.children).forEach(b => {
-                b.className = "px-4 py-2 text-xs font-bold border border-slate-200 bg-white hover:border-slate-400 rounded-xl transition";
+                b.className = "se-chip";
             });
-            btn.className = "px-4 py-2 text-xs font-bold border border-blue-600 bg-blue-50 text-blue-700 rounded-xl transition";
+            btn.className = "se-chip is-active";
             selectedColor = btn.innerText;
         }
 
@@ -404,6 +540,15 @@
             let qty = parseInt(qtyInput.value) || 1;
             qty += amount;
             if (qty < 1) qty = 1;
+
+            // لا يمكن طلب كمية أكبر من المخزون المتوفر
+            const maxStock = (currentProduct && currentProduct.stock !== undefined && currentProduct.stock !== null)
+                ? Number(currentProduct.stock) : null;
+            if (maxStock !== null && maxStock > 0 && qty > maxStock) {
+                qty = maxStock;
+                SE.toast(`⚠️ الكمية المتوفرة من هذا المنتج هي ${maxStock} فقط`, 'error', 2200);
+            }
+
             qtyInput.value = qty;
             calculateFinalTotal();
         }
@@ -477,8 +622,8 @@
             }
             const activeRate = merchantShippingRates.find(r => r.id === selectEl.value);
             if (activeRate) {
-                document.getElementById('price-home-display').innerText = `${activeRate.home_price} د.ج`;
-                document.getElementById('price-desk-display').innerText = `${activeRate.desk_price} د.ج`;
+                document.getElementById('price-home-display').innerText = SE.money(activeRate.home_price);
+                document.getElementById('price-desk-display').innerText = SE.money(activeRate.desk_price);
                 deliveryContainer.classList.remove('hidden');
             }
             calculateFinalTotal();
@@ -499,19 +644,19 @@
                     const selectedDeliveryType = document.querySelector('input[name="delivery_type"]:checked').value;
                     if (selectedDeliveryType === 'home') {
                         shippingCost = activeRate.home_price;
-                        labelHome.className = "border-2 border-blue-600 bg-blue-50/50 rounded-xl p-3 flex flex-col justify-center items-center cursor-pointer text-center";
-                        labelDesk.className = "border border-slate-200 bg-white rounded-xl p-3 flex flex-col justify-center items-center cursor-pointer text-center opacity-70";
+                        labelHome.className = "se-delivery is-active";
+                        labelDesk.className = "se-delivery";
                     } else {
                         shippingCost = activeRate.desk_price;
-                        labelDesk.className = "border-2 border-blue-600 bg-blue-50/50 rounded-xl p-3 flex flex-col justify-center items-center cursor-pointer text-center";
-                        labelHome.className = "border border-slate-200 bg-white rounded-xl p-3 flex flex-col justify-center items-center cursor-pointer text-center opacity-70";
+                        labelDesk.className = "se-delivery is-active";
+                        labelHome.className = "se-delivery";
                     }
                 }
             }
             const finalTotal = subtotal + shippingCost;
-            document.getElementById('bill-subtotal').innerText = `${subtotal} د.ج`;
-            document.getElementById('bill-shipping').innerText = `${shippingCost} د.ج`;
-            document.getElementById('bill-total').innerText = `${finalTotal} د.ج`;
+            document.getElementById('bill-subtotal').innerText = SE.money(subtotal);
+            document.getElementById('bill-shipping').innerText = SE.money(shippingCost);
+            document.getElementById('bill-total').innerText = SE.money(finalTotal);
         }
 
         function openSuccessModal() {
@@ -533,20 +678,25 @@
         async function submitOrder() {
             const name = document.getElementById('cust-name').value.trim();
             const phone = document.getElementById('cust-phone').value.trim();
+            const phone2 = document.getElementById('cust-phone2').value.trim();
+            const commune = document.getElementById('cust-commune').value.trim();
+            const note = document.getElementById('cust-note').value.trim();
             const wilayaSelectId = document.getElementById('wilaya-select').value;
             const fullAddress = document.getElementById('cust-address').value.trim();
-            
-            if(!name || !phone || !wilayaSelectId || !fullAddress) {
-                alert("⚠️ يرجى تعبئة جميع معلوماتك أولاً (الاسم، الهاتف، الولاية، والعنوان بالتفصيل)!");
-                return;
-            }
+
+            if (!name || name.length < 3) return SE.toast('⚠️ يرجى كتابة الاسم الكامل', 'error');
+            if (!/^0[5-7][0-9]{8}$/.test(phone)) return SE.toast('⚠️ رقم الهاتف غير صحيح (مثال: 0551234567)', 'error');
+            if (phone2 && !/^0[5-7][0-9]{8}$/.test(phone2)) return SE.toast('⚠️ رقم الهاتف الثاني غير صحيح', 'error');
+            if (!wilayaSelectId) return SE.toast('⚠️ يرجى اختيار ولاية التوصيل', 'error');
+            if (!commune || commune.length < 2) return SE.toast('⚠️ يرجى كتابة اسم البلدية', 'error');
+            if (!fullAddress || fullAddress.length < 5) return SE.toast('⚠️ يرجى كتابة العنوان بالتفصيل', 'error');
 
             const activeRate = merchantShippingRates.find(r => r.id === wilayaSelectId);
             const deliveryType = document.querySelector('input[name="delivery_type"]:checked').value;
             const qty = parseInt(document.getElementById('quantity').value) || 1;
 
             const typeText = deliveryType === 'home' ? 'توصيل للمنزل' : 'استلام من المكتب';
-            const finalAddressString = `ولاية: ${activeRate.wilaya_name} | التوصيل: ${typeText} | العنوان الكامل: ${fullAddress}`;
+            const finalAddressString = `ولاية: ${activeRate.wilaya_name} | بلدية: ${commune} | التوصيل: ${typeText} | العنوان الكامل: ${fullAddress}`;
 
             const merchantId = currentProduct.user_id || currentProduct.merchant || "";
 
@@ -561,20 +711,86 @@
                 "address": finalAddressString,
                 "selected_color": selectedColor || "غير محدد",
                 "selected_size": selectedSize || "غير محدد",
+                "phone_2": phone2,
+                "commune": commune,
+                "note": note,
+                "product_sku": currentProduct.sku || currentProduct.id || "",
+                "address_line": fullAddress,
                 "quantity": qty,
+                "unit_price": Number(currentProduct.price) || 0,
+                "total_price": (Number(currentProduct.price) || 0) * qty,
+                "wilaya": activeRate.wilaya_name || "",
+                "delivery_type": deliveryType,
+                "shipping_price": deliveryType === 'home' ? activeRate.home_price : activeRate.desk_price,
+                "order_ref": 'SE-' + Date.now().toString().slice(-8),
                 "created_at": firebase.firestore.FieldValue.serverTimestamp()
             };
 
+            const btn = document.getElementById('submit-order-btn');
+            const btnHtml = btn.innerHTML;
+            btn.disabled = true; btn.innerHTML = '⏳ جاري التحقق...';
+
+            // 🛡️ الحماية من البوتات وتقييد الطلبات حسب عنوان IP
+            const guard = await SEI.checkOrderAllowed(db, {
+                pageOpenedAt: pageOpenedAt,
+                honeypotValue: SEI.honeypotValue(document.getElementById('shipping-form-container'))
+            });
+            if (!guard.ok) {
+                btn.disabled = false; btn.innerHTML = btnHtml;
+                SE.toast('🛡️ ' + guard.reason, 'error', 5000);
+                return;
+            }
+
+            btn.innerHTML = '⏳ جاري إرسال الطلب...';
+            SEI.track('checkout', { id: currentProduct.id, name: currentProduct.name, value: (Number(currentProduct.price) || 0) * qty, qty: qty });
+
             try {
                 await db.collection('orders').add(orderPayload);
+
+                // تسجيل الطلب في عدّاد الحماية
+                await SEI.recordOrder(db, guard.ipHash);
+
+                // 📊 إرسال نسخة إلى Google Sheets الخاص بالتاجر
+                if (merchantSettings && merchantSettings.sheet_webhook) {
+                    SEI.sendToSheet(merchantSettings.sheet_webhook, {
+                        order_id: orderPayload.order_ref,
+                        order_date: new Date().toLocaleDateString('en-CA'),
+                        customer_name: name,
+                        phone_1: phone,
+                        phone_2: phone2,
+                        wilaya: activeRate.wilaya_name || '',
+                        commune: commune,
+                        delivery_type: deliveryType === 'home' ? 'منزل' : 'مكتب',
+                        address: fullAddress,
+                        product_sku: orderPayload.product_sku,
+                        product_name: currentProduct.name || '',
+                        quantity: qty,
+                        unit_price: Number(currentProduct.price) || 0,
+                        total_amount: orderPayload.total_price + (orderPayload.shipping_price || 0),
+                        confirmation: 'قيد الانتظار',
+                        notes: [note, selectedColor && selectedColor !== 'غير محدد' ? 'اللون: ' + selectedColor : '',
+                                selectedSize && selectedSize !== 'غير محدد' ? 'المقاس: ' + selectedSize : '']
+                               .filter(Boolean).join(' • ')
+                    });
+                }
+
+                // 🎯 حدث الشراء للبكسلات
+                SEI.track('purchase', {
+                    id: currentProduct.id, name: currentProduct.name,
+                    value: orderPayload.total_price + (orderPayload.shipping_price || 0), qty: qty
+                });
+
                 openSuccessModal();
+                SE.toast('✅ تم إرسال طلبك بنجاح', 'success');
                 
                 document.getElementById('cust-name').value = "";
                 document.getElementById('cust-phone').value = "";
                 document.getElementById('cust-address').value = "";
             } catch (error) {
                 console.error("خطأ أثناء إرسال الطلب:", error);
-                alert("❌ فشل إرسال الطلب. تأكد من إعدادات الـ Rules الخاصة بكولكشن 'orders' لتسمح بالـ write للجميع.");
+                SE.toast('❌ فشل إرسال الطلب، تحقق من اتصالك وحاول مجدداً', 'error', 3500);
+            } finally {
+                btn.disabled = false; btn.innerHTML = btnHtml;
             }
         }
     </script>

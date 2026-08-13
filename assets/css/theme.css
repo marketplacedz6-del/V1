@@ -1,0 +1,446 @@
+/* =========================================================
+   SouqiExpress — نظام التصميم الموحّد (Design System)
+   ملف CSS واحد يُستعمل في كل الصفحات
+   ========================================================= */
+
+:root {
+  --se-primary: #0284c7;
+  --se-primary-dark: #0369a1;
+  --se-primary-900: #0c4a6e;
+  --se-accent: #10b981;
+  --se-danger: #f43f5e;
+  --se-bg: #f8fafc;
+  --se-card: #ffffff;
+  --se-text: #0f172a;
+  --se-muted: #64748b;
+  --se-border: #e2e8f0;
+  --se-radius: 1.25rem;
+  --se-shadow: 0 10px 30px -12px rgba(2, 132, 199, .18);
+}
+
+html.dark {
+  --se-bg: #0b1120;
+  --se-card: #111827;
+  --se-text: #e2e8f0;
+  --se-muted: #94a3b8;
+  --se-border: #1f2937;
+  --se-shadow: 0 10px 30px -12px rgba(0, 0, 0, .6);
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+body {
+  /* خطوط احتياطية عربية مثبّتة على الأجهزة، لئلا يتشوّه النص
+     إن تعذّر تحميل خط Cairo من Google Fonts (شبكة بطيئة/محجوبة). */
+  font-family: 'Cairo', 'Tajawal', 'Noto Kufi Arabic', 'Noto Naskh Arabic',
+               'Segoe UI', 'Geeza Pro', 'Droid Arabic Naskh', Tahoma,
+               system-ui, -apple-system, sans-serif;
+  background-color: var(--se-bg);
+  color: var(--se-text);
+  scroll-behavior: smooth;
+}
+
+/* ---------- شريط التمرير ---------- */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--se-primary); }
+html.dark ::-webkit-scrollbar-thumb { background: #334155; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ---------- بطاقات وأسطح ---------- */
+.se-card {
+  background: var(--se-card);
+  border: 1px solid var(--se-border);
+  border-radius: var(--se-radius);
+  box-shadow: var(--se-shadow);
+}
+.se-surface { background: var(--se-card); border: 1px solid var(--se-border); }
+.se-muted { color: var(--se-muted); }
+
+/* ---------- الأزرار ---------- */
+.se-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  font-weight: 800; font-size: .8rem; padding: .8rem 1.25rem;
+  border-radius: 1rem; transition: all .2s ease; cursor: pointer; border: 1px solid transparent;
+  white-space: nowrap;           /* لا يُكسر النص إلى سطرين داخل الزر */
+  line-height: 1.2;
+  min-width: 0;                  /* يسمح بالانكماش داخل flex بدل الفيضان */
+}
+.se-btn:active { transform: scale(.96); }
+.se-btn-primary { background: linear-gradient(90deg, var(--se-primary-900), var(--se-primary)); color: #fff; box-shadow: 0 8px 20px -10px rgba(2,132,199,.8); }
+.se-btn-primary:hover { filter: brightness(1.08); }
+.se-btn-accent { background: linear-gradient(90deg, #059669, var(--se-accent)); color: #fff; }
+.se-btn-ghost { background: transparent; border-color: var(--se-border); color: var(--se-text); }
+.se-btn-ghost:hover { background: rgba(2,132,199,.08); border-color: var(--se-primary); }
+.se-btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+/* ---------- الحقول ---------- */
+.se-input {
+  width: 100%; padding: .8rem 1rem; font-size: .85rem; font-weight: 600;
+  background: var(--se-bg); color: var(--se-text);
+  border: 1px solid var(--se-border); border-radius: 1rem; transition: all .2s;
+}
+.se-input:focus { outline: none; border-color: var(--se-primary); background: var(--se-card); box-shadow: 0 0 0 4px rgba(2,132,199,.10); }
+.se-input::placeholder { color: var(--se-muted); font-weight: 500; }
+
+/* ---------- شارات ---------- */
+.se-badge { display:inline-flex; align-items:center; gap:.3rem; font-size:.65rem; font-weight:900; padding:.28rem .7rem; border-radius:999px; }
+.se-badge-green { background: rgba(16,185,129,.12); color: #059669; }
+.se-badge-red { background: rgba(244,63,94,.12); color: #e11d48; }
+.se-badge-blue { background: rgba(2,132,199,.12); color: var(--se-primary-dark); }
+
+/* ---------- هياكل التحميل (Skeleton) ---------- */
+.se-skeleton {
+  position: relative; overflow: hidden;
+  background: linear-gradient(90deg, rgba(148,163,184,.14) 25%, rgba(148,163,184,.28) 37%, rgba(148,163,184,.14) 63%);
+  background-size: 400% 100%;
+  animation: seShimmer 1.3s ease-in-out infinite;
+  border-radius: 1rem;
+}
+@keyframes seShimmer { 0% { background-position: 100% 50% } 100% { background-position: 0 50% } }
+
+/* ---------- ظهور تدريجي عند التمرير ---------- */
+.se-reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.se-reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------- الإشعارات (Toasts) ---------- */
+#se-toast-stack {
+  position: fixed; inset-inline: 0; bottom: 1rem; z-index: 9999;
+  display: flex; flex-direction: column; align-items: center; gap: .5rem; pointer-events: none; padding: 0 1rem;
+}
+.se-toast {
+  pointer-events: auto; display: flex; align-items: center; gap: .6rem;
+  background: #0f172a; color: #fff; font-size: .78rem; font-weight: 800;
+  padding: .7rem 1.1rem; border-radius: 1rem; box-shadow: 0 12px 30px -10px rgba(0,0,0,.5);
+  transform: translateY(16px); opacity: 0; transition: all .3s ease; max-width: 92vw;
+}
+.se-toast.show { transform: none; opacity: 1; }
+.se-toast.success { background: #047857; }
+.se-toast.error { background: #be123c; }
+.se-toast.info { background: #0369a1; }
+
+/* ---------- الشريط السفلي للهواتف ---------- */
+.se-tabbar {
+  /* ملاحظة: يجب أن يبقى أقل من النوافذ المنبثقة (z-50 وما فوق)
+     وإلا ظهر الشريط السفلي فوقها على الهاتف. */
+  position: fixed; bottom: 0; inset-inline: 0; z-index: 45;
+  background: var(--se-card); border-top: 1px solid var(--se-border);
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  padding: .35rem .25rem calc(.35rem + env(safe-area-inset-bottom));
+  box-shadow: 0 -8px 24px -18px rgba(15,23,42,.5);
+}
+.se-tabbar a { display:flex; flex-direction:column; align-items:center; gap:.15rem; font-size:.6rem; font-weight:800; color: var(--se-muted); padding:.4rem 0; border-radius:.9rem; transition:.2s; }
+.se-tabbar a i { font-size: 1.05rem; }
+.se-tabbar a.active, .se-tabbar a:hover { color: var(--se-primary); }
+/* حجز مساحة أسفل الصفحة بالـ CSS لا بالـ JS.
+   كان الحشو يُضبط مرة واحدة عند التحميل حسب innerWidth، فيختلّ
+   عند تدوير الهاتف أو تغيير حجم النافذة ويغطّي الشريط آخر عنصر. */
+@media (max-width: 767px) {
+  body.has-tabbar { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom)) !important; }
+}
+@media (min-width: 768px) { .se-tabbar { display: none; } body.has-tabbar { padding-bottom: 0 !important; } }
+
+/* ---------- زر العودة للأعلى ---------- */
+#se-to-top {
+  position: fixed; left: 1rem; bottom: 5rem; z-index: 44;
+  width: 2.75rem; height: 2.75rem; border-radius: 999px;
+  background: var(--se-card); color: var(--se-primary); border: 1px solid var(--se-border);
+  display: none; align-items: center; justify-content: center; box-shadow: var(--se-shadow); cursor: pointer;
+}
+#se-to-top.show { display: flex; }
+@media (min-width: 768px) { #se-to-top { bottom: 1.5rem; } }
+
+/* ---------- شريط الاتصال ---------- */
+/* ---------- تأثيرات مساعدة ---------- */
+.se-hover-lift { transition: transform .3s ease, box-shadow .3s ease; }
+.se-hover-lift:hover { transform: translateY(-6px); box-shadow: 0 24px 40px -24px rgba(2,132,199,.5); }
+.se-line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+@media print { .se-noprint { display: none !important; } }
+
+/* ---------- أزرار اختيار (المقاسات/الألوان/نوع التوصيل) ---------- */
+.se-chip {
+  padding: .55rem 1rem; font-size: .75rem; font-weight: 800;
+  border: 1px solid var(--se-border); background: var(--se-card); color: var(--se-text);
+  border-radius: .9rem; transition: all .2s; cursor: pointer;
+  min-height: 2.5rem; display: inline-flex; align-items: center; justify-content: center;
+}
+.se-chip:hover { border-color: var(--se-primary); }
+.se-chip.is-active { border-color: var(--se-primary); background: rgba(2,132,199,.12); color: var(--se-primary-dark); box-shadow: 0 0 0 3px rgba(2,132,199,.10); }
+html.dark .se-chip.is-active { color: #7dd3fc; }
+
+/* ---------- أزرار تنقل صور المنتج ---------- */
+.se-navbtn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 2.5rem; height: 2.5rem; border-radius: 999px; z-index: 10;
+  background: var(--se-card); color: var(--se-text); border: 1px solid var(--se-border);
+  display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.05rem;
+  box-shadow: 0 6px 16px -8px rgba(15,23,42,.4); transition: .2s;
+}
+.se-navbtn:hover { border-color: var(--se-primary); color: var(--se-primary); }
+.se-navbtn:active { transform: translateY(-50%) scale(.92); }
+
+/* ---------- مصغّرات الصور ---------- */
+.se-thumb { width: 3.5rem; height: 3.5rem; border-radius: .9rem; overflow: hidden; padding: 2px;
+  background: var(--se-card); border: 2px solid var(--se-border); transition: .2s; flex-shrink: 0; }
+.se-thumb.is-active { border-color: var(--se-primary); }
+.se-thumb:not(.is-active) { opacity: .65; }
+
+/* ---------- بطاقة اختيار التوصيل ---------- */
+.se-delivery {
+  border: 2px solid var(--se-border); background: var(--se-card); border-radius: .9rem;
+  padding: .75rem; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; cursor: pointer; transition: .2s;
+}
+.se-delivery.is-active { border-color: var(--se-primary); background: rgba(2,132,199,.08); }
+.se-delivery:not(.is-active) { opacity: .7; }
+
+/* منع تجاوز العرض أفقياً على الهواتف.
+   تحذير مهم: overflow-x:hidden على <html> يُنشئ حاوية تمرير فيتعطّل
+   position:sticky لكل الهيدرات (11 صفحة فيها sticky top-0).
+   الحل: overflow-x:clip — يقصّ الفيضان بلا إنشاء حاوية تمرير.
+   نُبقي hidden على body فقط كاحتياط للمتصفحات القديمة. */
+html { max-width: 100%; overflow-x: clip; }
+body { max-width: 100%; overflow-x: clip; }
+@supports not (overflow-x: clip) {
+  body { overflow-x: hidden; }
+}
+img, video { max-width: 100%; height: auto; }
+
+/* إتاحة مساحة أسفل الصفحة للأزرار العائمة على الهاتف */
+@media (max-width: 767px) {
+  body.se-has-floating { padding-bottom: 5.5rem; }
+}
+
+/* ---------- إبطال شريط "لا يوجد اتصال" نهائياً ----------
+   قاعدة قسرية: حتى لو شغّل المتصفح نسخة قديمة عالقة من app.js
+   وأنشأ الشريط، لن يظهر إطلاقاً. */
+#se-offline-bar,
+#se-offline-bar.show {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
+}
+
+/* =========================================================
+   نظام موحّد لصفحات لوحة التاجر والإدارة
+   يضمن مظهراً متطابقاً في كل الصفحات
+   ========================================================= */
+
+/* خلفية الصفحة الموحّدة */
+body.se-admin {
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgba(2,132,199,.07), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(99,102,241,.06), transparent 55%),
+    var(--se-bg);
+  background-attachment: fixed;
+  color: var(--se-text);
+}
+
+/* البطاقة الزجاجية الموحّدة (تحلّ محل glass-card القديمة) */
+.glass-card,
+.se-panel {
+  background: var(--se-card);
+  border: 1px solid var(--se-border);
+  border-radius: var(--se-radius);
+  box-shadow: var(--se-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+html.dark .glass-card,
+html.dark .se-panel { background: var(--se-card); }
+
+/* عنوان القسم الموحّد */
+.se-title { font-size: 1.25rem; font-weight: 900; letter-spacing: -.01em; color: var(--se-text); }
+.se-subtitle { font-size: .72rem; font-weight: 700; color: var(--se-muted); margin-top: .25rem; }
+@media (min-width: 768px) { .se-title { font-size: 1.5rem; } }
+
+/* بطاقة مؤشر (KPI) موحّدة */
+.se-kpi {
+  background: var(--se-card);
+  border: 1px solid var(--se-border);
+  border-radius: 1.25rem;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.se-kpi:hover { transform: translateY(-2px); box-shadow: var(--se-shadow); }
+.se-kpi-label { font-size: .68rem; font-weight: 800; color: var(--se-muted); }
+.se-kpi-value { font-size: 1.35rem; font-weight: 900; margin-top: .25rem; color: var(--se-text); }
+
+/* جداول موحّدة */
+.se-table { width: 100%; border-collapse: collapse; text-align: right; }
+.se-table thead tr {
+  background: rgba(148,163,184,.08);
+  border-bottom: 1px solid var(--se-border);
+}
+.se-table th {
+  padding: .85rem 1rem; font-size: .68rem; font-weight: 800;
+  color: var(--se-muted); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap;
+}
+.se-table td { padding: .9rem 1rem; font-size: .82rem; color: var(--se-text); }
+.se-table tbody tr { border-bottom: 1px solid var(--se-border); transition: background .15s; }
+.se-table tbody tr:hover { background: rgba(2,132,199,.04); }
+.se-table tbody tr:last-child { border-bottom: 0; }
+
+/* حقول موحّدة داخل اللوحات (تصحّح الحقول القديمة تلقائياً) */
+.se-admin input[type="text"],
+.se-admin input[type="url"],
+.se-admin input[type="tel"],
+.se-admin input[type="email"],
+.se-admin input[type="password"],
+.se-admin input[type="number"],
+.se-admin input[type="search"],
+.se-admin select,
+.se-admin textarea {
+  background: var(--se-bg);
+  color: var(--se-text);
+  border-color: var(--se-border);
+}
+.se-admin input::placeholder,
+.se-admin textarea::placeholder { color: var(--se-muted); }
+.se-admin input:focus,
+.se-admin select:focus,
+.se-admin textarea:focus {
+  outline: none;
+  border-color: var(--se-primary);
+  box-shadow: 0 0 0 4px rgba(2,132,199,.10);
+}
+
+/* توحيد الخلفيات الفاتحة المثبّتة في الصفحات القديمة */
+html.dark .se-admin .bg-white,
+html.dark .se-admin .bg-white\/90,
+html.dark .se-admin .bg-white\/80,
+html.dark .se-admin .bg-white\/75,
+html.dark .se-admin .bg-slate-50,
+html.dark .se-admin .bg-slate-50\/50,
+html.dark .se-admin .bg-slate-50\/80,
+html.dark .se-admin .bg-gray-50 { background-color: var(--se-card) !important; }
+
+/* درجات أغمق قليلاً: تُستعمل كخلفيات ثانوية (حقول، شرائح، رؤوس جداول) */
+html.dark .se-admin .bg-slate-100,
+html.dark .se-admin .bg-slate-100\/50,
+html.dark .se-admin .bg-slate-50\/70,
+html.dark .se-admin .bg-gray-100,
+html.dark .se-admin .bg-gray-100\/50 { background-color: var(--se-bg) !important; }
+
+html.dark .se-admin .text-slate-900,
+html.dark .se-admin .text-slate-800,
+html.dark .se-admin .text-slate-700,
+html.dark .se-admin .text-slate-600,
+html.dark .se-admin .text-gray-900,
+html.dark .se-admin .text-gray-800,
+html.dark .se-admin .text-gray-700,
+html.dark .se-admin .text-gray-600,
+html.dark .se-admin .text-black { color: var(--se-text) !important; }
+
+html.dark .se-admin .text-slate-500,
+html.dark .se-admin .text-slate-400,
+html.dark .se-admin .text-gray-500,
+html.dark .se-admin .text-gray-400 { color: var(--se-muted) !important; }
+
+html.dark .se-admin .border-slate-100,
+html.dark .se-admin .border-slate-200,
+html.dark .se-admin .border-gray-100,
+html.dark .se-admin .border-gray-200 { border-color: var(--se-border) !important; }
+
+/* شريط علوي موحّد للأقسام */
+.se-pagehead {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: .75rem; margin-bottom: 1rem;
+}
+
+/* حالة فارغة موحّدة */
+.se-empty { text-align: center; padding: 2.5rem 1rem; }
+.se-empty-icon { font-size: 2.75rem; margin-bottom: .5rem; }
+.se-empty-title { font-weight: 900; font-size: .9rem; color: var(--se-text); }
+.se-empty-sub { font-size: .72rem; font-weight: 700; color: var(--se-muted); margin-top: .25rem; }
+
+/* تحسين مظهر شريط التمرير داخل اللوحات */
+.se-admin ::-webkit-scrollbar { width: 7px; height: 7px; }
+.se-admin ::-webkit-scrollbar-thumb { background: var(--se-border); border-radius: 999px; }
+.se-admin ::-webkit-scrollbar-thumb:hover { background: var(--se-primary); }
+
+/* ظهور ناعم للمحتوى عند فتح الصفحة */
+@keyframes seFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.se-admin main > * { animation: seFadeUp .45s ease both; }
+@media (prefers-reduced-motion: reduce) { .se-admin main > * { animation: none; } }
+
+
+/* ---------- إخفاء شريط التمرير مع إبقاء إمكانية التمرير ---------- */
+/* كان .scrollbar-none مستعملاً في products.html بلا أي تعريف */
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* ---------- منع كسر التخطيط بالكلمات الطويلة ---------- */
+/* (منع الفيضان الأفقي معرّف أعلاه بالفعل على html,body) */
+.se-card, .se-panel, td, th, p, h1, h2, h3 {
+  /* خطأ سابق خطير: كانت anywhere تكسر الكلمة عند أي حرف.
+     في العربية الحروف متصلة، فكانت الكلمة تتقطّع حرفاً حرفاً
+     ("مرحباً" → "مرحب" ثم "اً") ويظهر النص متراكباً ومشوّهاً.
+     break-word يكسر فقط الكلمة الأطول من السطر (رابط/بريد طويل). */
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+/* الجداول العريضة تُمرَّر أفقياً بسلاسة على الهاتف */
+.overflow-x-auto { -webkit-overflow-scrolling: touch; }
+
+/* ---------- لافتة الاشتراك ---------- */
+#se-sub-banner a:hover { filter: brightness(.94); }
+@media (max-width: 480px) {
+  #se-sub-banner { font-size: 11px; padding: .55rem .75rem; }
+}
+
+
+/* ---------- شبكة أمان: إن فشل تحميل Font Awesome ----------
+   بعض الأزرار تعتمد على الأيقونة وحدها. نعطيها حجماً أدنى
+   حتى لا تنهار مساحة الزر ويصبح غير قابل للضغط. */
+.fa-solid, .fa-regular, .fa-brands, .fas, .far, .fab {
+  display: inline-block;
+  min-width: 1em;
+  min-height: 1em;
+  font-style: normal;
+}
+
+/* ---------- أهداف لمس مريحة على الهاتف ---------- */
+@media (max-width: 767px) {
+  /* أهداف لمس مريحة: القوائم المنسدلة وحقول الإدخال كانت 20-35px
+     فقط في بعض الصفحات، وهو أصغر من أن يُضغط بالإبهام بثقة. */
+  button, a.se-btn, .se-btn { min-height: 40px; }
+  select, input:not([type=checkbox]):not([type=radio]):not([type=hidden]), textarea { min-height: 42px; }
+  input[type=checkbox], input[type=radio] { min-width: 20px; min-height: 20px; }
+  /* روابط نصية داخل الفقرات: وسّع منطقة اللمس دون تغيير الشكل */
+  footer a, nav a { padding-block: .25rem; }
+}
+
+
+/* ---------- إصلاح أولوية الإخفاء ----------
+   مشكلة حقيقية: .se-btn (وغيرها) تُعرِّف display:inline-flex،
+   وهي مساوية في الأولوية لـ .hidden في Tailwind. النتيجة أن أزراراً
+   يُفترض إخفاؤها كانت تظهر (7 أزرار في 4 صفحات).
+   نرفع أولوية الإخفاء صراحةً حتى يعمل .hidden دائماً. */
+.hidden,
+[hidden] { display: none !important; }
+
+
+/* ---------- سلامة النص العربي ----------
+   بلاغ مستخدم: «حروف فوق بعض». الأسباب المعالَجة هنا:
+
+   1) leading-none (line-height:1) يقصّ امتداد الحروف العربية النازلة
+      (ج ح خ ع غ م ه ي) والتشكيل، فتتلامس الأسطر وتبدو متراكبة.
+      نرفع الحدّ الأدنى إلى 1.25 مع إبقاء المظهر مضغوطاً.
+
+   2) الأسطر المتقاربة عموماً: العربية تحتاج تباعداً أكبر من اللاتينية. */
+.leading-none { line-height: 1.25 !important; }
+.leading-tight { line-height: 1.35 !important; }
+.leading-3, .leading-4 { line-height: 1.3 !important; }
+
+/* النصوص الصغيرة جداً تحتاج تباعداً نسبياً أكبر لتبقى مقروءة */
+.text-\[8px\], .text-\[9px\], .text-\[10px\], .text-\[11px\] { line-height: 1.6; }
+
+/* منع قصّ الحروف النازلة داخل الحاويات ذات الارتفاع المحدود */
+h1, h2, h3, h4, p, span, a, button, label, td, th { text-overflow: clip; }

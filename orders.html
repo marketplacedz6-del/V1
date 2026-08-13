@@ -2,586 +2,695 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الطلبات الواردة | مركز التاجر</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap');
-        body { font-family: 'Cairo', sans-serif; }
-        
-        /* تأثير كرت الزجاج الفاخر مع توهج ناعم متناسق مع بقية لوحات التحكم */
-        .glass-card { 
-            background: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6); 
-        }
-        
-        /* شريط تمرير داخلي مخصص ومخفي لتنظيف التصميم */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
     </style>
+    <meta name="theme-color" content="#0284c7">
+    <title>الطلبات الواردة | مركز التاجر</title>
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=34">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/theme.css?v=34">
+    <style>body{font-family:'Cairo',sans-serif}</style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
-<body class="text-slate-900 flex h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-slate-100 to-blue-50/30 relative">
+<body class="se-admin flex h-screen overflow-hidden">
 
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-40 hidden md:hidden transition-all duration-300"></div>
-
-    <aside id="sidebar" class="fixed inset-y-0 right-0 w-68 bg-white/90 backdrop-blur-xl border-l border-slate-200/80 shadow-xl shadow-slate-900/5 flex flex-col z-50 transform translate-x-full transition-transform duration-300 ease-out md:translate-x-0 md:static md:h-full">
-        <div class="p-6 border-b border-slate-100/80 flex items-center gap-3.5">
-            <div class="w-11 h-11 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-lg shadow-blue-600/20 transform rotate-3">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-            </div>
-            <div>
-                <h1 class="text-lg font-black text-slate-900 leading-none">مركز التاجر</h1>
-                <p id="sidebarStoreName" class="text-xs text-blue-600 font-extrabold mt-1 truncate max-w-[130px]">جاري التحميل...</p>
-            </div>
-        </div>
-        
-        <nav class="flex-grow p-4 space-y-1.5 overflow-y-auto">
-            <a href="merchant-dashboard.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">📊</span> لوحة القيادة
-            </a>
-            <a href="products.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">📦</span> إدارة المنتجات
-            </a>
-            <a href="orders.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-black bg-gradient-to-l from-blue-50 to-indigo-50/50 text-blue-600 border-r-4 border-blue-600 shadow-sm transition-all duration-200">
-                <span class="text-base">🛒</span> الطلبات الواردة
-            </a>
-            <a href="shipping.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">🚚</span> إدارة الشحن
-            </a>
-            <a href="settings.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">⚙️</span> الإعدادات
-            </a>
-        </nav>
-        
-        <div class="p-4 border-t border-slate-100">
-            <button onclick="logout()" class="w-full text-right px-4 py-3 rounded-xl text-sm text-red-500 hover:bg-red-50/60 transition-all duration-200 font-black flex items-center gap-3">
-                <span>🚪</span> تسجيل الخروج
-            </button>
-        </div>
-    </aside>
+    <div id="shell"></div>
 
     <div class="flex-grow flex flex-col min-w-0 overflow-hidden">
-        
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/60 p-4 flex items-center justify-between md:hidden z-30 shadow-sm">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-xl flex justify-center items-center shadow-md">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                </div>
-                <span id="mobileStoreName" class="font-black text-slate-800 text-sm truncate max-w-[160px]">جاري التحميل...</span>
-            </div>
-            <button onclick="toggleSidebar()" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-all active:scale-95">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
-        </header>
+        <div id="shell-topbar"></div>
 
-        <main class="flex-grow overflow-y-auto p-4 md:p-8 relative pb-24">
-            
-            <div class="mb-6 md:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <main class="flex-grow overflow-y-auto p-4 md:p-6 space-y-4">
+
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">إدارة الطلبات الواردة</h2>
-                    <p class="text-slate-500 text-xs md:text-sm font-semibold mt-1">تتبع مبيعاتك وحالات الشحن والتوصيل لزبائنك بدقة.</p>
+                    <h2 class="text-xl md:text-2xl font-black tracking-tight">🛒 الطلبات الواردة</h2>
+                    <p class="se-muted text-xs font-bold mt-1">أكّد طلباتك بسرعة — المخزون يُحدَّث تلقائياً.</p>
                 </div>
-                <div class="flex gap-2.5 w-full sm:w-auto">
-                    <button onclick="openOrderModal()" class="flex-grow sm:flex-none px-5 py-3 bg-blue-600 text-white rounded-2xl font-black text-xs md:text-sm shadow-lg shadow-blue-600/20 hover:bg-blue-700 transition-all duration-200 flex items-center justify-center gap-2">
-                        <span>➕ إرسال طلب جديد</span>
-                    </button>
-                    <button onclick="fetchOrders()" class="px-5 py-3 bg-blue-50 text-blue-600 border border-blue-100/60 rounded-2xl font-black text-xs md:text-sm hover:bg-blue-100/80 transition-all duration-200 flex items-center justify-center gap-2 shadow-sm">
-                        <span>🔄 تحديث الطلبات</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-slate-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
-                    <p class="text-xs font-extrabold text-slate-400">إجمالي الطلبات</p>
-                    <h3 id="stats-total" class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight">0</h3>
-                </div>
-                
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group border-r-4 border-amber-500">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-amber-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
-                    <p class="text-xs font-extrabold text-amber-500">⏳ قيد الانتظار</p>
-                    <h3 id="stats-pending" class="text-2xl md:text-3xl font-black text-amber-600 mt-2 tracking-tight">0</h3>
-                </div>
-                
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group border-r-4 border-emerald-500">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
-                    <p class="text-xs font-extrabold text-emerald-500">✅ مكتملة ومستلمة</p>
-                    <h3 id="stats-completed" class="text-2xl md:text-3xl font-black text-emerald-600 mt-2 tracking-tight">0</h3>
-                </div>
-                
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group border-r-4 border-rose-500">
-                    <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-rose-500/5 rounded-full transition-transform group-hover:scale-120 duration-300"></div>
-                    <p class="text-xs font-extrabold text-rose-500">❌ ملغية</p>
-                    <h3 id="stats-cancelled" class="text-2xl md:text-3xl font-black text-rose-600 mt-2 tracking-tight">0</h3>
+                <div class="flex gap-2 flex-wrap">
+                    <select id="courierCsvTpl" class="se-input !py-2 !text-[11px] cursor-pointer w-auto">
+                        <option value="generic">📄 صيغة عامة</option>
+                        <option value="yalidine">📄 صيغة Yalidine</option>
+                    </select>
+                    <button onclick="exportCourierCsv()" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px]">🚚 تصدير لشركة التوصيل</button>
+                    <button onclick="exportCsv()" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px]">⬇️ تصدير CSV</button>
+                    <button onclick="exportToSheets()" id="sheetsBtn" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px] hidden" style="color:#0f9d58">📊 تصدير إلى Google Sheets</button>
+                    <button onclick="openOrderModal()" class="se-btn se-btn-primary !px-3 !py-2 !text-[11px]">➕ طلب يدوي</button>
                 </div>
             </div>
 
-            <div class="glass-card rounded-3xl shadow-sm overflow-hidden border border-slate-200/60 bg-white/75 mb-8">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-right border-collapse min-w-[950px]">
-                        <thead>
-                            <tr class="bg-slate-50/80 border-b border-slate-200/60 text-slate-400 text-xs font-bold uppercase tracking-wider">
-                                <th class="p-4">رقم الطلب</th>
-                                <th class="p-4">الزبون والمعلومات</th>
-                                <th class="p-4">المنتج المطلوب</th>
-                                <th class="p-4">الخيارات المختارة</th>
-                                <th class="p-4 text-center">الكمية</th>
-                                <th class="p-4">السعر الإجمالي (مع التوصيل)</th>
-                                <th class="p-4">حالة الطلب</th>
-                                <th class="p-4 text-center">إجراء</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orders-table-body" class="divide-y divide-slate-100 text-sm font-medium text-slate-700">
-                            <tr>
-                                <td colspan="8" class="p-12 text-center text-slate-400 font-bold">
-                                    <div class="flex items-center justify-center gap-2.5">
-                                        <span class="animate-spin text-2xl">⏳</span> جاري تحميل طلبياتك وفحص خيارات المنتجات...
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div id="courierBar" class="hidden se-card p-3 flex items-center justify-between gap-2 flex-wrap">
+                <div class="text-[11px] font-black flex items-center gap-2">
+                    <span class="se-badge se-badge-green">🚚 مربوط</span>
+                    <span id="courierName">—</span>
                 </div>
+                <button onclick="shipAllPending()" id="shipAllBtn" class="se-btn se-btn-primary !px-3 !py-2 !text-[11px]">📦 إرسال كل الطلبات المؤكدة</button>
             </div>
 
-            <!-- شريط الحقوق السفلي المنسق ليتناسب مع الهواتف والحواسب بشكل دائم وثابت -->
-            <div class="w-full text-center text-[11px] font-bold text-slate-400 tracking-wide font-sans pt-4 pb-2 mt-auto border-t border-slate-200/40">
-                &copy; 2026 <span class="text-indigo-600">SouqiExpress</span>. جميع الحقوق محفوظة.
+            <!-- الإحصائيات (قابلة للنقر كفلاتر) -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <button onclick="setFilter('all')" id="f-all" class="se-card p-4 text-right transition">
+                    <p class="text-[11px] font-extrabold se-muted">كل الطلبات</p>
+                    <h3 id="stats-total" class="text-xl font-black mt-1">0</h3>
+                </button>
+                <button onclick="setFilter('pending')" id="f-pending" class="se-card p-4 text-right transition">
+                    <p class="text-[11px] font-extrabold se-muted">⏳ قيد الانتظار</p>
+                    <h3 id="stats-pending" class="text-xl font-black mt-1 text-amber-600">0</h3>
+                </button>
+                <button onclick="setFilter('completed')" id="f-completed" class="se-card p-4 text-right transition">
+                    <p class="text-[11px] font-extrabold se-muted">✅ مكتملة</p>
+                    <h3 id="stats-completed" class="text-xl font-black mt-1 text-emerald-600">0</h3>
+                </button>
+                <button onclick="setFilter('cancelled')" id="f-cancelled" class="se-card p-4 text-right transition">
+                    <p class="text-[11px] font-extrabold se-muted">❌ ملغاة</p>
+                    <h3 id="stats-cancelled" class="text-xl font-black mt-1 text-rose-600">0</h3>
+                </button>
             </div>
 
+            <!-- البحث -->
+            <div class="se-card p-3 flex flex-col sm:flex-row gap-2">
+                <div class="relative flex-1">
+                    <input id="searchInput" oninput="applyView()" placeholder="ابحث بالاسم، الهاتف، المنتج أو رقم الطلب..." class="se-input !pr-10">
+                    <span class="absolute right-3.5 top-1/2 -translate-y-1/2 se-muted text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
+                </div>
+                <select id="sortSelect" onchange="applyView()" class="se-input sm:w-44 !py-2.5 cursor-pointer">
+                    <option value="new">🆕 الأحدث أولاً</option>
+                    <option value="old">📜 الأقدم أولاً</option>
+                    <option value="high">💰 الأعلى قيمة</option>
+                </select>
+            </div>
+
+            <!-- قائمة الطلبات -->
+            <div id="ordersList" class="space-y-3"></div>
+            <div id="emptyState" class="se-card p-10 text-center hidden">
+                <div class="text-5xl mb-3">📭</div>
+                <p class="font-black text-sm">لا توجد طلبات مطابقة</p>
+                <p class="se-muted text-xs font-bold mt-1">جرّب تغيير الفلتر أو كلمة البحث.</p>
+            </div>
         </main>
     </div>
 
-    <div id="orderModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4 transition-all">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] border border-slate-100">
-            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                <h3 class="font-black text-base md:text-lg text-slate-800">➕ إرسال طلب جديد (ربط المفاتيح)</h3>
-                <button type="button" onclick="closeOrderModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-lg flex items-center justify-center hover:bg-slate-100 text-sm font-bold transition-all">✕</button>
+    <!-- نافذة الطلب اليدوي -->
+    <div id="orderModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[60] hidden items-center justify-center p-4">
+        <div class="se-card w-full max-w-lg max-h-[90vh] flex flex-col">
+            <div class="p-5 border-b flex items-center justify-between" style="border-color:var(--se-border)">
+                <h3 class="font-black text-sm">➕ إضافة طلب يدوي</h3>
+                <button onclick="closeOrderModal()" class="se-muted hover:text-rose-500 text-lg">✕</button>
             </div>
-            
-            <form id="newOrderForm" onsubmit="sendOrder(event)" class="p-6 space-y-4 overflow-y-auto flex-grow text-sm font-semibold text-slate-700 scrollbar-none">
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1.5">اسم الزبون (customer_name)</label>
-                    <input type="text" id="form_customer_name" required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
+            <form id="newOrderForm" onsubmit="sendOrder(event)" class="p-5 space-y-3 overflow-y-auto">
+                <input id="form_customer_name" required placeholder="اسم الزبون *" class="se-input">
+                <input id="form_phone_number" required inputmode="numeric" maxlength="10" dir="ltr" placeholder="رقم الهاتف * 06XXXXXXXX" class="se-input text-right">
+                <select id="form_wilaya" class="se-input cursor-pointer"></select>
+                <input id="form_address" required placeholder="العنوان الكامل *" class="se-input">
+                <select id="form_product_ordered" required class="se-input cursor-pointer"><option value="">اختر المنتج *</option></select>
+                <div class="grid grid-cols-3 gap-2">
+                    <input id="form_quantity" type="number" min="1" value="1" required placeholder="الكمية" class="se-input">
+                    <input id="form_selected_color" placeholder="اللون" class="se-input">
+                    <input id="form_selected_size" placeholder="المقاس" class="se-input">
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1.5">رقم الهاتف (phone_number)</label>
-                    <input type="text" id="form_phone_number" required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1.5">العنوان الكامل (address) - اكتب اسم الولاية متبوعاً بـ "للمنزل" أو "المكتب"</label>
-                    <input type="text" id="form_address" placeholder="مثال: البليدة للمنزل" required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1.5">اختر المنتج (product_ordered)</label>
-                    <select id="form_product_ordered" required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all bg-white"></select>
-                </div>
-                
-                <div class="grid grid-cols-3 gap-3">
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5">الكمية (quantity)</label>
-                        <input type="number" id="form_quantity" value="1" min="1" required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5">اللون (selected_color)</label>
-                        <input type="text" id="form_selected_color" value="قياسي" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5">المقاس (selected_size)</label>
-                        <input type="text" id="form_selected_size" value="قياسي" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
-                    </div>
-                </div>
-                
-                <div class="pt-2">
-                    <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold text-sm shadow-md shadow-blue-600/10 hover:bg-blue-700 transition-all">إرسال وإنشاء الطلب فوراً</button>
-                </div>
+                <button type="submit" id="saveOrderBtn" class="se-btn se-btn-primary w-full !py-3.5">💾 حفظ الطلب</button>
             </form>
         </div>
     </div>
+
+    <script src="assets/js/config.js?v=34"></script>
+    <script src="assets/js/app.js?v=34"></script>
+    <script src="assets/js/subscription.js?v=34"></script>
+    <script src="assets/js/merchant-shell.js?v=34"></script>
+    <script src="assets/js/integrations.js?v=34"></script>
+    <script src="assets/js/couriers.js?v=34"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
-            measurementId: "G-PGLFSTBVTH"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.SE_CONFIG.firebase);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        let cachedShippingRates = [];
+        SHELL.mount('orders', 'الطلبات الواردة');
+
         let currentMerchant = null;
+        let allOrders = [], productsMap = {}, shippingRates = [];
+        let courierCfg = {};
+        let sheetWebhook = '';
+        let filter = 'all', unsub = null;
 
-        window.toggleSidebar = toggleSidebar;
-        window.openOrderModal = openOrderModal;
-        window.closeOrderModal = closeOrderModal;
-        window.fetchOrders = fetchOrders;
-        window.sendOrder = sendOrder;
-        window.updateStatus = updateStatus;
-        window.deleteOrder = deleteOrder;
-        window.logout = logout;
+        const esc = SE.escape;
+        const money = n => (Number(n) || 0).toLocaleString('en-US') + ' د.ج';
 
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('translate-x-full');
-            overlay.classList.toggle('hidden');
+        window.toggleSidebar = function () {
+            document.getElementById('sidebar').classList.toggle('translate-x-full');
+            document.getElementById('sidebarOverlay').classList.toggle('hidden');
+        };
+        window.logout = async function () { try { await signOut(auth); } catch (e) {} location.replace('login.html'); };
+
+        function setStatus(ok, txt) { SHELL.setStatus(ok, txt); }
+
+        /* التاريخ: يدعم created_at (الجديد) و created (القديم) */
+        function orderDate(o) {
+            const raw = o.created_at || o.created || null;
+            if (!raw) return null;
+            if (raw.toDate) return raw.toDate();
+            const d = new Date(raw);
+            return isNaN(d) ? null : d;
+        }
+        /* قيمة الطلب: نعتمد المحفوظ، ونحسب للطلبات القديمة */
+        function orderTotals(o) {
+            const qty = Number(o.quantity) || 1;
+            const unit = o.unit_price != null ? Number(o.unit_price) : Number((productsMap[o.product_ordered] || {}).price || 0);
+            const sub = unit * qty;
+            let ship = o.shipping_price != null ? Number(o.shipping_price) : shipFromAddress(o.address);
+            const total = o.total_price != null ? (Number(o.total_price) + ship) : (sub + ship);
+            return { qty, unit, sub, ship, total };
+        }
+        function shipFromAddress(addr) {
+            if (!addr) return 0;
+            const clean = s => String(s || '').replace(/ولاية/g, '').trim();
+            const r = shippingRates.find(x => String(addr).includes(clean(x.wilaya_name)));
+            if (!r) return 0;
+            if (/المكتب|desk/.test(addr)) return Number(r.desk_price) || 0;
+            return Number(r.home_price) || 0;
+        }
+        function wilayaOf(o) {
+            if (o.wilaya) return o.wilaya;
+            const m = String(o.address || '').match(/ولاية:\s*([^|]+)/);
+            return m ? m[1].trim() : '';
         }
 
-        function openOrderModal() {
-            document.getElementById('orderModal').classList.remove('hidden');
-            loadMerchantProductsToken();
-        }
-
-        function closeOrderModal() {
-            document.getElementById('orderModal').classList.add('hidden');
-        }
-
-        const ALLOWED_ROLE = 'merchant'; 
-
+        /* ============ المصادقة ============ */
         onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                window.location.replace('login.html');
-                return;
-            }
-            
+            if (!user) { location.replace('login.html'); return; }
             try {
-                const userDocRef = doc(db, "users", user.uid);
-                const userDoc = await getDoc(userDocRef);
-                
-                if (!userDoc.exists()) {
-                    console.error("المستند غير موجود في الفايرستور لهذا الـ UID");
-                    await forceLogout();
+                const snap = await getDoc(doc(db, "users", user.uid));
+                if (!snap.exists()) { await signOut(auth); location.replace('login.html'); return; }
+                const d = snap.data();
+                if (d.role !== 'merchant' && d.role !== 'admin') { alert('لا تملك صلاحية الدخول.'); location.replace('index.html'); return; }
+                if (d.role === 'merchant' && d.is_approved !== true) {
+                    if (window.SE_SUB) { window.SE_SUB.redirectExpired(d); return; }
+                    alert('حسابك قيد المراجعة.'); await signOut(auth); location.replace('login.html'); return;
+                }
+                // ---- فحص الاشتراك الشهري (موحّد) ----
+                if (d.role === 'merchant' && window.SE_SUB && !window.SE_SUB.status(d).active) {
+                    window.SE_SUB.redirectExpired(d);
                     return;
                 }
+                if (d.role === 'merchant' && window.SE_SUB) { try { window.SE_SUB.mountBanner(d); } catch (e) {} }
 
-                const userData = userDoc.data();
-                const userRole = userData.role;
 
-                if (userRole !== ALLOWED_ROLE && userRole !== 'admin') {
-                    alert(`عذراً، لا تملك الصلاحية لدخول هذه اللوحة. رتبتك الحالية هي: (${userRole || 'مستخدم عادي'})`);
-                    
-                    const routes = {
-                        'admin': 'admin-dashboard.html',
-                        'reseller': 'admin-control.html',
-                        'merchant': 'merchant-dashboard.html',
-                        'user': 'index.html'
-                    };
-                    window.location.replace(routes[userRole] || 'index.html');
-                    return;
-                }
-
-                if (userRole === 'merchant' && userData.is_approved !== true) {
-                    alert("حسابك قيد المراجعة! لا يمكنك الدخول إلى لوحة التحكم حتى يتم تفعيل حسابك من الإدارة.");
-                    await forceLogout();
-                    return;
-                }
-
-                currentMerchant = { id: user.uid, ...userData };
-                const storeName = currentMerchant.name || 'متجر غير مسمى';
-                document.getElementById('sidebarStoreName').textContent = storeName;
-                document.getElementById('mobileStoreName').textContent = storeName;
-                
-                await fetchOrders();
+                currentMerchant = { id: user.uid, ...d };
+                const nm = d.name || 'متجر';
+                SHELL.setStoreName(nm, currentMerchant ? currentMerchant.id : (currentUser ? currentUser.uid : ''));
+                                fillWilayas();
+                await loadRefs();
                 initRealtime();
-
-            } catch (err) {
-                console.error("خطأ أثناء التحقق من الصلاحيات:", err);
-                alert("تأخرت قاعدة البيانات في الرد، يرجى تحديث الصفحة.");
-            }
+            } catch (e) { console.error(e); setStatus(false, 'خطأ في الاتصال ❌'); }
         });
 
-        async function forceLogout() {
-            await signOut(auth);
-            window.location.replace('login.html');
+        function fillWilayas() {
+            document.getElementById('form_wilaya').innerHTML =
+                '<option value="">-- الولاية (اختياري) --</option>' +
+                (window.SE_WILAYAS || []).map(w => `<option value="${esc(w)}">${esc(w)}</option>`).join('');
         }
 
-        async function loadMerchantProductsToken() {
+        async function loadRefs() {
+            const mid = currentMerchant.id;
+            const [prodSnap, shipSnap] = await Promise.all([
+                getDocs(query(collection(db, "products"), where("user_id", "==", mid))),
+                getDocs(query(collection(db, "shipping_rates"), where("merchant", "==", mid)))
+            ]);
+            productsMap = {};
+            const opts = ['<option value="">اختر المنتج *</option>'];
+            prodSnap.forEach(d => {
+                const p = { id: d.id, ...d.data() };
+                productsMap[d.id] = p;
+                opts.push(`<option value="${esc(p.id)}">${esc(p.name)} — ${money(p.price)}</option>`);
+            });
+            document.getElementById('form_product_ordered').innerHTML = opts.join('');
+            shippingRates = shipSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+            // إعدادات التاجر: شركة التوصيل + رابط Google Sheets
             try {
-                const q = query(collection(db, "products"), where("user_id", "==", currentMerchant.id));
-                const querySnapshot = await getDocs(q);
-                
-                const selectElement = document.getElementById('form_product_ordered');
-                let optionsHTML = "";
-                querySnapshot.forEach((doc) => {
-                    const p = doc.data();
-                    optionsHTML += `<option value="${doc.id}">${p.name} (${p.price} د.ج)</option>`;
-                });
-                selectElement.innerHTML = optionsHTML;
-            } catch (err) {
-                console.error("خطأ أثناء جلب المنتجات للفورم:", err);
+                const st = await getDoc(doc(db, 'merchant_settings', mid));
+                const data = st.exists() ? (st.data() || {}) : {};
+                courierCfg = data.courier || {};
+                sheetWebhook = data.sheet_webhook || '';
+            } catch (e) { console.warn('merchant settings', e); }
+
+            // أظهر زر «تصدير إلى Google Sheets» فقط إن كان الربط مضبوطاً
+            const sheetBtn = document.getElementById('sheetsBtn');
+            if (sheetBtn) sheetBtn.classList.toggle('hidden', !SEI.isSheetUrl(sheetWebhook));
+            const linked = !!(courierCfg && courierCfg.courier);
+            const bar = document.getElementById('courierBar');
+            if (bar) {
+                bar.classList.toggle('hidden', !linked);
+                if (linked) document.getElementById('courierName').textContent = SEC.COURIERS[courierCfg.courier].name;
             }
         }
 
-        async function sendOrder(event) {
-            event.preventDefault();
-            try {
-                const orderData = {
-                    customer_name: document.getElementById('form_customer_name').value,
-                    phone_number: document.getElementById('form_phone_number').value,
-                    address: document.getElementById('form_address').value,
-                    product_ordered: document.getElementById('form_product_ordered').value,
-                    quantity: parseInt(document.getElementById('form_quantity').value) || 1,
-                    selected_color: document.getElementById('form_selected_color').value || 'قياسي',
-                    selected_size: document.getElementById('form_selected_size').value || 'قياسي',
-                    status: 'pending',
-                    merchant: currentMerchant.id,
-                    created: new Date()
-                };
-
-                await addDoc(collection(db, "orders"), orderData);
-                closeOrderModal();
-                document.getElementById('newOrderForm').reset();
-            } catch (error) {
-                console.error("فشل إرسال الطلب عبر السيرفر:", error);
-                alert("⚠️ حدث خطأ أثناء إرسال الطلب.");
-            }
-        }
-
-        async function fetchOrders() {
-            try {
-                if (!currentMerchant) return;
-
-                const shippingQuery = query(collection(db, "shipping_rates"), where("merchant", "==", currentMerchant.id), where("is_active", "==", true));
-                const shippingSnapshot = await getDocs(shippingQuery);
-                cachedShippingRates = [];
-                shippingSnapshot.forEach(doc => {
-                    cachedShippingRates.push({ id: doc.id, ...doc.data() });
-                });
-
-                const ordersQuery = query(collection(db, "orders"), where("merchant", "==", currentMerchant.id));
-                const ordersSnapshot = await getDocs(ordersQuery);
-                
-                let ordersList = [];
-                for (const orderDoc of ordersSnapshot.docs) {
-                    const orderData = orderDoc.data();
-                    
-                    let productData = null;
-                    if (orderData.product_ordered) {
-                        const prodDoc = await getDoc(doc(db, "products", orderData.product_ordered));
-                        if (prodDoc.exists()) {
-                            productData = { id: prodDoc.id, ...prodDoc.data() };
-                        }
-                    }
-                    
-                    ordersList.push({
-                        id: orderDoc.id,
-                        ...orderData,
-                        expand: { product_ordered: productData }
-                    });
-                }
-
-                ordersList.sort((a, b) => {
-                    const dateA = a.created?.seconds ? a.created.toDate() : new Date(a.created || 0);
-                    const dateB = b.created?.seconds ? b.created.toDate() : new Date(b.created || 0);
-                    return dateB - dateA;
-                });
-                
-                renderTable(ordersList);
-            } catch (error) {
-                console.error("خطأ أثناء جلب الطلبات:", error);
-                document.getElementById('orders-table-body').innerHTML = `
-                    <tr>
-                        <td colspan="8" class="p-8 text-center text-rose-500 font-bold">⚠️ تعذر تحميل الطلبات. تحقق من الكود المحدث أو الصلاحيات.</td>
-                    </tr>
-                `;
-            }
-        }
-
+        /* ============ الاستماع اللحظي (بلا إعادة جلب كامل) ============ */
         function initRealtime() {
-            if (!currentMerchant) return;
+            if (unsub) unsub();
             const q = query(collection(db, "orders"), where("merchant", "==", currentMerchant.id));
-            onSnapshot(q, () => {
-                fetchOrders();
-            }, (err) => console.error("فشل التحديث اللحظي:", err));
+            unsub = onSnapshot(q, (snap) => {
+                allOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                setStatus(true, `متصل — ${allOrders.length} طلب`);
+                applyView();
+            }, (err) => {
+                console.error(err);
+                setStatus(false, 'تعذّر جلب الطلبات ❌');
+            });
         }
 
-        function getShippingCostFromAddress(addressStr) {
-            let cost = 0;
-            if (!addressStr) return cost;
+        window.setFilter = function (f) {
+            filter = f;
+            ['all', 'pending', 'completed', 'cancelled'].forEach(k => {
+                const el = document.getElementById('f-' + k);
+                if (el) el.style.outline = (k === f) ? '2px solid var(--se-primary)' : 'none';
+            });
+            applyView();
+        };
 
-            const matchedRate = cachedShippingRates.find(rate => addressStr.includes(rate.wilaya_name));
+        window.applyView = function () {
+            // الإحصائيات دائماً على كل الطلبات
+            const st = { pending: 0, completed: 0, cancelled: 0 };
+            allOrders.forEach(o => { const s = normStatus(o.status); if (st[s] !== undefined) st[s]++; });
+            document.getElementById('stats-total').textContent = allOrders.length;
+            document.getElementById('stats-pending').textContent = st.pending;
+            document.getElementById('stats-completed').textContent = st.completed;
+            document.getElementById('stats-cancelled').textContent = st.cancelled;
 
-            if (matchedRate) {
-                if (addressStr.includes('للمنزل') || addressStr.includes('home')) {
-                    cost = Number(matchedRate.home_price || 0);
-                } else if (addressStr.includes('المكتب') || addressStr.includes('desk')) {
-                    cost = Number(matchedRate.desk_price || 0);
-                }
-            }
-            return cost;
-        }
+            const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const sort = document.getElementById('sortSelect').value;
 
-        function renderTable(orders) {
-            const tableBody = document.getElementById('orders-table-body');
-            tableBody.innerHTML = "";
-
-            if (orders.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-400 font-normal">لا توجد طلبات واردة لمنتجاتك حتى الآن.</td></tr>`;
-                updateStats(0, 0, 0, 0);
-                return;
-            }
-
-            let total = orders.length;
-            let pending = 0;
-            let completed = 0;
-            let cancelled = 0;
-
-            orders.forEach((order) => {
-                const orderStatus = order.status || 'pending';
-                const orderNumber = order.id.substring(0, 6).toUpperCase(); 
-                const customerName = order.customer_name || 'زبون مجهول';
-                const customerPhone = order.phone_number || 'بلا رقم';
-                const customerAddress = order.address || 'لم يحدد العنوان';
-
-                const expandedProduct = order.expand?.product_ordered;
-                const productTitle = expandedProduct?.name || 'منتج غير متوفر';
-                const productPrice = Number(expandedProduct?.price || 0);
-                const orderQuantity = Number(order.quantity || 1);
-                
-                const shippingCost = getShippingCostFromAddress(customerAddress);
-                const totalFinalPrice = (productPrice * orderQuantity) + shippingCost;
-
-                const chosenColor = order.selected_color || '';
-                const chosenSize = order.selected_size || '';
-
-                let options = [];
-                if (chosenColor && chosenColor !== 'غير محدد' && chosenColor !== 'قياسي') {
-                    options.push(`اللون: <span class="text-slate-900 font-bold">${chosenColor}</span>`);
-                }
-                if (chosenSize && chosenSize !== 'غير محدد' && chosenSize !== 'قياسي') {
-                    options.push(`المقاس: <span class="text-slate-900 font-bold">${chosenSize}</span>`);
-                }
-                
-                const productOptions = options.length > 0 ? options.join(' | ') : '<span class="text-slate-400 font-normal">قياسي</span>';
-
-                if(orderStatus === 'pending') pending++;
-                if(orderStatus === 'completed') completed++;
-                if(orderStatus === 'cancelled' || orderStatus === 'cancel') cancelled++;
-
-                let selectStyle = "bg-amber-50 border-amber-200 text-amber-700 focus:ring-amber-500";
-                if(orderStatus === 'completed') selectStyle = "bg-emerald-50 border-emerald-200 text-emerald-700 focus:ring-emerald-500";
-                if(orderStatus === 'cancelled' || orderStatus === 'cancel') selectStyle = "bg-rose-50 border-rose-200 text-rose-700 focus:ring-rose-500";
-
-                const rowHTML = `
-                    <tr class="hover:bg-slate-50/50 transition duration-150">
-                        <td class="p-4 font-bold text-slate-500">#${orderNumber}</td>
-                        <td class="p-4">
-                            <div class="font-bold text-slate-900">${customerName}</div>
-                            <div class="text-xs text-slate-500 mt-0.5">📱 ${customerPhone} | 📍 ${customerAddress}</div>
-                        </td>
-                        <td class="p-4 font-bold text-blue-600">🛍️ ${productTitle}</td>
-                        <td class="p-4">
-                            <span class="inline-block text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-lg border border-slate-200/50 max-w-[220px] truncate" title="خيارات الطلب">
-                                ${productOptions}
-                            </span>
-                        </td>
-                        <td class="p-4 text-center font-bold text-slate-700">${orderQuantity}</td>
-                        <td class="p-4">
-                            <div class="font-black text-emerald-600 text-sm">${totalFinalPrice.toLocaleString()} د.ج</div>
-                            <div class="text-flat text-slate-400 font-normal mt-0.5" dir="rtl">
-                                (منتج: ${productPrice * orderQuantity} + توصيل: ${shippingCost})
-                            </div>
-                        </td>
-                        <td class="p-4">
-                            <select onchange="updateStatus('${order.id}', this.value, this)" class="text-xs font-bold rounded-xl px-3 py-1.5 border focus:outline-none focus:ring-2 cursor-pointer transition-all ${selectStyle}">
-                                <option value="pending" ${orderStatus === 'pending' ? 'selected' : ''}>⏳ قيد الانتظار</option>
-                                <option value="completed" ${orderStatus === 'completed' ? 'selected' : ''}>✅ مكتمل</option>
-                                <option value="cancelled" ${orderStatus === 'cancelled' || orderStatus === 'cancel' ? 'selected' : ''}>❌ ملغى</option>
-                            </select>
-                        </td>
-                        <td class="p-4 text-center">
-                            <button onclick="deleteOrder('${order.id}')" class="text-slate-400 hover:text-red-500 text-xs font-bold transition px-2 py-1 hover:bg-red-50 rounded-lg">🗑️ حذف</button>
-                        </td>
-                    </tr>
-                `;
-                tableBody.insertAdjacentHTML('beforeend', rowHTML);
+            let list = allOrders.filter(o => {
+                if (filter !== 'all' && normStatus(o.status) !== filter) return false;
+                if (!q) return true;
+                const hay = [o.customer_name, o.phone_number, o.product_name, o.order_ref, o.id, wilayaOf(o)]
+                    .map(x => String(x || '').toLowerCase()).join(' ');
+                return hay.includes(q);
             });
 
-            updateStats(total, pending, completed, cancelled);
+            if (sort === 'high') list.sort((a, b) => orderTotals(b).total - orderTotals(a).total);
+            else if (sort === 'old') list.sort((a, b) => (orderDate(a) || 0) - (orderDate(b) || 0));
+            else list.sort((a, b) => (orderDate(b) || 0) - (orderDate(a) || 0));
+
+            renderList(list);
+        };
+
+        function normStatus(s) {
+            s = s || 'pending';
+            return s === 'cancel' ? 'cancelled' : s;
         }
 
-        function updateStats(total, pending, completed, cancelled) {
-            document.getElementById('stats-total').innerText = total;
-            document.getElementById('stats-pending').innerText = pending;
-            document.getElementById('stats-completed').innerText = completed;
-            document.getElementById('stats-cancelled').innerText = cancelled;
+        function renderList(list) {
+            const box = document.getElementById('ordersList');
+            document.getElementById('emptyState').classList.toggle('hidden', list.length > 0);
+            box.innerHTML = list.map(o => {
+                const s = normStatus(o.status);
+                const t = orderTotals(o);
+                const d = orderDate(o);
+                const name = productsMap[o.product_ordered] ? productsMap[o.product_ordered].name : (o.product_name || 'منتج محذوف');
+                const ref = o.order_ref || ('#' + o.id.substring(0, 6).toUpperCase());
+                const badge = s === 'completed' ? '<span class="se-badge se-badge-green">✅ مكتمل</span>'
+                    : s === 'cancelled' ? '<span class="se-badge se-badge-red">❌ ملغى</span>'
+                    : '<span class="se-badge" style="background:rgba(245,158,11,.15);color:#b45309">⏳ قيد الانتظار</span>';
+                const opts = [];
+                if (o.selected_color && !['غير محدد', 'قياسي', ''].includes(o.selected_color)) opts.push('اللون: ' + esc(o.selected_color));
+                if (o.selected_size && !['غير محدد', 'قياسي', ''].includes(o.selected_size)) opts.push('المقاس: ' + esc(o.selected_size));
+
+                return `
+                <div class="se-card p-4 space-y-3">
+                    <div class="flex items-start justify-between gap-2 flex-wrap">
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="font-black text-sm truncate">${esc(o.customer_name || 'زبون')}</span>
+                                ${badge}
+                            </div>
+                            <div class="text-[11px] se-muted font-bold mt-1">${esc(ref)} • ${d ? d.toLocaleDateString('ar-DZ') + ' ' + d.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' }) : 'بلا تاريخ'}</div>
+                        </div>
+                        <div class="text-left flex-shrink-0">
+                            <div class="font-black text-base text-emerald-600">${money(t.total)}</div>
+                            <div class="text-[10px] se-muted font-bold">منتج ${money(t.sub)} + شحن ${money(t.ship)}</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] font-bold">
+                        <div class="se-surface rounded-xl p-2.5 border" style="border-color:var(--se-border)">
+                            🛍️ <span class="se-muted">المنتج:</span> ${esc(name)} × ${t.qty}
+                            ${opts.length ? `<div class="se-muted mt-1">${opts.join(' • ')}</div>` : ''}
+                        </div>
+                        <div class="se-surface rounded-xl p-2.5 border" style="border-color:var(--se-border)">
+                            📍 <span class="se-muted">${esc(wilayaOf(o) || 'بلا ولاية')}</span>
+                            <div class="se-muted mt-1 break-words">${esc(o.address || 'بلا عنوان')}</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <a href="tel:${esc(o.phone_number || '')}" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px]">📞 ${esc(o.phone_number || '—')}</a>
+                        <a href="https://wa.me/213${String(o.phone_number || '').replace(/^0/, '')}" target="_blank" rel="noopener" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px] text-emerald-600">💬 واتساب</a>
+                        ${s !== 'completed' ? `<button onclick="updateStatus('${o.id}','completed')" class="se-btn se-btn-accent !px-3 !py-2 !text-[11px]">✅ تأكيد</button>` : ''}
+                        ${s !== 'cancelled' ? `<button onclick="updateStatus('${o.id}','cancelled')" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px] text-rose-500">❌ إلغاء</button>` : ''}
+                        ${s !== 'pending' ? `<button onclick="updateStatus('${o.id}','pending')" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px]">↩️ إرجاع</button>` : ''}
+                        ${o.tracking_number
+                            ? `<button onclick="trackParcel('${o.id}')" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px] text-sky-600">📍 ${esc(o.tracking_number)}</button>`
+                            : (courierCfg && courierCfg.courier && s === 'completed'
+                                ? `<button onclick="shipOrder('${o.id}')" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px] text-indigo-600">🚚 إرسال للشحن</button>`
+                                : '')}
+                        <button onclick="deleteOrder('${o.id}')" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px] text-rose-400 mr-auto">🗑️</button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
-        async function updateStatus(recordId, newStatus, selectElement) {
-            if (selectElement) {
-                selectElement.className = `text-xs font-bold rounded-xl px-3 py-1.5 border focus:outline-none focus:ring-2 cursor-pointer transition-all`;
-                if(newStatus === 'completed') selectElement.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-700', 'focus:ring-emerald-500');
-                if(newStatus === 'cancelled') selectElement.classList.add('bg-rose-50', 'border-rose-200', 'text-rose-700', 'focus:ring-rose-500');
-                if(newStatus === 'pending') selectElement.classList.add('bg-amber-50', 'border-amber-200', 'text-amber-700', 'focus:ring-amber-500');
-            }
+        /* ============ تحديث الحالة + مزامنة المخزون ============ */
+        window.updateStatus = async function (id, newStatus) {
+            const labels = { completed: 'تأكيد', cancelled: 'إلغاء', pending: 'إرجاع لقيد الانتظار' };
+            const target = allOrders.find(x => x.id === id);
 
+            // تنبيه: الطلب أُرسل لشركة التوصيل — تغيير الحالة هنا لا يوقف الطرد
+            if (target && target.tracking_number && newStatus !== 'completed') {
+                if (!confirm(
+                    `⚠️ هذا الطلب أُرسل مسبقاً لشركة التوصيل (${target.tracking_number}).\n\n` +
+                    `تغيير الحالة هنا لا يُلغي الطرد لدى الشركة — يجب إلغاؤه من لوحتها مباشرة.\n\n` +
+                    `هل تريد المتابعة على أي حال؟`)) return;
+            } else if (!confirm(`هل تريد ${labels[newStatus]} هذا الطلب؟`)) return;
             try {
-                const orderRef = doc(db, "orders", recordId);
-                const orderSnap = await getDoc(orderRef);
+                const ref = doc(db, "orders", id);
+                const snap = await getDoc(ref);
+                if (!snap.exists()) return SE.toast('الطلب غير موجود', 'error');
+                const o = snap.data();
+                const oldStatus = normStatus(o.status);
+                if (oldStatus === newStatus) return;
 
-                if (orderSnap.exists()) {
-                    const orderData = orderSnap.data();
-                    const oldStatus = orderData.status || 'pending';
-                    const orderQuantity = Number(orderData.quantity || 1);
-
-                    if (orderData.product_ordered) {
-                        const productRef = doc(db, "products", orderData.product_ordered);
-                        const productSnap = await getDoc(productRef);
-
-                        if (productSnap.exists()) {
-                            const currentStock = Number(productSnap.data().stock) || 0;
-
-                            if (newStatus === 'completed' && oldStatus !== 'completed') {
-                                const newStock = currentStock - orderQuantity;
-                                await updateDoc(productRef, { stock: Math.max(0, newStock) });
-                            }
-                            else if (oldStatus === 'completed' && newStatus !== 'completed') {
-                                const newStock = currentStock + orderQuantity;
-                                await updateDoc(productRef, { stock: newStock });
-                            }
+                // مزامنة المخزون: خصم عند التأكيد، إرجاع عند التراجع
+                if (o.product_ordered) {
+                    const pRef = doc(db, "products", o.product_ordered);
+                    const pSnap = await getDoc(pRef);
+                    if (pSnap.exists()) {
+                        const stock = Number(pSnap.data().stock) || 0;
+                        const qty = Number(o.quantity) || 1;
+                        if (newStatus === 'completed' && oldStatus !== 'completed') {
+                            await updateDoc(pRef, { stock: Math.max(0, stock - qty) });
+                        } else if (oldStatus === 'completed' && newStatus !== 'completed') {
+                            await updateDoc(pRef, { stock: stock + qty });
                         }
                     }
-                    
-                    await updateDoc(orderRef, { status: newStatus });
                 }
-            } catch (error) {
-                console.error("خطأ أثناء تحديث المخزون والسيرفر:", error);
-                alert("⚠️ حدث خطأ أثناء تحديث حالة الطلب ومزامنة المخزون.");
-                fetchOrders();
-            }
-        }
+                await updateDoc(ref, { status: newStatus });
+                const local = allOrders.find(x => x.id === id);
+                if (local) local.status = newStatus;
+                await loadRefs();
+                SE.toast(`✅ تم ${labels[newStatus]}`, 'success');
 
-        async function deleteOrder(recordId) {
-            if(confirm("هل أنت متأكد من حذف هذا الطلب نهائياً؟")) {
-                try {
-                    await deleteDoc(doc(db, "orders", recordId));
-                } catch (error) {
-                    alert("⚠️ تعذر حذف السجل.");
+                // إرسال تلقائي لشركة التوصيل عند التأكيد (إن كان مفعّلاً)
+                if (newStatus === 'completed' && courierCfg && courierCfg.courier && courierCfg.autoShip && !o.tracking_number) {
+                    const sent = await window.shipOrder(id, true);
+                    if (sent) SE.toast('🚚 تم إرسال الطلب تلقائياً لشركة التوصيل', 'success', 3500);
                 }
+            } catch (e) {
+                console.error(e);
+                SE.toast('❌ تعذّر تحديث الطلب', 'error');
             }
-        }
+        };
 
-        async function logout() { 
+        window.deleteOrder = async function (id) {
+            if (!confirm("حذف هذا الطلب نهائياً؟")) return;
+            try { await deleteDoc(doc(db, "orders", id)); SE.toast('🗑️ تم الحذف', 'info'); }
+            catch (e) { console.error(e); SE.toast('❌ تعذّر الحذف', 'error'); }
+        };
+
+        /* ============ الطلب اليدوي ============ */
+        window.openOrderModal = function () {
+            const m = document.getElementById('orderModal');
+            m.classList.remove('hidden'); m.classList.add('flex');
+        };
+        window.closeOrderModal = function () {
+            const m = document.getElementById('orderModal');
+            m.classList.add('hidden'); m.classList.remove('flex');
+        };
+
+        window.sendOrder = async function (e) {
+            e.preventDefault();
+            const phone = document.getElementById('form_phone_number').value.trim();
+            if (!/^0[5-7][0-9]{8}$/.test(phone)) return SE.toast('⚠️ رقم هاتف غير صحيح (مثال 0551234567)', 'error');
+
+            const pid = document.getElementById('form_product_ordered').value;
+            const product = productsMap[pid];
+            if (!product) return SE.toast('⚠️ اختر منتجاً صالحاً', 'error');
+
+            const qty = parseInt(document.getElementById('form_quantity').value, 10) || 1;
+            const wilaya = document.getElementById('form_wilaya').value;
+            const unit = Number(product.price) || 0;
+            const clean = s => String(s || '').replace(/ولاية/g, '').trim();
+            const rate = shippingRates.find(r => clean(r.wilaya_name) === clean(wilaya));
+            const ship = rate ? (Number(rate.home_price) || 0) : 0;
+
+            const btn = document.getElementById('saveOrderBtn');
+            btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
             try {
-                await forceLogout();
+                await addDoc(collection(db, "orders"), {
+                    order_ref: 'SE-' + Date.now().toString().slice(-8),
+                    customer_name: document.getElementById('form_customer_name').value.trim(),
+                    phone_number: phone,
+                    address: document.getElementById('form_address').value.trim(),
+                    wilaya: wilaya,
+                    product_ordered: pid,
+                    product_name: product.name || '',
+                    quantity: qty,
+                    unit_price: unit,
+                    total_price: unit * qty,
+                    shipping_price: ship,
+                    selected_color: document.getElementById('form_selected_color').value.trim() || 'غير محدد',
+                    selected_size: document.getElementById('form_selected_size').value.trim() || 'غير محدد',
+                    status: 'pending',
+                    merchant: currentMerchant.id,
+                    user_id: currentMerchant.id,
+                    created_at: serverTimestamp()
+                });
+                closeOrderModal();
+                document.getElementById('newOrderForm').reset();
+                fillWilayas();
+                SE.toast('✅ تم إضافة الطلب', 'success');
             } catch (err) {
-                console.error("خطأ أثناء تسجيل الخروج:", err);
+                console.error(err);
+                SE.toast('❌ تعذّر حفظ الطلب', 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = '💾 حفظ الطلب';
             }
+        };
+
+        /* ============ الشحن عبر شركة التوصيل ============ */
+        window.shipOrder = async function (id, silent) {
+            const o = allOrders.find(x => x.id === id);
+            if (!o) return;
+            if (!courierCfg || !courierCfg.courier) { SE.toast('اربط شركة توصيل من صفحة الشحن أولاً', 'error'); return false; }
+            if (o.tracking_number) { if (!silent) SE.toast('هذا الطلب مُرسَل مسبقاً', 'info'); return false; }
+
+            // لا تُشحن إلا الطلبات المؤكَّدة — الملغى أو المعلّق قد يُكلّف التاجر شحناً بلا مقابل
+            const st = normStatus(o.status);
+            if (st !== 'completed') {
+                if (!silent) SE.toast(
+                    st === 'cancelled'
+                        ? '❌ لا يمكن شحن طلب ملغى'
+                        : '⚠️ أكّد الطلب أولاً قبل إرساله لشركة التوصيل',
+                    'error', 3500);
+                return false;
+            }
+
+            // تحقّق مؤكَّد من الخادم لمنع الإرسال المزدوج
+            try {
+                const fresh = await getDoc(doc(db, 'orders', id));
+                if (fresh.exists() && (fresh.data() || {}).tracking_number) {
+                    o.tracking_number = fresh.data().tracking_number;
+                    if (!silent) SE.toast('هذا الطلب مُرسَل مسبقاً', 'info');
+                    return false;
+                }
+            } catch (e) { console.warn(e); }
+
+            if (!silent && !confirm(`إرسال الطلب إلى ${SEC.COURIERS[courierCfg.courier].name}؟`)) return false;
+
+            const r = await SEC.createParcel(courierCfg, o);
+            if (r.ok && r.tracking) {
+                o.tracking_number = r.tracking;
+                try {
+                    await updateDoc(doc(db, 'orders', id), {
+                        tracking_number: r.tracking,
+                        courier: courierCfg.courier,
+                        shipped_at: serverTimestamp()
+                    });
+                } catch (e) { console.error(e); }
+                if (!silent) SE.toast('✅ تم الإرسال — رقم التتبّع: ' + r.tracking, 'success', 4000);
+                return true;
+            }
+            if (!silent) {
+                SE.toast('❌ ' + (r.error || 'تعذّر الإرسال') + (r.network ? ' — جرّب التصدير CSV' : ''), 'error', 5000);
+            }
+            return false;
+        };
+
+        window.shipAllPending = async function () {
+            const list = allOrders.filter(o => normStatus(o.status) === 'completed' && !o.tracking_number);
+            if (!list.length) return SE.toast('لا توجد طلبات مؤكدة بانتظار الشحن', 'info');
+            if (!confirm(`إرسال ${list.length} طلب إلى شركة التوصيل؟`)) return;
+            const btn = document.getElementById('shipAllBtn');
+            btn.disabled = true;
+            let ok = 0, fail = 0;
+            for (let i = 0; i < list.length; i++) {
+                btn.textContent = `⏳ ${i + 1}/${list.length}...`;
+                const done = await window.shipOrder(list[i].id, true);
+                done ? ok++ : fail++;
+            }
+            btn.disabled = false; btn.textContent = '📦 إرسال كل الطلبات المؤكدة';
+            SE.toast(`تم إرسال ${ok} طلب${fail ? ` — فشل ${fail}` : ''}`, ok ? 'success' : 'error', 4000);
+        };
+
+        window.trackParcel = async function (id) {
+            const o = allOrders.find(x => x.id === id);
+            if (!o || !o.tracking_number) return;
+            SE.toast('⏳ جاري جلب حالة الشحنة...', 'info', 1500);
+            const r = await SEC.track(courierCfg, o.tracking_number);
+            if (r.ok) {
+                const st = r.data && (r.data.status || (r.data.events && r.data.events[0] && r.data.events[0].status));
+                SE.toast('📍 ' + o.tracking_number + ' — ' + SEC.statusAr(st), 'success', 5000);
+            } else {
+                SE.toast('تعذّر التتبّع: ' + (r.error || ''), 'error', 4000);
+            }
+        };
+
+        /* ============ تصدير كل الطلبات إلى Google Sheets ============ */
+        window.exportToSheets = async function () {
+            if (!SEI.isSheetUrl(sheetWebhook)) {
+                return SE.toast('⚠️ اضبط رابط Google Sheets من الإعدادات أولاً', 'error', 4000);
+            }
+            const shown = getVisibleOrders();
+            if (!shown.length) return SE.toast('لا توجد طلبات للتصدير', 'error');
+
+            const scope = (filter === 'all' && !document.getElementById('searchInput').value.trim())
+                ? 'كل الطلبات' : 'الطلبات المعروضة حالياً';
+            if (!confirm(`تصدير ${shown.length} طلب (${scope}) إلى جدول Google Sheets؟\n\nلن تتكرر الطلبات المُصدَّرة سابقاً.`)) return;
+
+            const btn = document.getElementById('sheetsBtn');
+            btn.disabled = true;
+            let ok = 0, fail = 0;
+
+            for (let i = 0; i < shown.length; i++) {
+                btn.textContent = `⏳ ${i + 1}/${shown.length}...`;
+                const sent = await SEI.sendToSheet(sheetWebhook, buildSheetRow(shown[i]));
+                sent ? ok++ : fail++;
+                if (i < shown.length - 1) await new Promise(r => setTimeout(r, 250));
+            }
+
+            btn.disabled = false;
+            btn.textContent = '📊 تصدير إلى Google Sheets';
+            SE.toast(
+                fail ? `📊 أُرسل ${ok} طلب — تعذّر ${fail}` : `📊 تم تصدير ${ok} طلب إلى جدولك بنجاح`,
+                fail ? 'error' : 'success', 5000
+            );
+        };
+
+        /* بناء صف الجدول بالترتيب المعتمد.
+           نستخرج القيم من الحقول الجديدة، ومع الطلبات القديمة نستنتجها من العنوان. */
+        function buildSheetRow(o) {
+            const t = orderTotals(o);
+            const d = orderDate(o);
+            const addr = String(o.address || '');
+            const pick = (re) => { const m = addr.match(re); return m ? m[1].trim() : ''; };
+
+            const commune = o.commune || pick(/بلدية:\s*([^|]+)/);
+            const addressLine = o.address_line || pick(/العنوان الكامل:\s*([^|]+)/) ||
+                addr.replace(/(ولاية|بلدية|التوصيل|العنوان الكامل):\s*[^|]*\|?/g, '')   // احذف الحقول المدمجة
+                    .replace(/(توصيل للمنزل|استلام من المكتب)\s*\|?/g, '')              // واحذف نوع التوصيل
+                    .replace(/^\s*\|\s*|\s*\|\s*$/g, '')
+                    .replace(/\s+/g, ' ').trim() || addr;
+
+            const isDesk = o.delivery_type === 'desk' || /المكتب|stopdesk|desk/i.test(addr);
+            const prod = productsMap[o.product_ordered] || {};
+            const statusAr = { pending: 'قيد الانتظار', completed: 'مؤكّد', cancelled: 'ملغى' };
+
+            return {
+                order_id:        o.order_ref || o.id,
+                order_date:      d ? d.toLocaleDateString('en-CA') : '',
+                customer_name:   o.customer_name || '',
+                phone_1:         o.phone_number || '',
+                phone_2:         o.phone_2 || '',
+                wilaya:          wilayaOf(o),
+                commune:         commune,
+                delivery_type:   isDesk ? 'مكتب' : 'منزل',
+                address:         addressLine,
+                product_sku:     o.product_sku || prod.sku || o.product_ordered || '',
+                product_name:    prod.name || o.product_name || '',
+                quantity:        t.qty,
+                unit_price:      t.unit,
+                total_amount:    t.total,
+                confirmation:    statusAr[normStatus(o.status)] || normStatus(o.status),
+                notes:           [o.note, o.selected_color && o.selected_color !== 'غير محدد' ? 'اللون: ' + o.selected_color : '',
+                                  o.selected_size && o.selected_size !== 'غير محدد' ? 'المقاس: ' + o.selected_size : '',
+                                  o.tracking_number ? 'تتبّع: ' + o.tracking_number : '']
+                                 .filter(Boolean).join(' • ')
+            };
         }
+
+        // الطلبات المعروضة حالياً (نفس منطق العرض)
+        function getVisibleOrders() {
+            const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            return allOrders.filter(o => {
+                if (filter !== 'all' && normStatus(o.status) !== filter) return false;
+                if (!q) return true;
+                const hay = [o.customer_name, o.phone_number, o.product_name, o.order_ref, o.id, wilayaOf(o)]
+                    .map(x => String(x || '').toLowerCase()).join(' ');
+                return hay.includes(q);
+            });
+        }
+
+        window.exportCourierCsv = function () {
+            const tpl = document.getElementById('courierCsvTpl').value;
+            const list = allOrders.filter(o => normStatus(o.status) !== 'cancelled');
+            if (!list.length) return SE.toast('لا توجد طلبات للتصدير', 'error');
+            const n = SEC.exportCourierCsv(list, tpl);
+            SE.toast(n ? `🚚 تم تصدير ${n} طلب — ارفع الملف في لوحة شركة التوصيل` : '❌ تعذّر التصدير', n ? 'success' : 'error', 4500);
+        };
+
+        /* ============ تصدير CSV ============ */
+        window.exportCsv = function () {
+            if (!allOrders.length) return SE.toast('لا توجد طلبات للتصدير', 'error');
+            const head = ['رقم الطلب', 'التاريخ', 'الزبون', 'الهاتف', 'الولاية', 'العنوان', 'المنتج', 'الكمية', 'سعر الوحدة', 'الشحن', 'الإجمالي', 'الحالة'];
+            const rows = allOrders.map(o => {
+                const t = orderTotals(o), d = orderDate(o);
+                const nm = productsMap[o.product_ordered] ? productsMap[o.product_ordered].name : (o.product_name || '');
+                return [o.order_ref || o.id, d ? d.toLocaleDateString('en-CA') : '', o.customer_name || '', o.phone_number || '',
+                    wilayaOf(o), String(o.address || '').replace(/[\n\r]+/g, ' '), nm, t.qty, t.unit, t.ship, t.total, normStatus(o.status)];
+            });
+            const csv = [head, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `orders-${new Date().toISOString().slice(0, 10)}.csv`;
+            a.click(); URL.revokeObjectURL(a.href);
+            SE.toast('⬇️ تم تصدير ' + rows.length + ' طلب', 'success');
+        };
+
+        setFilter('all');
     </script>
 </body>
 </html>

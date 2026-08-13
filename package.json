@@ -1,0 +1,15 @@
+{
+  "name": "souqiexpress",
+  "version": "34.0.0",
+  "private": true,
+  "description": "سوقي إكسبريس — منصة تجارة إلكترونية جزائرية (HTML ثابت 100%)",
+  "scripts": {
+    "build:css": "node tools/build-css.mjs",
+    "verify:css": "node tools/verify-css.mjs",
+    "serve": "python3 -m http.server 8080 --bind 0.0.0.0"
+  },
+  "devDependencies": {
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0"
+  }
+}

@@ -1,0 +1,8 @@
+# اعتماديات البناء — لا تُرفع (يُعاد تثبيتها بـ npm install)
+node_modules/
+package-lock.json
+
+# ملفات مؤقتة
+*.log
+.DS_Store
+Thumbs.db
