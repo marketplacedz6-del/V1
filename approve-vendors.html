@@ -25,7 +25,7 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>لوحة المسوق | تفعيل وإدارة التجار | Walid Market</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=35">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=36">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
@@ -45,9 +45,9 @@
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
-    <link rel="stylesheet" href="assets/css/theme.css?v=35">
-    <script src="assets/js/config.js?v=35"></script>
-    <script src="assets/js/subscription.js?v=35"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=36">
+    <script src="assets/js/config.js?v=36"></script>
+    <script src="assets/js/subscription.js?v=36"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="se-admin min-h-screen flex flex-col">
@@ -80,15 +80,16 @@
 
         <div class="glass-card p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200/60 flex flex-col md:flex-row items-center justify-between gap-6">
             <div class="space-y-2 text-center md:text-right">
-                <span class="bg-blue-50 text-blue-700 border border-blue-100/50 px-3.5 py-1.5 rounded-full text-[11px] font-extrabold tracking-wide">الرصيد المتاح للتفعيل</span>
-                <h2 class="text-xl md:text-2xl font-black text-slate-800 tracking-tight">حالة رصيد تفعيلاتك الحالية</h2>
-                <p class="text-xs md:text-sm text-slate-400 font-medium leading-relaxed max-w-md">يمكنك تفعيل حسابات التجار الجدد طالما تملك تفعيلات متبقية ومتاحة في محفظتك الرقابية.</p>
+                <span class="bg-blue-50 text-blue-700 border border-blue-100/50 px-3.5 py-1.5 rounded-full text-[11px] font-extrabold tracking-wide">رصيد النقاط</span>
+                <h2 class="text-xl md:text-2xl font-black text-slate-800 tracking-tight">رصيد نقاطك</h2>
+                <p class="text-[11px] font-bold text-slate-400 mt-1">نقطة واحدة = شهر اشتراك للتاجر. تفعيل 3 أشهر يخصم 3 نقاط.</p>
+                <p class="text-xs md:text-sm text-slate-400 font-medium leading-relaxed max-w-md">اختر مدة الاشتراك لكل تاجر، وستُخصم النقاط بعدد الأشهر تلقائياً. التجديد يخصم أيضاً.</p>
             </div>
             
             <div class="w-full md:w-96 space-y-3.5 bg-slate-50/80 border border-slate-200/40 p-5 rounded-2xl shadow-inner">
                 <div class="flex justify-between items-center text-xs">
                     <span class="text-slate-500 font-extrabold">نسبة استهلاك التراخيص</span>
-                    <span class="font-mono font-black text-blue-600 bg-white px-2.5 py-1 rounded-lg border border-slate-200/60 shadow-sm" id="balanceText">0 / 0 ترخيص</span>
+                    <span class="font-mono font-black text-blue-600 bg-white px-2.5 py-1 rounded-lg border border-slate-200/60 shadow-sm" id="balanceText">0 / 0 نقطة</span>
                 </div>
                 <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden p-[2px]">
                     <div id="balanceProgress" class="bg-gradient-to-r from-blue-600 to-cyan-500 h-full rounded-full transition-all duration-700 ease-out shadow-sm" style="width: 0%"></div>
@@ -266,10 +267,30 @@
             const percent = maxActivations > 0 ? (currentActivations / maxActivations) * 100 : 0;
             const available = Math.max(0, maxActivations - currentActivations);
 
-            document.getElementById('balanceText').textContent = `${currentActivations} / ${maxActivations} تفعيل`;
-            document.getElementById('balanceProgress').style.width = `${percent}%`;
-            document.getElementById('balanceUsed').textContent = `${currentActivations} مستخدم`;
-            document.getElementById('balanceAvailable').textContent = `${available} تفعيل`;
+            document.getElementById('balanceText').textContent = `${currentActivations} / ${maxActivations} نقطة`;
+            document.getElementById('balanceProgress').style.width = `${Math.min(100, percent)}%`;
+            document.getElementById('balanceUsed').textContent = `${currentActivations} مستخدمة`;
+            document.getElementById('balanceAvailable').textContent = `${available} نقطة`;
+
+            // حدّث أزرار الجدول: عطّل ما لا يكفيه الرصيد
+            document.querySelectorAll('.merchant-row').forEach(row => {
+                const sel = row.querySelector('.months-select');
+                const btn = row.querySelector('.approve-btn, .renew-btn');
+                if (!sel || !btn) return;
+                const need = Number(sel.value) || 1;
+                const enough = available >= need;
+                btn.disabled = !enough;
+                btn.classList.toggle('opacity-40', !enough);
+                btn.classList.toggle('cursor-not-allowed', !enough);
+                btn.title = enough ? `يخصم ${need} نقطة` : `تحتاج ${need} نقطة ومتاح لديك ${available}`;
+                const tag = row.querySelector('.cost-tag');
+                if (tag) {
+                    tag.textContent = `${need} نقطة`;
+                    tag.className = 'cost-tag text-[10px] font-black px-1.5 py-1 rounded-lg whitespace-nowrap ' +
+                        (enough ? 'bg-blue-50 text-blue-700 border border-blue-100'
+                                : 'bg-rose-50 text-rose-600 border border-rose-100');
+                }
+            });
         }
 
         async function loadAllMerchants() {
@@ -335,13 +356,14 @@
                             </td>
                             <td class="py-4 text-left">
                                 <div class="flex items-center justify-end gap-1.5">
-                                    <select class="months-select bg-white border border-gray-200 rounded-lg px-1.5 py-1.5 text-[11px] font-black text-gray-700 focus:outline-none focus:border-blue-500">
+                                    <select class="months-select bg-white border border-gray-200 rounded-lg px-1.5 py-1.5 text-[11px] font-black text-gray-700 focus:outline-none focus:border-blue-500" aria-label="مدة الاشتراك">
                                         <option value="1">1 شهر</option>
                                         <option value="2">شهران</option>
                                         <option value="3">3 أشهر</option>
                                         <option value="6">6 أشهر</option>
                                         <option value="12">سنة</option>
                                     </select>
+                                    <span class="cost-tag text-[10px] font-black px-1.5 py-1 rounded-lg whitespace-nowrap bg-blue-50 text-blue-700 border border-blue-100">1 نقطة</span>
                                     ${isApproved
                                         ? `<button class="renew-btn bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-xl text-[11px] font-bold transition shadow-md shadow-emerald-100 whitespace-nowrap">🔄 تجديد</button>`
                                         : `<button class="approve-btn bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl text-[11px] font-bold transition shadow-md shadow-blue-100 whitespace-nowrap">تفعيل الحساب</button>`
@@ -361,6 +383,14 @@
                         approveMerchant(mId, this, months, false);
                     });
                 });
+
+                // حدّث شارة التكلفة فوراً عند تغيير المدة
+                document.querySelectorAll('.months-select').forEach(sel => {
+                    sel.addEventListener('change', updateBalanceUI);
+                });
+
+                // اضبط الشارات والأزرار حسب الرصيد الحالي
+                updateBalanceUI();
 
                 document.querySelectorAll('.renew-btn').forEach(button => {
                     button.addEventListener('click', function() {
@@ -385,9 +415,17 @@
             const debugContainer = document.getElementById('debugErrorContainer');
             debugContainer.classList.add('hidden');
 
-            // التفعيل الأول فقط يستهلك من رصيد المسوق، التجديد لا يستهلك
-            if (!isRenew && currentActivations >= maxActivations) {
-                showToast("عذراً، نفد رصيد التفعيلات الخاص بك!", "error");
+            /* نظام النقاط: كل شهر اشتراك = نقطة واحدة من رصيد المسوّق.
+               شهر → 1، شهران → 2، 6 أشهر → 6، سنة → 12.
+               ينطبق على التفعيل الأول والتجديد على حدّ سواء، لأن كليهما
+               يمنح التاجر مدة اشتراك حقيقية. */
+            const cost = months;
+            const remaining = maxActivations - currentActivations;
+            if (remaining < cost) {
+                showToast(
+                    `رصيدك ${remaining} نقطة فقط، وهذه العملية تحتاج ${cost} نقطة (${months} شهر).`,
+                    "error"
+                );
                 return;
             }
 
@@ -424,16 +462,17 @@
                     subscription_updated_at: new Date().toISOString()
                 });
 
-                // 2. التفعيل الأول فقط يخصم من رصيد المسوق
-                if (!isRenew) {
-                    currentActivations = currentActivations + 1;
-                    await updateDoc(doc(db, "users", currentResellerId), {
-                        current_activations: currentActivations
-                    });
-                }
+                // 2. اخصم نقطة عن كل شهر — في التفعيل والتجديد معاً
+                currentActivations = currentActivations + cost;
+                await updateDoc(doc(db, "users", currentResellerId), {
+                    current_activations: currentActivations
+                });
 
                 const endTxt = window.SE_SUB ? window.SE_SUB.formatDate(renewal.subscription_end) : '';
-                showToast((isRenew ? "تم تجديد الاشتراك ✅ " : "تم تفعيل حساب التاجر 🎉 ") + "صالح حتى " + endTxt);
+                showToast(
+                    (isRenew ? "تم تجديد الاشتراك ✅ " : "تم تفعيل حساب التاجر 🎉 ") +
+                    `${months} شهر · خُصمت ${cost} نقطة · صالح حتى ${endTxt}`
+                );
 
                 updateBalanceUI();
                 await loadAllMerchants();

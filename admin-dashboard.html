@@ -25,15 +25,15 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>لوحة تحكم المدير العام</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=35">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=36">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
     </style>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
-    <link rel="stylesheet" href="assets/css/theme.css?v=35">
-    <script src="assets/js/config.js?v=35"></script>
-    <script src="assets/js/subscription.js?v=35"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=36">
+    <script src="assets/js/config.js?v=36"></script>
+    <script src="assets/js/subscription.js?v=36"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="se-admin min-h-screen flex flex-col">
@@ -111,8 +111,8 @@
                         <input type="text" id="resPassword" required minlength="6" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition font-mono" placeholder="اكتب كلمة مرور قوية (6 أحرف على الأقل)">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1">رصيد التفعيلات المتاحة له (Max Activations)</label>
-                        <input type="number" id="resMaxActivations" value="5" min="0" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition font-bold">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">رصيد النقاط <span class="text-gray-400 font-normal">(نقطة واحدة = شهر اشتراك)</span></label>
+                        <input type="number" id="resMaxActivations" value="12" min="1" max="10000" required aria-label="رصيد النقاط" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition font-bold">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-500 mb-1">صورة الحساب / الهوية</label>
@@ -148,7 +148,7 @@
                         <thead>
                             <tr class="bg-gray-50/70 text-gray-400 text-xs font-bold border-b border-gray-100">
                                 <th class="py-3 px-6">المسوق</th>
-                                <th class="py-3 text-center">الرصيد المتاح</th>
+                                <th class="py-3 text-center">رصيد النقاط<br><span class="text-[9px] font-normal text-gray-400">نقطة = شهر</span></th>
                                 <th class="py-3 text-center">المستهلك</th>
                                 <th class="py-3 text-center">تاريخ الإنضمام</th>
                                 <th class="py-3 text-left px-6">إجراءات</th>
@@ -193,7 +193,7 @@
     </footer>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signOut, onAuthStateChanged, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -340,10 +340,10 @@
                             </div>
                         </td>
                         <td class="py-4 text-center">
-                            <input type="number" id="inputMax_${res.id}" value="${maxAct}" min="0" class="w-14 border border-gray-200 rounded-lg p-1 text-center font-bold">
+                            <input type="number" id="inputMax_${res.id}" value="${maxAct}" min="0" max="10000" title="رصيد النقاط (نقطة = شهر)" class="w-14 border border-gray-200 rounded-lg p-1 text-center font-bold">
                         </td>
                         <td class="py-4 text-center">
-                            <span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full text-xs font-bold">${curAct} مستهلك</span>
+                            <span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full text-xs font-bold">${curAct} نقطة مستهلكة</span>
                         </td>
                         <td class="py-4 text-center text-xs text-gray-500">${joinDate}</td>
                         <td class="py-4 text-left">
@@ -579,14 +579,38 @@
             const email = document.getElementById('resEmail').value;
             const phone = document.getElementById('resPhone').value; // سحب رقم الهاتف
             const password = document.getElementById('resPassword').value;
-            const maxActivations = parseInt(document.getElementById('resMaxActivations').value) || 0;
+            const maxActivations = parseInt(document.getElementById('resMaxActivations').value, 10);
             const imageInput = document.getElementById('resImage');
             const alertMsg = document.getElementById('alertMessage');
             const submitBtn = document.getElementById('submitResBtn');
-            
+
             alertMsg.classList.add('hidden');
+
+            /* تحقّق من المدخلات قبل لمس Firebase */
+            const showErr = (msg) => {
+                alertMsg.textContent = msg;
+                alertMsg.className = "mt-4 text-center text-sm font-bold text-red-700 bg-red-50 p-3 rounded-xl border border-red-200";
+                alertMsg.classList.remove('hidden');
+            };
+            if (name.trim().length < 3) { showErr("⚠️ اكتب اسم المسوّق كاملاً (3 أحرف على الأقل)."); return; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) { showErr("⚠️ البريد الإلكتروني غير صالح."); return; }
+            const digits = String(phone).replace(/\D/g, '');
+            if (!/^0(5|6|7)[0-9]{8}$/.test(digits) && !/^213(5|6|7)[0-9]{8}$/.test(digits)) {
+                showErr("⚠️ رقم هاتف جزائري غير صالح (يبدأ بـ 05 أو 06 أو 07)."); return;
+            }
+            if (password.length < 6) { showErr("⚠️ كلمة المرور يجب أن تكون 6 أحرف على الأقل."); return; }
+            if (!Number.isFinite(maxActivations) || maxActivations <= 0 || maxActivations > 10000) {
+                showErr("⚠️ رصيد النقاط يجب أن يكون رقماً بين 1 و 10000. (كل نقطة = شهر اشتراك واحد)"); return;
+            }
+
             submitBtn.disabled = true;
             submitBtn.textContent = "جاري إنشاء الحساب فوريّاً...";
+
+            /* تطبيق Firebase ثانوي معزول.
+               خطأ خطير سابق: createUserWithEmailAndPassword على النسخة الرئيسية
+               يسجّل دخول الحساب الجديد تلقائياً — فيُطرد الأدمن من لوحته
+               ويجد نفسه مسجّلاً كمسوّق. النسخة الثانوية تمنع ذلك تماماً. */
+            let secApp = null, secAuth = null, createdUser = null;
 
             try {
                 let base64Avatar = "";
@@ -597,16 +621,19 @@
                     base64Avatar = await convertImageToBase64(imageInput.files[0]);
                 }
 
-                // 1. إنشاء الحساب في نظام Firebase Authentication
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const uid = userCredential.user.uid;
+                // 1. إنشاء الحساب عبر نسخة ثانوية حتى لا تتبدّل جلسة الأدمن
+                secApp = initializeApp(window.SE_CONFIG.firebase, 'secondary-' + Date.now());
+                secAuth = getAuth(secApp);
+                const userCredential = await createUserWithEmailAndPassword(secAuth, email.trim(), password);
+                createdUser = userCredential.user;
+                const uid = createdUser.uid;
 
                 // 2. التخزين الفوري بداخل Firestore
                 await setDoc(doc(db, "users", uid), {
                     uid: uid,
-                    name: name,
-                    email: email,
-                    phone: phone, // تخزين رقم الواتساب داخل حقل phone
+                    name: name.trim(),
+                    email: email.trim(),
+                    phone: phone.trim(), // تخزين رقم الواتساب داخل حقل phone
                     // ⚠️ لا نخزّن كلمة المرور هنا إطلاقاً.
                     // Firebase Auth يديرها مشفّرة بالفعل؛ نسخها في Firestore
                     // يعني أن أي تسريب لقاعدة البيانات = تسريب كلمات مرور صريحة.
@@ -630,6 +657,12 @@
                 fetchSystemStats();
             } catch (err) {
                 console.error(err);
+                /* تراجع: إن أُنشئ الحساب في Auth ثم فشل حفظ بياناته،
+                   نحذفه حتى لا يبقى "مسوّق يتيم" لا يستطيع الدخول
+                   ولا يمكن إعادة إنشائه بنفس البريد. */
+                if (createdUser) {
+                    try { await createdUser.delete(); } catch (e) { console.error('فشل التراجع:', e); }
+                }
                 if (err.message && err.message.includes("حجم الصورة")) {
                     alertMsg.textContent = `❌ ${err.message}`;
                 } else if (err.code === 'auth/email-already-in-use') {
@@ -642,16 +675,31 @@
                 alertMsg.className = "mt-4 text-center text-sm font-bold text-red-700 bg-red-50 p-3 rounded-xl border border-red-200";
                 alertMsg.classList.remove('hidden');
             } finally {
+                // نظّف التطبيق الثانوي دائماً (نجح أو فشل) حتى لا تتراكم النسخ
+                if (secAuth) { try { await secAuth.signOut(); } catch (e) {} }
+                if (secApp)  { try { await deleteApp(secApp); } catch (e) {} }
                 submitBtn.disabled = false;
                 submitBtn.textContent = "إضافة وتفعيل الحساب مباشرة";
             }
         });
 
         async function updateMaxActivations(userId) {
-            const updatedMax = parseInt(document.getElementById(`inputMax_${userId}`).value) || 0;
+            const updatedMax = parseInt(document.getElementById(`inputMax_${userId}`).value, 10);
+            // تحقّق: كان يقبل نصاً أو سالباً فيتحوّل إلى 0 ويشلّ المسوّق بلا سبب
+            if (!Number.isFinite(updatedMax) || updatedMax < 0 || updatedMax > 10000) {
+                alert("⚠️ رصيد النقاط يجب أن يكون رقماً بين 0 و 10000.\n(كل نقطة = شهر اشتراك واحد)");
+                return;
+            }
+            // لا تسمح برصيد أقل مما استُهلك فعلاً
+            const res = allResellers.find(r => r.id === userId);
+            const used = res ? Number(res.current_activations || 0) : 0;
+            if (updatedMax < used) {
+                alert(`⚠️ المسوّق استهلك ${used} نقطة بالفعل.\nلا يمكن جعل رصيده أقل من ذلك.`);
+                return;
+            }
             try {
                 await updateDoc(doc(db, "users", userId), { max_activations: updatedMax });
-                alert("تم تحديث الرصيد للمسوق بنجاح! 🎉");
+                alert(`تم تحديث الرصيد إلى ${updatedMax} نقطة 🎉`);
                 loadResellers();
             } catch (e) { alert("خطأ أثناء تحديث الرصيد في فايربيز."); }
         }

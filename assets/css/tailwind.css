@@ -1814,6 +1814,8 @@ video {
   font-weight: 800;
 }.font-medium {
   font-weight: 500;
+}.font-normal {
+  font-weight: 400;
 }.font-semibold {
   font-weight: 600;
 }.uppercase {
@@ -2013,6 +2015,8 @@ video {
   opacity: 0;
 }.opacity-100 {
   opacity: 1;
+}.opacity-40 {
+  opacity: 0.4;
 }.opacity-50 {
   opacity: 0.5;
 }.opacity-60 {
