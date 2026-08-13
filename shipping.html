@@ -25,7 +25,7 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>إدارة الشحن والولايات SouqiExpress </title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=37">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=38">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -36,65 +36,55 @@
         body { font-family: 'Cairo', sans-serif; }
         
         /* تأثير كرت الزجاج الفاخر الموحد عبر المنصة */
-        .glass-card { 
-            background: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6); 
-        }
-        
         /* شريط تمرير داخلي منسق ومخفي للشفافية والبساطة */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
-    <link rel="stylesheet" href="assets/css/theme.css?v=37">
-    <script src="assets/js/config.js?v=37"></script>
-    <script src="assets/js/app.js?v=37"></script>
-    <script src="assets/js/subscription.js?v=37"></script>
-    <script src="assets/js/merchant-shell.js?v=37"></script>
-    <script src="assets/js/couriers.js?v=37"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=38">
+    <script src="assets/js/config.js?v=38"></script>
+    <script src="assets/js/app.js?v=38"></script>
+    <script src="assets/js/subscription.js?v=38"></script>
+    <script src="assets/js/merchant-shell.js?v=38"></script>
+    <script src="assets/js/couriers.js?v=38"></script>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="se-admin min-h-screen flex hidden" id="main-body">
+<body class="se-admin flex h-screen overflow-hidden" id="main-body">
 
     <div id="shell"></div>
 
-    <div class="flex-1 md:mr-64 min-w-0 flex flex-col">
+    <div class="flex-grow flex flex-col min-w-0 overflow-hidden">
+        <div id="shell-topbar"></div>
         
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/60 p-4 md:px-6 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3.5 sticky top-0 z-30 shadow-sm">
-            
-            <div class="flex items-center gap-3 w-full md:w-auto">
-                <button onclick="toggleSidebar()" class="md:hidden p-2 border border-slate-200 rounded-xl text-slate-700 bg-slate-50 hover:bg-slate-100 transition-all active:scale-95 shrink-0">☰</button>
-                <h1 class="text-sm md:text-base font-black text-slate-800 tracking-tight flex items-center gap-2 leading-tight">
-                    <span class="text-base shrink-0">🚚</span> 
-                    <span>إعداد أسعار شحن الولايات الخاصة بمتجري</span>
-                </h1>
-            </div>
-            
-            <div class="flex items-center justify-between md:justify-end gap-3 w-full md:w-auto border-t border-slate-100 pt-2.5 md:border-t-0 md:pt-0 shrink-0">
-                <span id="merchant-name-badge" class="hidden bg-blue-50 text-blue-700 border border-blue-100 text-[11px] md:text-xs font-extrabold px-3 py-2 rounded-xl shadow-sm whitespace-nowrap"></span>
-                
-                <button id="addWilayaBtn" onclick="openAddWilayaModal()" disabled class="bg-blue-600 opacity-50 cursor-not-allowed text-white font-black text-[11px] md:text-xs px-4 py-2.5 rounded-xl transition-all shadow-md shadow-blue-600/10 flex items-center gap-1 whitespace-nowrap">
-                    ➕ إضافة ولاية جديدة
-                </button>
-            </div>
-        </header>
+        <main class="flex-grow overflow-y-auto p-4 md:p-6 space-y-5">
 
-        <main class="p-4 md:p-6 space-y-6 flex-1 overflow-y-auto">
-            
+            <!-- ترويسة القسم: نفس نمط بقية صفحات مركز التاجر -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <h2 class="text-xl md:text-2xl font-black tracking-tight">🚚 إدارة الشحن</h2>
+                    <p class="se-muted text-xs font-bold mt-1">حدّد أسعار التوصيل لكل ولاية — الزبون يراها في السلة فوراً.</p>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span id="merchant-name-badge" class="hidden se-badge se-badge-blue !text-[11px] whitespace-nowrap"></span>
+                    <button id="addWilayaBtn" onclick="openAddWilayaModal()" disabled
+                            class="se-btn se-btn-primary !text-xs whitespace-nowrap opacity-50 cursor-not-allowed">
+                        ➕ إضافة ولاية
+                    </button>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between relative overflow-hidden group">
+                <div class="se-card p-5 flex items-center justify-between relative overflow-hidden group">
                     <div>
-                        <p class="text-xs font-extrabold text-slate-400">ولاياتك المدعومة</p>
-                        <p id="stats-total-wilayas" class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight">0</p>
+                        <p class="text-xs font-extrabold se-muted">ولاياتك المدعومة</p>
+                        <p id="stats-total-wilayas" class="text-2xl md:text-3xl font-black mt-2 tracking-tight">0</p>
                     </div>
                     <span class="text-lg bg-blue-50/80 border border-blue-100/50 p-3 rounded-2xl text-blue-600 shadow-sm transition-transform group-hover:scale-110 duration-300">📍</span>
                 </div>
                 
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between relative overflow-hidden group border-r-4 border-emerald-500">
+                <div class="se-card p-5 flex items-center justify-between relative overflow-hidden group border-r-4 border-emerald-500">
                     <div>
                         <p class="text-xs font-extrabold text-emerald-500">الشحن نشط إلى</p>
                         <p id="stats-active-wilayas" class="text-2xl md:text-3xl font-black text-emerald-600 mt-2 tracking-tight">0</p>
@@ -102,7 +92,7 @@
                     <span class="text-lg bg-emerald-50/80 border border-emerald-100/50 p-3 rounded-2xl text-emerald-600 shadow-sm transition-transform group-hover:scale-110 duration-300">✅</span>
                 </div>
                 
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between relative overflow-hidden group border-r-4 border-rose-500">
+                <div class="se-card p-5 flex items-center justify-between relative overflow-hidden group border-r-4 border-rose-500">
                     <div>
                         <p class="text-xs font-extrabold text-rose-500">الشحن متوقف إلى</p>
                         <p id="stats-inactive-wilayas" class="text-2xl md:text-3xl font-black text-rose-600 mt-2 tracking-tight">0</p>
@@ -112,7 +102,7 @@
             </div>
 
             <!-- ========= الربط مع شركات التوصيل ========= -->
-            <div class="glass-card rounded-3xl shadow-sm border border-slate-200/60 bg-white/75 p-4 md:p-5 space-y-4">
+            <div class="se-card p-4 md:p-5 space-y-4">
                 <div class="flex items-start justify-between gap-2 flex-wrap">
                     <div>
                         <h3 class="text-sm font-black text-slate-800">🚚 الربط مع شركة التوصيل</h3>
@@ -124,14 +114,14 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[10px] font-black text-slate-500 mb-1">شركة التوصيل</label>
-                        <select id="courierSelect" aria-label="اختر شركة التوصيل" onchange="renderCourierFields()" class="w-full text-sm font-bold p-2.5 border border-slate-200 rounded-xl bg-white focus:border-blue-500 focus:outline-none cursor-pointer">
+                        <select id="courierSelect" aria-label="اختر شركة التوصيل" onchange="renderCourierFields()" class="se-input !text-sm !font-bold !p-2.5">
                             <option value="">— لا يوجد ربط (يدوي) —</option>
                         </select>
                         <p id="courierNote" class="text-[10px] text-slate-400 font-bold mt-1"></p>
                     </div>
                     <div id="fromWilayaWrap" class="hidden">
                         <label class="block text-[10px] font-black text-slate-500 mb-1">ولاية الانطلاق (مخزنك)</label>
-                        <select id="courierFromWilaya" class="w-full text-sm font-bold p-2.5 border border-slate-200 rounded-xl bg-white focus:border-blue-500 focus:outline-none cursor-pointer"></select>
+                        <select id="courierFromWilaya" class="se-input !text-sm !font-bold !p-2.5"></select>
                     </div>
                 </div>
 
@@ -161,7 +151,7 @@
             </div>
 
             <!-- أدوات جماعية توفّر على التاجر تعديل 58 ولاية يدوياً -->
-            <div class="glass-card rounded-3xl shadow-sm border border-slate-200/60 bg-white/75 p-4 md:p-5 space-y-3">
+            <div class="se-card p-4 md:p-5 space-y-3">
                 <h3 class="text-sm font-black text-slate-800">⚡ تسعير جماعي سريع</h3>
                 <div class="flex flex-wrap items-end gap-2">
                     <div>
@@ -180,15 +170,15 @@
                 <p class="text-[10px] text-slate-400 font-bold">يعدّل الأسعار المعروضة في الجدول أدناه — لا يُحفظ إلا بعد الضغط على «حفظ الكل».</p>
             </div>
 
-            <div class="glass-card rounded-3xl shadow-sm overflow-hidden border border-slate-200/60 bg-white/75">
-                <div class="p-5 bg-slate-50/80 border-b border-slate-200/60 flex items-center justify-between gap-2 flex-wrap">
+            <div class="se-card overflow-hidden !p-0">
+                <div class="p-5 border-b flex items-center justify-between gap-2 flex-wrap" style="background:var(--se-bg);border-color:var(--se-border)">
                     <h3 class="text-sm font-black text-slate-800">قائمة أسعار الشحن لمتجرك</h3>
                     <button onclick="saveAllRates()" id="saveAllBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] px-4 py-2 rounded-xl shadow-sm">💾 حفظ الكل</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-right border-collapse min-w-[850px]">
                         <thead>
-                            <tr class="bg-slate-50/40 border-b border-slate-200/60 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                            <tr class="border-b se-muted text-xs font-bold uppercase tracking-wider" style="background:var(--se-bg);border-color:var(--se-border)">
                                 <th class="p-4 w-24">رمز الولاية</th>
                                 <th class="p-4">اسم الولاية</th>
                                 <th class="p-4">سعر التوصيل للمنزل (د.ج)</th>
@@ -197,7 +187,7 @@
                                 <th class="p-4 text-center w-36">الإجراءات</th>
                             </tr>
                         </thead>
-                        <tbody id="shipping-table-body" class="divide-y divide-slate-100 text-sm font-semibold text-slate-700">
+                        <tbody id="shipping-table-body" class="divide-y text-sm font-semibold" style="border-color:var(--se-border)">
                             <tr>
                                 <td colspan="6" class="p-12 text-center text-slate-400 font-bold">
                                     <div class="flex items-center justify-center gap-2.5">
@@ -213,8 +203,8 @@
     </div>
 
     <div id="addWilayaModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4 transition-all">
-        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
-            <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+        <div class="se-card w-full max-w-md !p-0 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-5 border-b flex justify-between items-center" style="background:var(--se-bg);border-color:var(--se-border)">
                 <h3 class="font-black text-slate-800 text-base flex items-center gap-1.5">
                     <span>➕</span> إضافة ولاية وأسعار شحن لمتجرك
                 </h3>
@@ -224,29 +214,29 @@
             <form id="addWilayaForm" onsubmit="createNewShippingRate(event)" class="p-6 space-y-5 overflow-y-auto flex-grow text-sm font-semibold text-slate-700">
                 <div>
                     <label class="block text-xs font-extrabold text-slate-500 mb-2">اختر الولاية:</label>
-                    <select id="modal-wilaya-select" aria-label="اختر الولاية" onchange="handleWilayaSelectChange()" required class="w-full p-3 border border-slate-200 rounded-xl bg-white text-sm font-bold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
+                    <select id="modal-wilaya-select" aria-label="اختر الولاية" onchange="handleWilayaSelectChange()" required class="se-input !p-3 !text-sm  !font-bold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
                     </select>
                 </div>
 
                 <div id="custom-wilaya-fields" class="hidden grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200 transition-all">
                     <div>
                         <label class="block text-xs font-extrabold text-slate-500 mb-1.5">رمز الولاية:</label>
-                        <input type="text" id="modal-custom-code" placeholder="مثال: 59" class="w-full p-3 border border-slate-200 rounded-xl bg-white text-sm font-black focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all text-center">
+                        <input type="text" id="modal-custom-code" placeholder="مثال: 59" class="se-input !p-3 !text-sm  !font-black focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all text-center">
                     </div>
                     <div>
                         <label class="block text-xs font-extrabold text-slate-500 mb-1.5">اسم الولاية:</label>
-                        <input type="text" id="modal-custom-name" placeholder="مثال: بوسعادة" class="w-full p-3 border border-slate-200 rounded-xl bg-white text-sm font-bold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
+                        <input type="text" id="modal-custom-name" placeholder="مثال: بوسعادة" class="se-input !p-3 !text-sm  !font-bold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-extrabold text-slate-500 mb-2">سعر توصيل المنزل (د.ج):</label>
-                        <input type="number" id="modal-home-price" aria-label="سعر التوصيل للمنزل بالدينار" value="600" min="0" required class="w-full p-3 border border-slate-200 rounded-xl bg-white font-black text-sm text-center focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
+                        <input type="number" id="modal-home-price" aria-label="سعر التوصيل للمنزل بالدينار" value="600" min="0" required class="se-input !p-3 !font-black  !text-sm text-center focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
                     </div>
                     <div>
                         <label class="block text-xs font-extrabold text-slate-500 mb-2">سعر توصيل المكتب (د.ج):</label>
-                        <input type="number" id="modal-desk-price" aria-label="سعر التوصيل للمكتب بالدينار" value="350" min="0" required class="w-full p-3 border border-slate-200 rounded-xl bg-white font-black text-sm text-center focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
+                        <input type="number" id="modal-desk-price" aria-label="سعر التوصيل للمكتب بالدينار" value="350" min="0" required class="se-input !p-3 !font-black  !text-sm text-center focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
                     </div>
                 </div>
                 
@@ -326,7 +316,6 @@
                 }
 
                 currentUser = user;
-                document.getElementById('main-body').classList.remove('hidden');
                 initCourierUI();
                 await fetchShippingRates();
                 await loadCourierCfg();
@@ -405,14 +394,14 @@
                 if (isActive) activeWilayas++; else inactiveWilayas++;
 
                 const rowHTML = `
-                    <tr class="hover:bg-slate-50 transition">
+                    <tr class="se-row transition">
                         <td class="p-4 font-bold text-slate-500">${code}</td>
-                        <td class="p-4 font-bold text-gray-800 text-sm">📍 ${code} - ${name}</td>
+                        <td class="p-4 font-bold text-sm">📍 ${code} - ${name}</td>
                         <td class="p-4">
-                            <input type="number" id="home-${id}" value="${homePrice}" class="w-full max-w-[120px] text-sm font-bold p-2 border border-slate-200 rounded-xl bg-white text-black text-center focus:border-blue-500 focus:outline-none">
+                            <input type="number" id="home-${id}" value="${homePrice}" class="se-input !w-full !max-w-[120px] !text-sm !font-bold !p-2 !text-center">
                         </td>
                         <td class="p-4">
-                            <input type="number" id="desk-${id}" value="${deskPrice}" class="w-full max-w-[120px] text-sm font-bold p-2 border border-slate-200 rounded-xl bg-white text-black text-center focus:border-blue-500 focus:outline-none">
+                            <input type="number" id="desk-${id}" value="${deskPrice}" class="se-input !w-full !max-w-[120px] !text-sm !font-bold !p-2 !text-center">
                         </td>
                         <td class="p-4">
                             <select id="status-${id}" class="text-xs font-bold rounded-xl px-3 py-2 border cursor-pointer focus:outline-none ${isActive ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-rose-50 border-rose-200 text-rose-700'}">
@@ -496,7 +485,7 @@
                     <label class="block text-[10px] font-black text-slate-500 mb-1">${SE.escape(f.label)}</label>
                     <input type="${f.type}" id="cf_${f.key}" dir="ltr" placeholder="${SE.escape(f.placeholder || '')}"
                         value="${SE.escape(courierCfg[f.key] || '')}"
-                        class="w-full text-sm font-bold p-2.5 border border-slate-200 rounded-xl bg-white text-left focus:border-blue-500 focus:outline-none">
+                        class="se-input !text-sm !font-bold !p-2.5">
                 </div>`).join('');
         };
 
@@ -813,11 +802,6 @@
             auth.signOut().then(() => {
                 window.location.href = 'login.html';
             }).catch(err => console.error("خطأ أثناء خروج التاجر:", err));
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('translate-x-full');
-            document.getElementById('sidebarOverlay').classList.toggle('hidden');
         }
     </script>
 </body>

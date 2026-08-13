@@ -25,7 +25,7 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>إدارة المنتجات | مركز التاجر</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=37">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=38">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
         body { font-family: 'Cairo', sans-serif; }
@@ -45,7 +45,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
-    <link rel="stylesheet" href="assets/css/theme.css?v=37">
+    <link rel="stylesheet" href="assets/css/theme.css?v=38">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="se-admin flex h-screen overflow-hidden">
@@ -104,11 +104,11 @@
             <div class="flex flex-col sm:flex-row gap-3 mb-6">
                 <div class="relative flex-grow">
                     <span class="absolute inset-y-0 right-4 flex items-center text-slate-400 text-base">🔍</span>
-                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ابحث باسم المنتج..." class="w-full pl-4 pr-11 py-3.5 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all shadow-sm">
+                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ابحث باسم المنتج..." class="se-input !pl-4 !pr-11 !py-3.5 !text-sm">
                 </div>
             </div>
 
-            <div class="glass-card rounded-3xl shadow-sm overflow-hidden border border-slate-200/60 bg-white/75 mb-8">
+            <div class="se-card overflow-hidden !p-0 mb-8">
                 <div class="overflow-x-auto">
                     <table class="w-full text-right border-collapse min-w-[800px]">
                         <thead>
@@ -137,7 +137,7 @@
     </div>
 
     <div id="addProductModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-all">
-        <div class="bg-white rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh] border border-slate-100">
+        <div class="se-card !p-0 w-full max-w-xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                 <h3 class="font-black text-base md:text-lg text-slate-800" id="modalTitle">✨ إضافة منتج جديد</h3>
                 <button type="button" onclick="closeAddProductModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-lg flex items-center justify-center hover:bg-slate-100 text-sm font-bold transition-all duration-200">✕</button>
@@ -164,7 +164,7 @@
                 
                 <div>
                     <label class="block text-xs font-bold text-slate-500 mb-1.5">الفئة (Category) *</label>
-                    <select id="pCategory" required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all bg-white">
+                    <select id="pCategory" required class="se-input !p-3 !text-sm">
                         <option value="">اختر الفئة...</option>
                     </select>
                 </div>
@@ -208,10 +208,10 @@
             </form>
         </div>
     </div>
-    <script src="assets/js/config.js?v=37"></script>
-    <script src="assets/js/app.js?v=37"></script>
-    <script src="assets/js/subscription.js?v=37"></script>
-    <script src="assets/js/merchant-shell.js?v=37"></script>
+    <script src="assets/js/config.js?v=38"></script>
+    <script src="assets/js/app.js?v=38"></script>
+    <script src="assets/js/subscription.js?v=38"></script>
+    <script src="assets/js/merchant-shell.js?v=38"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";

@@ -25,7 +25,7 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>إعدادات المتجر والحساب - مركز التاجر</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=37">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=38">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap');
         body { font-family: 'Cairo', sans-serif; }
@@ -44,12 +44,12 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
-    <script src="assets/js/config.js?v=37"></script>
-    <script src="assets/js/app.js?v=37"></script>
-    <script src="assets/js/subscription.js?v=37"></script>
-    <script src="assets/js/merchant-shell.js?v=37"></script>
+    <script src="assets/js/config.js?v=38"></script>
+    <script src="assets/js/app.js?v=38"></script>
+    <script src="assets/js/subscription.js?v=38"></script>
+    <script src="assets/js/merchant-shell.js?v=38"></script>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
-    <link rel="stylesheet" href="assets/css/theme.css?v=37">
+    <link rel="stylesheet" href="assets/css/theme.css?v=38">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="se-admin flex h-screen overflow-hidden">
@@ -69,7 +69,7 @@
 
             <!-- بطاقة الاشتراك الشهري -->
             <div class="flex justify-center mb-5">
-                <div id="subCard" class="w-full max-w-2xl bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-3xl shadow-xl shadow-slate-900/5 overflow-hidden">
+                <div id="subCard" class="se-card w-full max-w-2xl !p-0 overflow-hidden">
                     <div class="p-5 sm:p-6">
                         <div class="flex flex-wrap items-start justify-between gap-4">
                             <div class="min-w-0">
@@ -96,7 +96,7 @@
             </div>
 
             <div class="flex justify-center">
-                <div class="w-full max-w-2xl bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-3xl shadow-xl shadow-slate-900/5 overflow-hidden">
+                <div class="se-card w-full max-w-2xl !p-0 overflow-hidden">
                     
                     <div class="p-6 bg-slate-50/70 border-b border-slate-100/80">
                         <h3 class="text-base md:text-lg font-black text-slate-800">بيانات التواصل الاجتماعي</h3>
@@ -312,7 +312,7 @@ function doGet() {                      // للتأكد أن النشر يعمل
                             <div id="lpLinkBox" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-4 space-y-2">
                                 <p class="text-[11px] font-black text-emerald-800">🔗 رابط صفحة الهبوط الخاصة بك:</p>
                                 <div class="flex gap-2">
-                                    <input id="lpLink" readonly dir="ltr" class="flex-1 min-w-0 bg-white border border-emerald-200 rounded-xl px-3 py-2 text-[11px] font-bold text-left">
+                                    <input id="lpLink" readonly dir="ltr" class="se-input !flex-1 !min-w-0 !px-3 !py-2 !text-[11px] !font-bold !text-left">
                                     <button type="button" onclick="copyLp()" class="bg-emerald-600 text-white text-[11px] font-black px-3 py-2 rounded-xl flex-shrink-0">نسخ</button>
                                     <a id="lpOpen" href="#" target="_blank" class="bg-white border border-emerald-300 text-emerald-700 text-[11px] font-black px-3 py-2 rounded-xl flex-shrink-0">فتح</a>
                                 </div>
@@ -364,7 +364,7 @@ function doGet() {                      // للتأكد أن النشر يعمل
             </div>
         </main>
     </div>
-    <script src="assets/js/integrations.js?v=37"></script>
+    <script src="assets/js/integrations.js?v=38"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
