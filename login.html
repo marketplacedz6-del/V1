@@ -25,7 +25,7 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>بوابة الدخول | SouqiExpress</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=34">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=35">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -35,9 +35,9 @@
         }
     </style>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
-    <link rel="stylesheet" href="assets/css/theme.css?v=34">
-    <script src="assets/js/config.js?v=34"></script>
-    <script src="assets/js/subscription.js?v=34"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=35">
+    <script src="assets/js/config.js?v=35"></script>
+    <script src="assets/js/subscription.js?v=35"></script>
 </head>
 <body class="auth-gradient min-h-screen flex items-center justify-center p-4 antialiased">
 
@@ -82,7 +82,7 @@
             <div id="registerFields" class="hidden space-y-4">
                 
                 <div class="flex flex-col items-center justify-center mb-2">
-                    <span class="text-xs text-gray-500 font-bold mb-2">الصورة الشخصية (اختياري)</span>
+                    <span class="text-xs text-gray-600 font-bold mb-2">شعار أو صورة متجرك <span class="text-rose-500">*</span></span>
                     <div class="relative group">
                         <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="previewAvatar(event)">
                         <button type="button" onclick="document.getElementById('avatarInput').click()" class="w-24 h-24 rounded-full bg-gray-50 border-2 border-dashed border-gray-200 hover:border-blue-500 flex flex-col items-center justify-center overflow-hidden transition relative shadow-inner group">
@@ -92,10 +92,14 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812-1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
-                                <span class="text-[9px] font-bold">إضافة صورة</span>
+                                <span class="text-[9px] font-bold">أضف شعارك</span>
                             </div>
                         </button>
                     </div>
+                    <p id="avatarHint" class="text-[10px] font-bold text-slate-400 mt-1.5 text-center">مطلوبة</p>
+                    <p class="text-[10px] font-bold text-slate-400 mt-0.5 text-center leading-relaxed max-w-[15rem]">
+                        تظهر لزبائنك في صفحة متجرك — الشعار يزيد الثقة والمبيعات.
+                    </p>
                 </div>
 
                 <div class="relative">
@@ -111,7 +115,7 @@
             
             <div class="relative">
                 <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">✉️</span>
-                <input type="email" id="email" required placeholder="البريد الإلكتروني" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
+                <input type="email" id="email" required placeholder="البريد الإلكتروني *" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
             </div>
 
             <div class="relative">
@@ -184,16 +188,43 @@
             }
         };
 
+        let avatarObjectUrl = null;
+
         window.previewAvatar = (event) => {
             const file = event.target.files[0];
             const preview = document.getElementById('avatarPreview');
             const placeholder = document.getElementById('avatarPlaceholder');
-            
-            if (file) {
-                preview.src = URL.createObjectURL(file);
-                preview.classList.remove('hidden');
-                placeholder.classList.add('hidden');
+            const hint = document.getElementById('avatarHint');
+
+            // نظّف الرابط السابق — createObjectURL يحجز ذاكرة حتى يُلغى
+            if (avatarObjectUrl) { URL.revokeObjectURL(avatarObjectUrl); avatarObjectUrl = null; }
+
+            const reset = (msg) => {
+                event.target.value = '';
+                preview.src = '';
+                preview.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+                if (hint && msg) { hint.textContent = msg; hint.className = 'text-[10px] font-bold text-rose-600 mt-1.5 text-center'; }
+            };
+
+            // إلغاء الاختيار: أعِد الحالة بدل إبقاء معاينة قديمة
+            if (!file) { reset(''); return; }
+
+            // تحقّق من النوع: كان يقبل PDF أو فيديو
+            if (!file.type || !file.type.startsWith('image/')) {
+                reset('⚠️ اختر ملف صورة فقط (JPG أو PNG)');
+                return;
             }
+            if (file.size > 8 * 1024 * 1024) {
+                reset('⚠️ الصورة أكبر من 8 ميغابايت، اختر صورة أصغر');
+                return;
+            }
+
+            avatarObjectUrl = URL.createObjectURL(file);
+            preview.src = avatarObjectUrl;
+            preview.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            if (hint) { hint.textContent = '✅ تم اختيار الصورة'; hint.className = 'text-[10px] font-bold text-emerald-600 mt-1.5 text-center'; }
         };
 
         window.toggleMode = () => {
@@ -210,7 +241,11 @@
             document.getElementById('name').required = !isLoginMode;
             document.getElementById('confirmPassword').required = !isLoginMode;
 
+            const hint = document.getElementById('avatarHint');
+            if (hint) { hint.textContent = 'مطلوبة'; hint.className = 'text-[10px] font-bold text-slate-400 mt-1.5 text-center'; }
+
             if (isLoginMode) {
+                if (avatarObjectUrl) { URL.revokeObjectURL(avatarObjectUrl); avatarObjectUrl = null; }
                 document.getElementById('avatarInput').value = '';
                 document.getElementById('avatarPreview').src = '';
                 document.getElementById('avatarPreview').classList.add('hidden');
@@ -219,6 +254,8 @@
                 document.getElementById('name').value = '';
                 document.getElementById('confirmPassword').value = '';
             }
+            // امسح كلمة المرور عند التبديل حتى لا تُرسل قيمة من المحاولة السابقة
+            document.getElementById('password').value = '';
         };
 
         window.closeSuccessModal = () => {
@@ -227,7 +264,9 @@
             modal.querySelector('div').classList.add('scale-95');
             setTimeout(() => {
                 modal.classList.add('hidden');
-                window.toggleMode(); 
+                // ارجع لوضع الدخول فقط إن كنّا في وضع التسجيل — كان يقلب
+                // الوضع بلا شرط فيفتح التسجيل بدل الدخول أحياناً.
+                if (!isLoginMode) window.toggleMode();
             }, 150);
         };
 
@@ -284,6 +323,20 @@
                     return 'كلمة المرور ضعيفة جداً، يجب أن تتكون من 6 أحرف أو رموز على الأقل.';
                 case 'auth/network-request-failed':
                     return 'فشل الاتصال بالشبكة، يرجى التحقق من اتصال الإنترنت لديك.';
+                case 'auth/too-many-requests':
+                    return 'محاولات كثيرة خلال وقت قصير. انتظر بضع دقائق ثم أعد المحاولة.';
+                case 'auth/user-disabled':
+                    return 'هذا الحساب موقوف. تواصل مع الإدارة لمعرفة السبب.';
+                case 'auth/operation-not-allowed':
+                    return 'التسجيل بالبريد غير مفعّل حالياً. تواصل مع الإدارة.';
+                case 'auth/requires-recent-login':
+                    return 'انتهت صلاحية جلستك. سجّل الدخول مجدداً.';
+                case 'permission-denied':
+                    return 'لا تملك صلاحية هذا الإجراء. تحقّق من قواعد الحماية.';
+                case 'unavailable':
+                    return 'الخدمة غير متاحة مؤقتاً. أعد المحاولة بعد قليل.';
+                case 'SAVE_FAILED':
+                    return 'أُنشئ حسابك لكن تعذّر حفظ بياناتك، فأُلغي الحساب لتتمكّن من إعادة المحاولة بنفس البريد. تحقّق من اتصالك وحاول مجدداً.';
                 default:
                     return 'حدث خطأ أثناء الاتصال بقاعدة البيانات، يرجى إعادة المحاولة.';
             }
@@ -343,6 +396,22 @@
                     fail("⚠️ خطأ في كلمة المرور", "كلمتا المرور غير متطابقتين، يرجى التأكد وإعادة الكتابة.");
                     return;
                 }
+
+                // صورة/شعار المتجر مطلوبة — تظهر للزبائن في متجرك وتزيد ثقتهم
+                const avatarF = document.getElementById('avatarInput').files[0];
+                if (!avatarF) {
+                    fail("⚠️ شعار المتجر مطلوب", "أضف صورة أو شعاراً لمتجرك — سيظهر للزبائن في صفحة متجرك ويزيد ثقتهم بك.");
+                    document.getElementById('avatarInput').closest('div').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+                if (!avatarF.type || !avatarF.type.startsWith('image/')) {
+                    fail("⚠️ الملف ليس صورة", "اختر ملف صورة بصيغة JPG أو PNG.");
+                    return;
+                }
+                if (avatarF.size > 8 * 1024 * 1024) {
+                    fail("⚠️ الصورة كبيرة جداً", "اختر صورة أصغر من 8 ميغابايت.");
+                    return;
+                }
             }
 
             submitBtn.disabled = true;
@@ -357,18 +426,16 @@
                     let userDoc = await getDoc(userDocRef);
                     
                     if (!userDoc.exists()) {
-                        await setDoc(userDocRef, {
-                            uid: uid,
-                            name: email.split('@')[0],
-                            email: email,
-                            phone: "",
-                            role: "merchant",
-                            avatar: "",
-                            is_approved: false,
-                            emailVisibility: false,
-                            createdAt: new Date().toISOString()
-                        });
-                        userDoc = await getDoc(userDocRef);
+                        /* حساب موجود في Auth بلا مستند بيانات (بقايا تسجيل فاشل قديم).
+                           كنّا ننشئ له مستنداً تلقائياً بلا اسم ولا هاتف ولا شعار —
+                           وهو ما يناقض شرط اكتمال البيانات، ويصل المسوّق إلى تاجر
+                           لا يعرف اسمه ولا يستطيع الاتصال به.
+                           الصواب: نمنع الدخول ونطلب إكمال التسجيل. */
+                        await signOut(auth);
+                        errorTitle.innerHTML = "⚠️ بيانات حسابك غير مكتملة";
+                        errorDetails.textContent = "حسابك مسجّل لكن بياناته ناقصة. أنشئ حسابك من جديد بنفس البريد مع إكمال الاسم والهاتف وشعار المتجر، أو تواصل مع الإدارة.";
+                        errorMessage.classList.remove('hidden');
+                        return;
                     }
                     
                     const userData = userDoc.data();
@@ -424,30 +491,33 @@
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const uid = userCredential.user.uid;
 
-                    let avatarUrl = "";
-
-                    if (avatarFile) {
-                        try {
-                            if (avatarFile.size > 8 * 1024 * 1024) {
-                                throw new Error('الصورة أكبر من 8 ميغابايت');
-                            }
+                    /* من هنا فصاعداً: حساب Auth أُنشئ فعلاً.
+                       إن فشل أي شيء بعده (صورة تالفة، انقطاع شبكة، رفض قواعد
+                       Firestore) نحصل على "حساب يتيم": موجود في Auth بلا مستند
+                       بيانات — فلا يستطيع صاحبه الدخول ولا إعادة التسجيل بنفس
+                       البريد. لذلك نحذف حساب Auth عند أي فشل. */
+                    try {
+                        let avatarUrl = "";
+                        if (avatarFile) {
                             avatarUrl = await convertImageToBase64(avatarFile);
-                        } catch (imgErr) {
-                            console.error("خطأ في تجهيز الصورة:", imgErr);
                         }
-                    }
 
-                    await setDoc(doc(db, "users", uid), {
-                        uid: uid,
-                        name: name,
-                        email: email,
-                        phone: phone,
-                        role: "merchant",
-                        avatar: avatarUrl,
-                        is_approved: false,
-                        emailVisibility: false,
-                        createdAt: new Date().toISOString()
-                    });
+                        await setDoc(doc(db, "users", uid), {
+                            uid: uid,
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            role: "merchant",
+                            avatar: avatarUrl,
+                            is_approved: false,
+                            emailVisibility: false,
+                            createdAt: new Date().toISOString()
+                        });
+                    } catch (saveErr) {
+                        console.error("فشل حفظ بيانات الحساب:", saveErr);
+                        try { await userCredential.user.delete(); } catch (delErr) { console.error(delErr); }
+                        throw new Error('SAVE_FAILED');
+                    }
 
                     try {
                         sessionStorage.setItem("se_sub_notice", JSON.stringify({
@@ -468,7 +538,7 @@
                 console.error("Firebase Error:", err);
                 errorMessage.classList.remove('hidden');
                 errorTitle.innerHTML = "❌ فشل الإجراء";
-                errorDetails.textContent = getFriendlyErrorMessage(err.code);
+                errorDetails.textContent = getFriendlyErrorMessage(err.code || err.message);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = isLoginMode ? 'دخول' : 'إنشاء حساب جديد';
