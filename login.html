@@ -25,7 +25,8 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>بوابة الدخول | SouqiExpress</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=38">
+    <meta name="description" content="سجّل دخولك أو افتح متجرك الإلكتروني على سوقي إكسبريس — منصة التجارة الجزائرية.">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=39">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -35,9 +36,9 @@
         }
     </style>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
-    <link rel="stylesheet" href="assets/css/theme.css?v=38">
-    <script src="assets/js/config.js?v=38"></script>
-    <script src="assets/js/subscription.js?v=38"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=39">
+    <script src="assets/js/config.js?v=39"></script>
+    <script src="assets/js/subscription.js?v=39"></script>
 </head>
 <body class="auth-gradient min-h-screen flex items-center justify-center p-4 antialiased">
 
@@ -160,17 +161,7 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
-            measurementId: "G-PGLFSTBVTH"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.SE_CONFIG.firebase);
         const auth = getAuth(app);
         const db = getFirestore(app);
 

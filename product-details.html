@@ -28,12 +28,12 @@
     <meta name="description" content="اطلب منتجك الآن من سوقي إكسبريس مع الدفع عند الاستلام وتوصيل لكل الولايات الجزائرية.">
     <meta name="theme-color" content="#0284c7">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=38">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=39">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/theme.css?v=38">
-    <script src="assets/js/config.js?v=38"></script>
-    <script src="assets/js/integrations.js?v=38"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=39">
+    <script src="assets/js/config.js?v=39"></script>
+    <script src="assets/js/integrations.js?v=39"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -254,12 +254,12 @@
     </footer>
 
     <img id="merchantAvatar" src="" alt="" class="hidden"> 
-    <a id="whatsapp-floating-btn" href="#" target="_blank" class="fixed bottom-4 right-4 z-50 bg-emerald-500 hover:bg-emerald-600 text-white font-black px-4 py-3 rounded-full shadow-lg hidden items-center gap-2 text-sm transition hover:scale-105 se-noprint" style="margin-bottom:env(safe-area-inset-bottom)" dir="ltr">
+    <a id="whatsapp-floating-btn" href="#" target="_blank" class="fixed bottom-4 right-4 z-50 bg-emerald-500 hover:bg-emerald-600 text-white font-black px-4 py-3 rounded-full shadow-lg hidden items-center gap-2 text-sm transition hover:scale-105 se-noprint" style="margin-bottom:env(safe-area-inset-bottom)" dir="ltr" rel="noopener noreferrer">
         <span>WhatsApp</span>
         <span class="text-lg">💬</span>
     </a>
 
-    <script src="assets/js/app.js?v=38"></script>
+    <script src="assets/js/app.js?v=39"></script>
     <script>
         const firebaseConfig = window.SE_CONFIG.firebase;
         firebase.initializeApp(firebaseConfig);
@@ -600,13 +600,13 @@
                     const footerContainer = document.getElementById('social-footer-links');
                     footerContainer.innerHTML = "";
                     if(settings.facebook) {
-                        footerContainer.innerHTML += `<a href="${settings.facebook}" target="_blank" class="flex items-center gap-1.5 bg-[#1877F2] text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm transition hover:scale-105">فيسبوك</a>`;
+                        footerContainer.innerHTML += `<a href="${settings.facebook}" target="_blank" class="flex items-center gap-1.5 bg-[#1877F2] text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm transition hover:scale-105" rel="noopener noreferrer">فيسبوك</a>`;
                     }
                     if(settings.instagram) {
-                        footerContainer.innerHTML += `<a href="${settings.instagram}" target="_blank" class="flex items-center gap-1.5 bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm transition hover:scale-105">إنستغرام</a>`;
+                        footerContainer.innerHTML += `<a href="${settings.instagram}" target="_blank" class="flex items-center gap-1.5 bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm transition hover:scale-105" rel="noopener noreferrer">إنستغرام</a>`;
                     }
                     if(settings.tiktok) {
-                        footerContainer.innerHTML += `<a href="${settings.tiktok}" target="_blank" class="flex items-center gap-1.5 bg-black text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm transition hover:scale-105">تيك توك</a>`;
+                        footerContainer.innerHTML += `<a href="${settings.tiktok}" target="_blank" class="flex items-center gap-1.5 bg-black text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm transition hover:scale-105" rel="noopener noreferrer">تيك توك</a>`;
                     }
                 }
             } catch (err) { console.log("لا توجد إعدادات تواصل اجتماعي مخصصة."); }

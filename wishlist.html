@@ -26,12 +26,13 @@
     </style>
     <meta name="theme-color" content="#0284c7">
     <title>المفضلة | SouqiExpress</title>
+    <meta name="description" content="قائمة المنتجات المفضّلة لديك على سوقي إكسبريس — احفظ ما يعجبك واشترِه لاحقاً.">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=38">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=39">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/theme.css?v=38">
-    <script src="assets/js/config.js?v=38"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=39">
+    <script src="assets/js/config.js?v=39"></script>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -48,7 +49,7 @@
                 </div>
             </a>
             <div class="flex items-center gap-2">
-                <button data-se-theme-toggle class="se-btn se-btn-ghost !px-3 !py-2"><i data-se-theme-icon class="fa-solid fa-moon"></i></button>
+                <button data-se-theme-toggle aria-label="الوضع الليلي" title="الوضع الليلي" class="se-btn se-btn-ghost !px-3 !py-2"><i data-se-theme-icon class="fa-solid fa-moon"></i></button>
                 <a href="cart.html" class="se-btn se-btn-ghost relative">
                     <i class="fa-solid fa-basket-shopping"></i>
                     <span data-se-cart-count class="absolute -top-2 -left-2 bg-emerald-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
@@ -75,7 +76,7 @@
         © 2026 <span style="color:var(--se-primary)">SouqiExpress</span> — جميع الحقوق محفوظة.
     </footer>
 
-    <script src="assets/js/app.js?v=38"></script>
+    <script src="assets/js/app.js?v=39"></script>
     <script>
         document.getElementById('brandLogo').src = SE_CONFIG.logo;
         SE.mountTabbar('wish');

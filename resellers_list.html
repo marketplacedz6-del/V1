@@ -25,17 +25,18 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>دليل حسابات المسوقين</title>
+    <meta name="description" content="قائمة المسوّقين المعتمدين على سوقي إكسبريس — اختر مسوّقاً لتفعيل أو تجديد اشتراك متجرك.">
     <!-- تضمين Tailwind CSS للتصميم المتجاوب والسريع -->
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=38">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=39">
     <!-- تضمين خط Cairo من Google Fonts لتنسيق النصوص العربية بشكل احترافي -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
     </style>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
-    <link rel="stylesheet" href="assets/css/theme.css?v=38">
-    <script src="assets/js/config.js?v=38"></script>
-    <script src="assets/js/subscription.js?v=38"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=39">
+    <script src="assets/js/config.js?v=39"></script>
+    <script src="assets/js/subscription.js?v=39"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="se-admin min-h-screen flex flex-col antialiased">
@@ -258,17 +259,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
-            measurementId: "G-PGLFSTBVTH"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.SE_CONFIG.firebase);
         const db = getFirestore(app);
 
         let allResellers = [];

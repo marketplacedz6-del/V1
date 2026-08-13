@@ -25,18 +25,19 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>المتجر الإلكتروني | SouqiExpress</title>
+    <meta name="description" content="تصفّح متجراً على منصة سوقي إكسبريس — منتجات جزائرية بالدفع عند الاستلام وتوصيل سريع.">
     <meta name="theme-color" content="#0284c7">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=38">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=39">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     
-    <link rel="stylesheet" href="assets/css/theme.css?v=38">
-    <script src="assets/js/config.js?v=38"></script>
-    <script src="assets/js/integrations.js?v=38"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=39">
+    <script src="assets/js/config.js?v=39"></script>
+    <script src="assets/js/integrations.js?v=39"></script>
     <style>
         body { font-family: 'Cairo', sans-serif; }
         ::-webkit-scrollbar { width: 6px; }
@@ -94,9 +95,9 @@
     <!-- القائمة الجانبية (Sidebar) -->
     <div id="sidebar" class="fixed inset-y-0 right-0 w-[85vw] max-w-xs z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col" style="background:var(--se-card)">
         <div class="p-6 border-b border-gray-100 flex flex-col items-center text-center relative">
-            <button id="close-sidebar" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-lg"></i></button>
+            <button id="close-sidebar" aria-label="إغلاق القائمة" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-lg"></i></button>
             <div class="w-20 h-20 rounded-full overflow-hidden bg-gray-50 border shadow-sm p-1 mb-3">
-                <img id="sidebar-logo" src="https://placehold.co/150" class="w-full h-full object-cover rounded-full">
+                <img id="sidebar-logo" src="https://placehold.co/150" alt="شعار المتجر" class="w-full h-full object-cover rounded-full">
             </div>
             <h2 id="sidebar-store-name" class="font-black text-lg">اسم المتجر</h2>
         </div>
@@ -155,7 +156,7 @@
     <!-- أسعار التوصيل -->
     <div id="shipping-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
         <div class="se-card w-full max-w-lg p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
-            <button onclick="closeShippingModal()" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-lg"></i></button>
+            <button onclick="closeShippingModal()" aria-label="إغلاق" class="absolute top-4 left-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-times text-lg"></i></button>
             <h3 class="text-xl font-black border-b pb-3 mb-4"><i class="fa-solid fa-truck text-blue-600 ml-2"></i>أسعار التوصيل المعتمدة</h3>
             <div id="shipping-list" class="flex-1 overflow-y-auto space-y-3 pr-1">
                 <!-- جلب حقول التوصيل ديناميكياً للتاجر الحالي فقط -->
@@ -169,7 +170,7 @@
             <div class="flex flex-col items-center md:items-end space-y-3">
                 <div class="flex items-center gap-2">
                     <span id="footer-store-name" class="font-black text-lg">اسم المتجر</span>
-                    <img id="footer-logo" src="" class="w-8 h-8 rounded-full object-cover hidden">
+                    <img id="footer-logo" src="" alt="شعار المتجر" class="w-8 h-8 rounded-full object-cover hidden">
                 </div>
                 <p id="store-bio" class="text-xs text-gray-400 max-w-xs leading-relaxed">بائع معتمد في المنصة SouqiExpress.</p>
             </div>
@@ -182,7 +183,7 @@
         </div>
     </footer>
 
-    <script src="assets/js/app.js?v=38"></script>
+    <script src="assets/js/app.js?v=39"></script>
     <script>
         firebase.initializeApp(window.SE_CONFIG.firebase);
         const db = firebase.firestore();
@@ -258,13 +259,13 @@
                         const socialContainer = document.getElementById('sidebar-socials');
                         socialContainer.innerHTML = '';
                         
-                        if (settings.facebook) socialContainer.innerHTML += `<a href="${settings.facebook}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-[#1877f2] text-lg hover:scale-110 transition"><i class="fa-brands fa-facebook-f"></i></a>`;
-                        if (settings.instagram) socialContainer.innerHTML += `<a href="${settings.instagram}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-gradient-to-tr from-[#fccc63] via-[#f75274] to-[#9d36e7] text-lg hover:scale-110 transition"><i class="fa-brands fa-instagram"></i></a>`;
-                        if (settings.tiktok) socialContainer.innerHTML += `<a href="${settings.tiktok}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-black text-lg hover:scale-110 transition"><i class="fa-brands fa-tiktok"></i></a>`;
+                        if (settings.facebook) socialContainer.innerHTML += `<a href="${settings.facebook}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-[#1877f2] text-lg hover:scale-110 transition" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>`;
+                        if (settings.instagram) socialContainer.innerHTML += `<a href="${settings.instagram}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-gradient-to-tr from-[#fccc63] via-[#f75274] to-[#9d36e7] text-lg hover:scale-110 transition" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>`;
+                        if (settings.tiktok) socialContainer.innerHTML += `<a href="${settings.tiktok}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-black text-lg hover:scale-110 transition" rel="noopener noreferrer"><i class="fa-brands fa-tiktok"></i></a>`;
                         if (settings.snapchat || settings.whatsapp) {
                             const snap = settings.snapchat || `https://wa.me/${settings.whatsapp}`;
                             // تم تحويل الأيقونة والخلفية هنا إلى واتساب الأخضر بدلاً من سناب شات الأصفر
-                            socialContainer.innerHTML += `<a href="${snap}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-[#25D366] text-lg hover:scale-110 transition shadow-sm"><i class="fa-brands fa-whatsapp"></i></a>`;
+                            socialContainer.innerHTML += `<a href="${snap}" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center text-white bg-[#25D366] text-lg hover:scale-110 transition shadow-sm" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>`;
                         }
                     }
                 } catch (e) {}
@@ -337,7 +338,7 @@
 
                     catsContainer.innerHTML += `
                         <div class="min-w-[140px] sm:min-w-[210px] h-52 sm:h-64 relative rounded-2xl overflow-hidden snap-start shrink-0 group shadow-sm">
-                            <img src="${catImage}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <img src="${catImage}" alt="${SE.escape(finalCatName)}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
                                 <h3 class="text-white font-black text-sm sm:text-base text-right mb-2.5 leading-tight">${finalCatName}</h3>
                                 <button onclick="filterByCategory('${catKey}')" class="w-full bg-blue-600 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-1 shadow-md hover:bg-blue-700 transition">
@@ -389,7 +390,7 @@
                     <div class="aspect-square w-full overflow-hidden relative rounded-xl bg-gray-50">
                         <img src="${productImg}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                         ${discountBadge}
-                        <button data-se-wish-id="${product.id}" onclick="storeToggleWish('${product.id}')" class="absolute top-2 left-2 w-8 h-8 rounded-full bg-white/90 shadow flex items-center justify-center text-slate-400 hover:scale-110 transition"><i class="fa-regular fa-heart"></i></button>
+                        <button data-se-wish-id="${product.id}" onclick="storeToggleWish('${product.id}')" aria-label="إضافة للمفضلة" title="إضافة للمفضلة" class="absolute top-2 left-2 w-8 h-8 rounded-full bg-white/90 shadow flex items-center justify-center text-slate-400 hover:scale-110 transition"><i class="fa-regular fa-heart"></i></button>
                     </div>
                     <div class="pt-2.5 pb-1.5 px-1.5 flex flex-col items-center text-center space-y-1">
                         <h3 class="font-semibold text-[11px] sm:text-sm md:text-base se-line-clamp-2 leading-snug w-full min-h-[2.1rem]">${product.name || 'منتج جديد'}</h3>
