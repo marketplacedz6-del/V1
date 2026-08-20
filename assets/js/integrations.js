@@ -51,6 +51,16 @@
    *  - keepalive يضمن إكمال الإرسال حتى لو انتقل المستخدم من الصفحة فوراً.
    *  - sendBeacon كخطة بديلة لأنه مصمَّم لهذه الحالة بالضبط.
    */
+  /* تقسيم الاسم الكامل إلى اسم ولقب.
+     جدول Google Sheets يطلب عمودين منفصلين. نرسلهما من هنا
+     بدل ترك التقسيم لسكربت الجدول — أدق وأسهل في التتبّع. */
+  SEI.splitName = function (full) {
+    const clean = String(full == null ? '' : full).trim().replace(/\s+/g, ' ');
+    if (!clean) return { first: '', last: '' };
+    const parts = clean.split(' ');
+    return { first: parts.shift(), last: parts.join(' ') };
+  };
+
   SEI.sendToSheet = function (webhookUrl, payload) {
     const url = String(webhookUrl || '').trim();
     if (!SEI.isSheetUrl(url)) {
@@ -58,7 +68,15 @@
       return Promise.resolve(false);
     }
 
-    const body = JSON.stringify(payload || {});
+    // اشتقّ الاسم واللقب تلقائياً إن لم يُرسلا صراحةً
+    const data = Object.assign({}, payload || {});
+    if (!data.first_name && !data.last_name && data.customer_name) {
+      const n = SEI.splitName(data.customer_name);
+      data.first_name = n.first;
+      data.last_name = n.last;
+    }
+
+    const body = JSON.stringify(data);
 
     // 1) sendBeacon: الأضمن عند مغادرة الصفحة — يُرسل في الخلفية
     try {

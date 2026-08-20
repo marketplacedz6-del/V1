@@ -550,14 +550,14 @@
 
     // شبكة أمان: إن كان الـ SW المتحكّم قديماً (نسخة سابقة)، ألغِ التسجيل
     // وامسح الكاش مرة واحدة تلقائياً — يمنع بقاء المستخدم على نسخة عالقة.
-    const SE_BUILD = "40";
+    const SE_BUILD = "41";
     try {
       if (localStorage.getItem("se_build") !== SE_BUILD) {
         localStorage.setItem("se_build", SE_BUILD);
         // امسح كل الكاش القديم بلا استثناء عند تغيّر الإصدار
         if (window.caches) {
           caches.keys().then(keys => {
-            keys.filter(k => k !== "souqi-express-v40").forEach(k => caches.delete(k));
+            keys.filter(k => k !== "souqi-express-v41").forEach(k => caches.delete(k));
           }).catch(() => {});
         }
       }

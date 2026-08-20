@@ -25,7 +25,7 @@
     [hidden],.hidden{display:none !important}
     </style>
     <title>إعدادات المتجر والحساب - مركز التاجر</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=40">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=41">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap');
         body { font-family: 'Cairo', sans-serif; }
@@ -44,12 +44,12 @@
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
-    <script src="assets/js/config.js?v=40"></script>
-    <script src="assets/js/app.js?v=40"></script>
-    <script src="assets/js/subscription.js?v=40"></script>
-    <script src="assets/js/merchant-shell.js?v=40"></script>
+    <script src="assets/js/config.js?v=41"></script>
+    <script src="assets/js/app.js?v=41"></script>
+    <script src="assets/js/subscription.js?v=41"></script>
+    <script src="assets/js/merchant-shell.js?v=41"></script>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
-    <link rel="stylesheet" href="assets/css/theme.css?v=40">
+    <link rel="stylesheet" href="assets/css/theme.css?v=41">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="se-admin flex h-screen overflow-hidden">
@@ -166,22 +166,53 @@
                                     <pre id="sheetCode" dir="ltr" class="bg-slate-900 text-emerald-300 p-3 rounded-xl overflow-x-auto text-[10px] leading-relaxed text-left">function doPost(e) {
   try {
     var sh = SpreadsheetApp.getActiveSheet();
-    var raw = (e &amp;&amp; e.postData &amp;&amp; e.postData.contents) ? e.postData.contents : "{}";
-    var d = JSON.parse(raw);
 
-    var HEAD = ["Order ID","Date","Customer Name","Phone 1","Phone 2",
+    /* ---- قراءة البيانات بعدة طرق ----
+       سبب مشكلة "كل شيء في عمود واحد": أحياناً يصل الطلب في
+       e.parameter بدل e.postData حسب نوع المحتوى. هنا نجرّب كل
+       الاحتمالات حتى لا يفشل التحليل ويُكتب النص خاماً. */
+    var d = {};
+    var raw = "";
+    if (e &amp;&amp; e.postData &amp;&amp; e.postData.contents) raw = e.postData.contents;
+
+    if (raw) {
+      try {
+        d = JSON.parse(raw);
+      } catch (err1) {
+        try {                       // ربما وصل مُرمّزاً كنموذج
+          d = JSON.parse(decodeURIComponent(raw));
+        } catch (err2) {
+          var m = String(raw).match(/payload=(.*)/);
+          if (m) { try { d = JSON.parse(decodeURIComponent(m[1])); } catch (err3) {} }
+        }
+      }
+    }
+    if ((!d || !d.order_id) &amp;&amp; e &amp;&amp; e.parameter &amp;&amp; e.parameter.order_id) {
+      d = e.parameter;              // احتياط أخير
+    }
+    if (!d || typeof d !== "object") d = {};
+
+    var HEAD = ["Order ID","Date","First Name","Last Name","Phone 1","Phone 2",
       "Wilaya","Commune","Delivery Type","Address","Product SKU",
       "Product Name","Quantity","Unit Price (DZD)","Total Amount (DZD)",
       "Confirmation","Notes"];
 
+    /* ---- الرأس: يُنشأ أو يُصحَّح ---- */
     if (sh.getLastRow() === 0) {
       sh.appendRow(HEAD);
       sh.getRange(1, 1, 1, HEAD.length).setFontWeight("bold")
         .setBackground("#0f9d58").setFontColor("#ffffff");
       sh.setFrozenRows(1);
+    } else {
+      var cur = sh.getRange(1, 1, 1, HEAD.length).getValues()[0];
+      if (String(cur[2]).indexOf("First") === -1) {   // رأس قديم
+        sh.getRange(1, 1, 1, HEAD.length).setValues([HEAD])
+          .setFontWeight("bold").setBackground("#0f9d58").setFontColor("#ffffff");
+        sh.setFrozenRows(1);
+      }
     }
 
-    // منع تكرار نفس الطلب عند إعادة التصدير
+    /* ---- منع تكرار نفس الطلب ---- */
     var id = d.order_id || "";
     if (id &amp;&amp; sh.getLastRow() &gt; 1) {
       var col = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues();
@@ -192,26 +223,49 @@
       }
     }
 
-    sh.appendRow([
+    /* ---- فصل الاسم عن اللقب ----
+       إن أرسلت المنصة first_name/last_name نستعملهما،
+       وإلا نقسم الاسم الكامل: أول كلمة اسم والباقي لقب. */
+    var first = d.first_name || "";
+    var last  = d.last_name  || "";
+    if (!first &amp;&amp; !last) {
+      var full = String(d.customer_name || "").trim().replace(/\s+/g, " ");
+      if (full) {
+        var parts = full.split(" ");
+        first = parts.shift();
+        last  = parts.join(" ");
+      }
+    }
+
+    var phone1 = String(d.phone_1 || "").trim();
+    var phone2 = String(d.phone_2 || "").trim();
+
+    var row = [
       id,
       d.order_date || new Date(),
-      d.customer_name || "",
-      "'" + (d.phone_1 || ""),        // ' تمنع حذف الصفر الأول
-      d.phone_2 ? "'" + d.phone_2 : "",
+      first,
+      last,
+      phone1 ? "'" + phone1 : "",     // ' تمنع حذف الصفر الأول
+      phone2 ? "'" + phone2 : "",
       d.wilaya || "",
       d.commune || "",
       d.delivery_type || "",
       d.address || "",
       d.product_sku || "",
       d.product_name || "",
-      d.quantity || 1,
-      d.unit_price || 0,
-      d.total_amount || 0,
+      Number(d.quantity) || 1,
+      Number(d.unit_price) || 0,
+      Number(d.total_amount) || 0,
       d.confirmation || "قيد الانتظار",
       d.notes || ""
-    ]);
+    ];
 
-    sh.autoResizeColumns(1, HEAD.length);
+    /* ---- الكتابة خلية بخلية ----
+       appendRow قد يضع كل شيء في عمود واحد إن احتوى النص فواصل.
+       setValues على نطاق محدد يضمن أن كل قيمة في عمودها. */
+    var r = sh.getLastRow() + 1;
+    sh.getRange(r, 1, 1, HEAD.length).setValues([row]);
+
     return ContentService.createTextOutput("ok");
   } catch (err) {
     return ContentService.createTextOutput("error: " + err);
@@ -242,7 +296,7 @@ function doGet() {                      // للتأكد أن النشر يعمل
 
                                 <div class="bg-slate-100 border border-slate-200 rounded-xl p-3 mt-2">
                                     <p class="text-slate-800 font-black mb-1">📊 الأعمدة التي ستظهر في جدولك بالترتيب:</p>
-                                    <p class="text-slate-600 text-[10px] leading-relaxed" dir="ltr">Order ID · Date · Customer Name · Phone 1 · Phone 2 · Wilaya · Commune · Delivery Type · Address · Product SKU · Product Name · Quantity · Unit Price (DZD) · Total Amount (DZD) · Confirmation · Notes</p>
+                                    <p class="text-slate-600 text-[10px] leading-relaxed" dir="ltr">Order ID · Date · First Name · Last Name · Phone 1 · Phone 2 · Wilaya · Commune · Delivery Type · Address · Product SKU · Product Name · Quantity · Unit Price (DZD) · Total Amount (DZD) · Confirmation · Notes</p>
                                 </div>
                             </div>
                         </div>
@@ -364,7 +418,7 @@ function doGet() {                      // للتأكد أن النشر يعمل
             </div>
         </main>
     </div>
-    <script src="assets/js/integrations.js?v=40"></script>
+    <script src="assets/js/integrations.js?v=41"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
