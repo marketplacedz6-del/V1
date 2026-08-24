@@ -1,5 +1,5 @@
 /* SouqiExpress Service Worker — تصفح سريع وعمل جزئي بدون إنترنت */
-const CACHE = "souqi-express-v42";
+const CACHE = "souqi-express-v43";
 
 /* صفحات لوحة التاجر: يجب أن تكون محدّثة دائماً — لا تُخزَّن إطلاقاً */
 const NEVER_CACHE = [

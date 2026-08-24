@@ -26,10 +26,10 @@
     </style>
     <meta name="theme-color" content="#0284c7">
     <title>الطلبات الواردة | مركز التاجر</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=42">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=43">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/theme.css?v=42">
+    <link rel="stylesheet" href="assets/css/theme.css?v=43">
     <style>body{font-family:'Cairo',sans-serif}</style>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
@@ -87,13 +87,38 @@
                 </button>
             </div>
 
-            <!-- البحث -->
+            <!-- تصفية حسب الحالة: أزرار صريحة + قائمة للهاتف -->
+            <div class="se-card p-3 space-y-2.5">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <span class="text-[11px] font-black se-muted">تصفية حسب الحالة</span>
+                    <span id="filterCount" class="text-[11px] font-bold se-muted"></span>
+                </div>
+
+                <!-- أزرار (تظهر من sm فأعلى) -->
+                <div class="hidden sm:flex items-center gap-2 flex-wrap">
+                    <button onclick="setFilter('all')" id="fb-all" class="se-btn se-btn-ghost !text-[11px] !px-3 !py-2">📋 الكل</button>
+                    <button onclick="setFilter('pending')" id="fb-pending" class="se-btn se-btn-ghost !text-[11px] !px-3 !py-2">⏳ قيد الانتظار</button>
+                    <button onclick="setFilter('completed')" id="fb-completed" class="se-btn se-btn-ghost !text-[11px] !px-3 !py-2">✅ مكتملة</button>
+                    <button onclick="setFilter('cancelled')" id="fb-cancelled" class="se-btn se-btn-ghost !text-[11px] !px-3 !py-2">❌ ملغاة</button>
+                </div>
+
+                <!-- قائمة منسدلة (الهاتف) -->
+                <select id="statusSelect" onchange="setFilter(this.value)" aria-label="تصفية حسب الحالة"
+                        class="se-input sm:hidden !py-2.5 cursor-pointer !text-xs">
+                    <option value="all">📋 كل الطلبات</option>
+                    <option value="pending">⏳ قيد الانتظار</option>
+                    <option value="completed">✅ مكتملة</option>
+                    <option value="cancelled">❌ ملغاة</option>
+                </select>
+            </div>
+
+            <!-- البحث والترتيب -->
             <div class="se-card p-3 flex flex-col sm:flex-row gap-2">
                 <div class="relative flex-1">
                     <input id="searchInput" oninput="applyView()" placeholder="ابحث بالاسم، الهاتف، المنتج أو رقم الطلب..." class="se-input !pr-10">
                     <span class="absolute right-3.5 top-1/2 -translate-y-1/2 se-muted text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
                 </div>
-                <select id="sortSelect" onchange="applyView()" class="se-input sm:w-44 !py-2.5 cursor-pointer">
+                <select id="sortSelect" onchange="applyView()" aria-label="ترتيب الطلبات" class="se-input sm:w-44 !py-2.5 cursor-pointer">
                     <option value="new">🆕 الأحدث أولاً</option>
                     <option value="old">📜 الأقدم أولاً</option>
                     <option value="high">💰 الأعلى قيمة</option>
@@ -133,12 +158,12 @@
         </div>
     </div>
 
-    <script src="assets/js/config.js?v=42"></script>
-    <script src="assets/js/app.js?v=42"></script>
-    <script src="assets/js/subscription.js?v=42"></script>
-    <script src="assets/js/merchant-shell.js?v=42"></script>
-    <script src="assets/js/integrations.js?v=42"></script>
-    <script src="assets/js/couriers.js?v=42"></script>
+    <script src="assets/js/config.js?v=43"></script>
+    <script src="assets/js/app.js?v=43"></script>
+    <script src="assets/js/subscription.js?v=43"></script>
+    <script src="assets/js/merchant-shell.js?v=43"></script>
+    <script src="assets/js/integrations.js?v=43"></script>
+    <script src="assets/js/couriers.js?v=43"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -285,9 +310,20 @@
         window.setFilter = function (f) {
             filter = f;
             ['all', 'pending', 'completed', 'cancelled'].forEach(k => {
-                const el = document.getElementById('f-' + k);
-                if (el) el.style.outline = (k === f) ? '2px solid var(--se-primary)' : 'none';
+                const active = (k === f);
+                // بطاقات الإحصاءات (قابلة للنقر أيضاً)
+                const card = document.getElementById('f-' + k);
+                if (card) card.style.outline = active ? '2px solid var(--se-primary)' : 'none';
+                // أزرار شريط التصفية
+                const btn = document.getElementById('fb-' + k);
+                if (btn) {
+                    btn.classList.toggle('se-btn-primary', active);
+                    btn.classList.toggle('se-btn-ghost', !active);
+                }
             });
+            // مزامنة القائمة المنسدلة (الهاتف)
+            const sel = document.getElementById('statusSelect');
+            if (sel && sel.value !== f) sel.value = f;
             applyView();
         };
 
@@ -314,6 +350,13 @@
             if (sort === 'high') list.sort((a, b) => orderTotals(b).total - orderTotals(a).total);
             else if (sort === 'old') list.sort((a, b) => (orderDate(a) || 0) - (orderDate(b) || 0));
             else list.sort((a, b) => (orderDate(b) || 0) - (orderDate(a) || 0));
+
+            // عدّاد يوضّح ما يُعرض الآن ولماذا
+            const cnt = document.getElementById('filterCount');
+            if (cnt) {
+                const labels = { all: 'كل الطلبات', pending: 'قيد الانتظار', completed: 'المكتملة', cancelled: 'الملغاة' };
+                cnt.textContent = `${list.length} من ${allOrders.length} · ${labels[filter] || ''}`;
+            }
 
             renderList(list);
         };
