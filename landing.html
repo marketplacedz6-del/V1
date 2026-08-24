@@ -29,15 +29,20 @@
     <meta name="description" content="عروض حصرية مع الدفع عند الاستلام وتوصيل لكل الولايات الجزائرية.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="عروض حصرية | SouqiExpress">
+    <meta property="og:description" content="عروض حصرية مع الدفع عند الاستلام وتوصيل لكل الولايات الجزائرية.">
+    <!-- og:image ضروري: بدونه يظهر الرابط على فيسبوك بلا صورة فينخفض النقر.
+         يُستبدل ديناميكياً بصورة غلاف التاجر إن وُجدت. -->
+    <meta property="og:image" id="ogImage" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s512/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=41">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=42">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/theme.css?v=41">
+    <link rel="stylesheet" href="assets/css/theme.css?v=42">
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <script src="assets/js/config.js?v=41"></script>
-    <script src="assets/js/integrations.js?v=41"></script>
+    <script src="assets/js/config.js?v=42"></script>
+    <script src="assets/js/integrations.js?v=42"></script>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
 <body class="min-h-screen flex flex-col overflow-x-hidden">
@@ -148,26 +153,44 @@
         <span>واتساب</span><span class="text-lg">💬</span>
     </a>
 
-    <script src="assets/js/app.js?v=41"></script>
+    <script src="assets/js/app.js?v=42"></script>
     <script>
         document.body.classList.add('se-has-floating');
-        const merchantId = SE.param('merchantId') || SE.param('id') || '';
+        /* يقبل الرابط القصير ?s=rizova-boutique وأيضاً ?merchantId=<uid> القديم.
+           الروابط القديمة تبقى تعمل — التجار نشروها في إعلاناتهم. */
+        const slug = (SE.param('s') || SE.param('store') || '').trim().toLowerCase();
+        let merchantId = SE.param('merchantId') || SE.param('id') || '';
         let db = null;
         try { firebase.initializeApp(SE_CONFIG.firebase); db = firebase.firestore(); } catch (e) { console.warn(e); }
 
         document.getElementById('storeLogo').src = SE_CONFIG.logo;
         document.getElementById('lpHero').src = SE_CONFIG.logo;
 
-        /* عدّاد تنازلي يتجدد كل 24 ساعة */
+        /* عدّاد تنازلي يتجدد فعلاً كل 24 ساعة.
+           خطأ سابق: كان end يُحسب مرة واحدة عند فتح الصفحة، فبعد
+           منتصف الليل يعلق على 00:00:00 للأبد — وهو أسوأ ما يظهر
+           في صفحة إعلانية تعتمد على الإلحاح. */
         (function countdown() {
-            const end = new Date(); end.setHours(23, 59, 59, 999);
-            setInterval(() => {
-                let diff = Math.max(0, end - new Date());
-                const h = Math.floor(diff / 3600000), m = Math.floor(diff % 3600000 / 60000), s = Math.floor(diff % 60000 / 1000);
+            const nextMidnight = () => {
+                const d = new Date();
+                d.setHours(23, 59, 59, 999);
+                if (d <= new Date()) d.setDate(d.getDate() + 1);
+                return d;
+            };
+            let end = nextMidnight();
+            const tick = () => {
+                let diff = end - new Date();
+                if (diff <= 0) { end = nextMidnight(); diff = end - new Date(); }
+                const h = Math.floor(diff / 3600000),
+                      m = Math.floor(diff % 3600000 / 60000),
+                      s = Math.floor(diff % 60000 / 1000);
                 document.getElementById('cdH').textContent = String(h).padStart(2, '0');
                 document.getElementById('cdM').textContent = String(m).padStart(2, '0');
                 document.getElementById('cdS').textContent = String(s).padStart(2, '0');
-            }, 1000);
+            };
+            tick();
+            const timer = setInterval(tick, 1000);
+            window.addEventListener('pagehide', () => clearInterval(timer));
         })();
 
         function card(p) {
@@ -177,7 +200,7 @@
             <div class="se-card overflow-hidden flex flex-col se-hover-lift relative">
                 ${out ? '<span class="absolute top-2 left-2 z-10 se-badge se-badge-red !text-[9px]">نفدت الكمية</span>' : ''}
                 <a href="product-details.html?id=${encodeURIComponent(p.id)}" class="block aspect-square overflow-hidden bg-slate-100">
-                    <img src="${img}" loading="lazy" alt="${SE.escape(p.name || '')}" class="w-full h-full object-cover hover:scale-105 transition duration-500 ${out ? 'opacity-50 grayscale' : ''}">
+                    <img src="${SE.escape(img)}" loading="lazy" alt="${SE.escape(p.name || '')}" onerror="this.onerror=null;this.src='https://placehold.co/400x400?text=SouqiExpress'" class="w-full h-full object-cover hover:scale-105 transition duration-500 ${out ? 'opacity-50 grayscale' : ''}">
                 </a>
                 <div class="p-2.5 sm:p-4 text-center space-y-1 flex-1 flex flex-col justify-between">
                     <h3 class="font-bold text-[11px] sm:text-sm se-line-clamp-2 leading-snug min-h-[2.1rem]">${SE.escape(p.name || 'منتج')}</h3>
@@ -195,25 +218,68 @@
 
             if (!db) { grid.innerHTML = '<p class="col-span-full text-center se-muted font-bold py-10">تعذّر الاتصال بقاعدة البيانات.</p>'; return; }
 
+            /* حلّ الرابط القصير إلى معرّف التاجر.
+               نبحث في حقل store_slug المحفوظ عند التاجر؛ وإن لم يوجد
+               نطابق باشتقاق الـ slug من الاسم (للحسابات القديمة). */
+            if (!merchantId && slug) {
+                try {
+                    let snap = await db.collection('users').where('store_slug', '==', slug).limit(1).get();
+                    if (!snap.empty) {
+                        merchantId = snap.docs[0].id;
+                    } else {
+                        const all = await db.collection('users').where('role', '==', 'merchant').get();
+                        const hit = all.docs.find(x => SE.slugify((x.data() || {}).name || '') === slug);
+                        if (hit) merchantId = hit.id;
+                    }
+                } catch (e) { console.warn('slug lookup:', e); }
+
+                if (!merchantId) {
+                    grid.innerHTML = '<div class="col-span-full text-center py-12">'
+                        + '<div class="text-4xl mb-2">🔍</div>'
+                        + '<p class="font-black text-sm mb-1">لم نجد هذا المتجر</p>'
+                        + '<p class="se-muted text-xs font-bold mb-4">تأكّد من الرابط أو تصفّح بقية المتاجر.</p>'
+                        + '<a href="index.html" class="se-btn se-btn-primary !text-xs">تصفّح المنصة</a></div>';
+                    document.getElementById('storeName').textContent = SE_CONFIG.siteName;
+                    return;
+                }
+            }
+
             // إعدادات التاجر: البكسلات + الهبوط + واتساب
             let st = null;
             if (merchantId) {
                 st = await SEI.loadMerchantSettings(db, merchantId);
                 try {
                     const u = await db.collection('users').doc(merchantId).get();
-                    if (u.exists) document.getElementById('storeName').textContent = (u.data().name || 'المتجر');
-                } catch (e) {}
+                    if (u.exists) {
+                        document.getElementById('storeName').textContent = (u.data().name || 'المتجر');
+                    } else {
+                        // رابط لتاجر محذوف أو معرّف خاطئ — لا نترك الزائر أمام صفحة صامتة
+                        grid.innerHTML = '<div class="col-span-full text-center py-12">'
+                            + '<div class="text-4xl mb-2">🔍</div>'
+                            + '<p class="font-black text-sm mb-1">هذا المتجر غير متاح</p>'
+                            + '<p class="se-muted text-xs font-bold mb-4">قد يكون الرابط قديماً أو المتجر متوقفاً.</p>'
+                            + '<a href="index.html" class="se-btn se-btn-primary !text-xs">تصفّح المنصة</a></div>';
+                        document.getElementById('storeName').textContent = SE_CONFIG.siteName;
+                        return;
+                    }
+                } catch (e) { console.warn(e); }
             } else {
                 document.getElementById('storeName').textContent = SE_CONFIG.siteName;
             }
 
+            // البكسل يعمل دائماً — الصفحة إعلانية وقياسها أساسي
+            SEI.track('view', { name: 'Landing Page' });
+
             if (st) {
-                SEI.initPixels(st);            // 🎯 تفعيل البكسلات
-                SEI.track('view', { name: 'Landing Page' });
+                SEI.initPixels(st);            // 🎯 تفعيل بكسلات التاجر
 
                 if (st.lp_title) { document.getElementById('lpTitle').textContent = st.lp_title; document.title = st.lp_title; }
                 if (st.lp_subtitle) document.getElementById('lpSubtitle').textContent = st.lp_subtitle;
-                if (st.lp_hero) document.getElementById('lpHero').src = st.lp_hero;
+                if (st.lp_hero) {
+                    document.getElementById('lpHero').src = st.lp_hero;
+                    const og = document.getElementById('ogImage');
+                    if (og && /^https?:\/\//i.test(st.lp_hero)) og.setAttribute('content', st.lp_hero);
+                }
 
                 if (st.whatsapp) {
                     const link = 'https://wa.me/' + String(st.whatsapp).replace(/\D/g, '');
@@ -222,18 +288,28 @@
                         el.href = link; el.classList.remove('hidden'); el.classList.add(id === 'waBtn' ? 'inline-flex' : 'flex');
                     });
                 }
-                const soc = document.getElementById('lpSocial');
-                if (st.facebook) soc.innerHTML += `<a href="${st.facebook}" target="_blank" rel="noopener" class="bg-[#1877F2] text-white text-[11px] font-bold px-3 py-1.5 rounded-lg">فيسبوك</a>`;
-                if (st.instagram) soc.innerHTML += `<a href="${st.instagram}" target="_blank" rel="noopener" class="bg-gradient-to-r from-[#833AB4] to-[#FCAF45] text-white text-[11px] font-bold px-3 py-1.5 rounded-lg">إنستغرام</a>`;
-                if (st.tiktok) soc.innerHTML += `<a href="${st.tiktok}" target="_blank" rel="noopener" class="bg-black text-white text-[11px] font-bold px-3 py-1.5 rounded-lg">تيك توك</a>`;
+                // روابط التواصل: تُهرَّب وتُبنى دفعة واحدة (لا innerHTML += متكرر)
+                const safeUrl = u => {
+                    const v = String(u || '').trim();
+                    return /^https?:\/\//i.test(v) ? SE.escape(v) : '';
+                };
+                const socItems = [
+                    [safeUrl(st.facebook), 'bg-[#1877F2]', 'فيسبوك'],
+                    [safeUrl(st.instagram), 'bg-gradient-to-r from-[#833AB4] to-[#FCAF45]', 'إنستغرام'],
+                    [safeUrl(st.tiktok), 'bg-black', 'تيك توك']
+                ].filter(x => x[0]);
+                document.getElementById('lpSocial').innerHTML = socItems
+                    .map(([u, cls, label]) => `<a href="${u}" target="_blank" rel="noopener noreferrer" class="${cls} text-white text-[11px] font-bold px-3 py-1.5 rounded-lg">${label}</a>`)
+                    .join('');
             }
 
             // المنتجات
             try {
+                // limit في الاستعلام لا slice بعده — يوفّر قراءات Firestore
                 let q = db.collection('products').where('is_active', '==', true);
                 if (merchantId) q = q.where('user_id', '==', merchantId);
-                const snap = await q.get();
-                const list = snap.docs.map(d => ({ id: d.id, ...d.data() })).slice(0, 12);
+                const snap = await q.limit(12).get();
+                const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 document.getElementById('prodCount').textContent = list.length;
                 grid.innerHTML = list.length
                     ? list.map(card).join('')

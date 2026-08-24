@@ -29,6 +29,33 @@
     }[c]));
   };
 
+  /* ---------------- رابط المتجر القصير (slug) ----------------
+     بدل رابط طويل مثل:
+       landing.html?merchantId=LzUGHUxHKNdhrOSA1DnlgANx09C2
+     نستعمل اسم التاجر:
+       landing.html?s=rizova-boutique
+
+     الأسماء العربية تُنقل حرفياً إلى اللاتينية، لأن العربية في الرابط
+     تتحوّل إلى ترميز نسبة مئوية طويل وقبيح عند النسخ واللصق. */
+  const AR_MAP = {
+    'ا':'a','أ':'a','إ':'a','آ':'a','ٱ':'a','ب':'b','ت':'t','ث':'th','ج':'j','ح':'h',
+    'خ':'kh','د':'d','ذ':'dh','ر':'r','ز':'z','س':'s','ش':'ch','ص':'s','ض':'d',
+    'ط':'t','ظ':'dh','ع':'a','غ':'gh','ف':'f','ق':'q','ك':'k','ل':'l','م':'m',
+    'ن':'n','ه':'h','ة':'a','و':'w','ؤ':'w','ي':'y','ى':'a','ئ':'y','ء':'',
+    'پ':'p','چ':'ch','ڤ':'v','ࢗ':'g','گ':'g'
+  };
+
+  SE.slugify = function (name) {
+    let v = String(name == null ? '' : name).trim().toLowerCase();
+    if (!v) return '';
+    v = v.replace(/[\u064B-\u0652\u0670]/g, '');          // التشكيل
+    v = v.replace(/[\u0600-\u06FF\u0750-\u077F]/g, c => AR_MAP[c] !== undefined ? AR_MAP[c] : '');
+    v = v.normalize ? v.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : v;  // لكنات لاتينية
+    v = v.replace(/[^a-z0-9]+/g, '-');                       // أي شيء آخر → شرطة
+    v = v.replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-');
+    return v.slice(0, 40);
+  };
+
   SE.param = function (key) {
     return new URLSearchParams(location.search).get(key);
   };
@@ -550,14 +577,14 @@
 
     // شبكة أمان: إن كان الـ SW المتحكّم قديماً (نسخة سابقة)، ألغِ التسجيل
     // وامسح الكاش مرة واحدة تلقائياً — يمنع بقاء المستخدم على نسخة عالقة.
-    const SE_BUILD = "41";
+    const SE_BUILD = "42";
     try {
       if (localStorage.getItem("se_build") !== SE_BUILD) {
         localStorage.setItem("se_build", SE_BUILD);
         // امسح كل الكاش القديم بلا استثناء عند تغيّر الإصدار
         if (window.caches) {
           caches.keys().then(keys => {
-            keys.filter(k => k !== "souqi-express-v41").forEach(k => caches.delete(k));
+            keys.filter(k => k !== "souqi-express-v42").forEach(k => caches.delete(k));
           }).catch(() => {});
         }
       }

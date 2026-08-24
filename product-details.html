@@ -28,12 +28,12 @@
     <meta name="description" content="اطلب منتجك الآن من سوقي إكسبريس مع الدفع عند الاستلام وتوصيل لكل الولايات الجزائرية.">
     <meta name="theme-color" content="#0284c7">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=41">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=42">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/theme.css?v=41">
-    <script src="assets/js/config.js?v=41"></script>
-    <script src="assets/js/integrations.js?v=41"></script>
+    <link rel="stylesheet" href="assets/css/theme.css?v=42">
+    <script src="assets/js/config.js?v=42"></script>
+    <script src="assets/js/integrations.js?v=42"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -152,10 +152,9 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 pt-1">
-                        <button id="add-cart-btn" onclick="addToCart()" class="se-btn se-btn-ghost !py-3.5"><i class="fa-solid fa-cart-plus"></i> أضف للسلة</button>
-                        <a href="#shipping-form-container" class="se-btn se-btn-accent !py-3.5">⚡ اطلب فوراً</a>
-                    </div>
+                    <!-- أُزيل زرّا «أضف للسلة» و«اطلب فوراً».
+                         الطلب يتم مباشرة من نموذج التوصيل أدناه — مسار واحد
+                         أوضح للزبون وأقل تشتيتاً في صفحة الدفع عند الاستلام. -->
                 </div>
             </div>
 
@@ -259,7 +258,7 @@
         <span class="text-lg">💬</span>
     </a>
 
-    <script src="assets/js/app.js?v=41"></script>
+    <script src="assets/js/app.js?v=42"></script>
     <script>
         const firebaseConfig = window.SE_CONFIG.firebase;
         firebase.initializeApp(firebaseConfig);
@@ -315,16 +314,6 @@
         }
 
         /* الإضافة للسلة */
-        function addToCart() {
-            if (!currentProduct) return;
-            if (currentProduct.is_active === false || (currentProduct.stock !== undefined && currentProduct.stock <= 0)) {
-                return SE.toast('❌ هذا المنتج غير متوفر حالياً', 'error');
-            }
-            const qty = parseInt(document.getElementById('quantity').value) || 1;
-            SE.cart.add(currentProduct, qty, selectedSize, selectedColor);
-            SEI.track('addToCart', { id: currentProduct.id, name: currentProduct.name, value: currentProduct.price * qty, qty: qty });
-        }
-
         /* منتجات ذات صلة */
         async function loadRelated() {
             if (!currentProduct) return;
@@ -421,8 +410,6 @@
                 }
 
                 if (currentProduct.is_active === false || (currentProduct.stock !== undefined && currentProduct.stock <= 0)) {
-                    const addBtn = document.getElementById('add-cart-btn');
-                    if (addBtn) { addBtn.disabled = true; addBtn.classList.add('opacity-50'); }
                     availabilityBadge.className = "bg-red-50 text-red-600 text-xs font-bold px-3 py-1 rounded-full";
                     availabilityBadge.innerText = "❌ غير متوفر حالياً";
                     submitBtn.disabled = true;
