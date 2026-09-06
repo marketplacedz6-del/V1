@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ⚠️ مهم: بروتوكول Sitemap يشترط روابط مطلقة (absolute URLs).
+  الروابط النسبية كانت تجعل محركات البحث ترفض الملف كلياً.
+
+  استبدل https://souqiexpress.example بنطاقك الحقيقي.
+  إن كنت على GitHub Pages فسيكون مثل:
+  https://marketplacedz6-del.github.io/V1
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://souqiexpress.example/index.html</loc>
+    <priority>1.0</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://souqiexpress.example/about.html</loc>
+    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://souqiexpress.example/store.html</loc>
+    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://souqiexpress.example/product-details.html</loc>
+    <priority>0.8</priority>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://souqiexpress.example/landing.html</loc>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://souqiexpress.example/cart.html</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://souqiexpress.example/wishlist.html</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://souqiexpress.example/login.html</loc>
+    <priority>0.4</priority>
+  </url>
+</urlset>

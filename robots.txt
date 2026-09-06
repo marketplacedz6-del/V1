@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# صفحات الإدارة ومركز التاجر — لا تُفهرس
+Disallow: /admin-dashboard.html
+Disallow: /merchant-dashboard.html
+Disallow: /approve-vendors.html
+Disallow: /orders.html
+Disallow: /settings.html
+Disallow: /customers.html
+Disallow: /landing-preview.html
+Disallow: /shipping.html
+Disallow: /products.html
+Disallow: /Cleanup1.html
+Disallow: /resellers_list.html
+
+# صفحات تقنية
+Disallow: /offline.html
+Disallow: /404.html
+
+Sitemap: /sitemap.xml

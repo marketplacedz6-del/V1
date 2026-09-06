@@ -2,268 +2,326 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة صيانة الاشتراكات وتنظيف البيانات الذكية - SouqiExpress</title>
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+    *::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
+    <title>تنظيف البيانات اليتيمة | SouqiExpress</title>
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=44">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/theme.css?v=44">
+    <script src="assets/js/config.js?v=44"></script>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
     <style>
-        body { font-family: sans-serif; margin: 30px; background-color: #f7f9fa; text-align: center; color: #333; }
-        .container { max-width: 850px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 25px; }
-        button { padding: 14px 35px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; }
-        .btn-main { background-color: #e74c3c; }
-        .btn-main:hover { background-color: #c0392b; }
-        .btn-sec { background-color: #2980b9; }
-        .btn-sec:hover { background-color: #1f618d; }
-        button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
-        #log { margin-top: 25px; padding: 20px; background: #2c3e50; color: #ecf0f1; text-align: right; max-height: 400px; overflow-y: auto; border-radius: 6px; font-family: monospace; font-size: 14px; line-height: 1.6; }
-        #log div { margin-bottom: 6px; border-bottom: 1px solid #34495e; padding-bottom: 4px; }
-        textarea { width: 100%; height: 120px; margin: 15px 0; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: monospace; text-align: left; box-sizing: border-box; }
-        .result-item { background: #f2f4f4; padding: 12px; margin: 8px 0; border-right: 5px solid #e74c3c; text-align: right; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
-        .info { color: #3498db; }
-        .success { color: #2ecc71; font-weight: bold; }
-        .warn { color: #f1c40f; }
-        .danger { color: #e74c3c; font-weight: bold; }
+        .logline { border-inline-start: 3px solid transparent; }
+        .log-info    { border-color:#94a3b8; background:#f8fafc; }
+        .log-success { border-color:#10b981; background:#ecfdf5; }
+        .log-warn    { border-color:#f59e0b; background:#fffbeb; }
+        .log-danger  { border-color:#f43f5e; background:#fff1f2; }
     </style>
 </head>
-<body>
+<body class="se-admin min-h-screen">
 
-    <div class="container">
-        <h2>⚙️ لوحة إدارة الاشتراكات وحماية بيانات التجار المتقدمة</h2>
-        <p>آلية العمل الآمنة والمحدثة: 
-            (1) تأمين وقفل كافة حسابات التجار الموجودين حالياً لحماية بضائعهم وطلباتهم.
-            (2) إلغاء تفعيل من انتهى اشتراكه [30 يوم] وحذف من تجاوز فترة السماح [7 أيام].
-            (3) مسح البيانات الميتة واليتيمة تماماً (المنتجات، أسعار الشحن، الإعدادات، والطلبات) التابعة فقط للتجار المحذوفين كلياً من النظام.
-        </p>
-        <br>
-        <button id="startBtn" class="btn-main">تشغيل الفحص والصيانة الآمنة</button>
-        <div id="log">بانتظار بدء عملية الفحص...</div>
+<!-- شاشة التحقق من الصلاحية: لا يظهر أي شيء قبل إثبات أنك أدمن -->
+<div id="authGate" class="min-h-screen flex items-center justify-center p-4">
+    <div class="text-center">
+        <div class="inline-block animate-spin rounded-full h-9 w-9 border-4 border-blue-500 border-t-transparent mb-3"></div>
+        <p class="text-sm font-bold text-slate-500">جارٍ التحقق من صلاحيتك...</p>
+    </div>
+</div>
+
+<main id="app" class="hidden max-w-5xl mx-auto p-4 md:p-6 space-y-5">
+
+    <!-- الرأس -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="min-w-0">
+            <h1 class="text-lg md:text-2xl font-black text-slate-900 flex items-center gap-2">🧹 تنظيف البيانات اليتيمة</h1>
+            <p class="text-[11px] md:text-xs font-bold text-slate-500 mt-1 leading-relaxed">
+                يحذف السجلات التي بقيت بلا صاحب بعد حذف تاجر — منتجاته وطلباته وأسعار شحنه وإعداداته.
+            </p>
+        </div>
+        <a href="admin-dashboard.html" class="se-btn se-btn-ghost !text-xs whitespace-nowrap">↩ لوحة الإدارة</a>
     </div>
 
-    <div class="container" style="border-top: 4px solid #2980b9;">
-        <h3>🔍 كاشف الحسابات المعلقة في الـ Authentication</h3>
-        <textarea id="authInput" placeholder="الصق النص المنسوخ من لوحة الـ Authentication هنا..."></textarea>
-        <button id="compareBtn" class="btn-sec">تصفية المعلقين في الـ Auth</button>
-        <div id="authResults" style="margin-top: 20px; text-align: right;"></div>
+    <!-- ضمانات الأمان -->
+    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4">
+        <h2 class="text-xs font-black text-emerald-800 mb-2">🛡️ ضمانات هذه الأداة</h2>
+        <ul class="text-[11px] font-bold text-emerald-900 leading-relaxed space-y-1">
+            <li>✓ <b>لا تلمس حسابات التجار إطلاقاً</b> — لا حذف ولا إلغاء تفعيل. مجموعة <code>users</code> للقراءة فقط.</li>
+            <li>✓ <b>لا علاقة لها بالاشتراكات</b> — التجديد والإنهاء من لوحة الإدارة أو لوحة المسوّق.</li>
+            <li>✓ <b>تفحص أولاً ولا تحذف</b> — ترى القائمة كاملة قبل أي إجراء.</li>
+            <li>✓ <b>تصدير نسخة احتياطية CSV</b> قبل الحذف.</li>
+            <li>✓ <b>تتجاهل أي سجل بلا معرّف مالك</b> — لا نحذف ما لا نفهم مصدره.</li>
+        </ul>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <!-- الخطوة 1: الفحص -->
+    <div class="se-card p-4 md:p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="min-w-0">
+                <h2 class="text-sm font-black text-slate-800">الخطوة 1 — فحص بلا حذف</h2>
+                <p class="text-[11px] font-bold text-slate-500 mt-0.5">يقارن كل سجل بقائمة التجار الموجودين فعلاً.</p>
+            </div>
+            <button id="scanBtn" class="se-btn se-btn-primary !text-xs whitespace-nowrap">🔍 ابدأ الفحص</button>
+        </div>
+    </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
-            measurementId: "G-PGLFSTBVTH"
-        };
+    <!-- النتائج -->
+    <div id="results" class="hidden space-y-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+            <div class="se-card p-3 text-center"><div id="cProducts" class="text-xl font-black text-rose-600">0</div><div class="text-[10px] font-bold text-slate-500 mt-0.5">منتجات يتيمة</div></div>
+            <div class="se-card p-3 text-center"><div id="cOrders" class="text-xl font-black text-rose-600">0</div><div class="text-[10px] font-bold text-slate-500 mt-0.5">طلبات يتيمة</div></div>
+            <div class="se-card p-3 text-center"><div id="cShipping" class="text-xl font-black text-rose-600">0</div><div class="text-[10px] font-bold text-slate-500 mt-0.5">أسعار شحن</div></div>
+            <div class="se-card p-3 text-center"><div id="cSettings" class="text-xl font-black text-rose-600">0</div><div class="text-[10px] font-bold text-slate-500 mt-0.5">إعدادات</div></div>
+        </div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        <div id="ownersBox" class="hidden se-card p-4">
+            <h3 class="text-xs font-black text-slate-800 mb-2">👻 معرّفات تجار محذوفين وُجدت في البيانات</h3>
+            <div id="ownersList" class="flex flex-wrap gap-1.5"></div>
+        </div>
 
-        const logDiv = document.getElementById('log');
-        const startBtn = document.getElementById('startBtn');
-        const compareBtn = document.getElementById('compareBtn');
-        const authInput = document.getElementById('authInput');
-        const authResults = document.getElementById('authResults');
+        <div id="cleanBox" class="hidden bg-rose-50 border border-rose-200 rounded-2xl p-4 space-y-3">
+            <h2 class="text-sm font-black text-rose-800">الخطوة 2 — الحذف النهائي</h2>
+            <p class="text-[11px] font-bold text-rose-900 leading-relaxed">
+                هذا الإجراء <b>لا يمكن التراجع عنه</b>. نزّل النسخة الاحتياطية أولاً، ثم اكتب
+                <code class="bg-white px-1.5 py-0.5 rounded border border-rose-200 font-black">حذف</code>
+                للتأكيد.
+            </p>
+            <div class="flex flex-wrap items-center gap-2">
+                <button id="csvBtn" class="se-btn se-btn-ghost !text-xs">📥 تنزيل نسخة احتياطية (CSV)</button>
+                <input id="confirmInput" placeholder="اكتب: حذف" class="se-input !py-2 !text-xs" style="max-width:9rem" aria-label="تأكيد الحذف">
+                <button id="deleteBtn" class="se-btn !text-xs !bg-rose-600 !text-white" disabled>🗑️ احذف اليتيم فقط</button>
+            </div>
+        </div>
 
-        function addLog(text, type = 'info') {
-            const p = document.createElement('div');
-            p.className = type;
-            p.innerText = `[${new Date().toLocaleTimeString()}] ${text}`;
-            logDiv.appendChild(p);
-            logDiv.scrollTop = logDiv.scrollHeight;
+        <div id="okBox" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center">
+            <div class="text-3xl mb-2">✨</div>
+            <p class="text-sm font-black text-emerald-800">قاعدة بياناتك نظيفة</p>
+            <p class="text-[11px] font-bold text-emerald-700 mt-1">لا توجد أي سجلات يتيمة.</p>
+        </div>
+    </div>
+
+    <!-- السجل -->
+    <div class="se-card p-4 md:p-5">
+        <h2 class="text-sm font-black text-slate-800 mb-2">📋 سجل العمليات</h2>
+        <div id="log" class="space-y-1.5 max-h-80 overflow-y-auto text-[11px] font-bold">
+            <p class="text-slate-400">في انتظار بدء الفحص...</p>
+        </div>
+    </div>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const app = initializeApp(window.SE_CONFIG.firebase);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const $ = id => document.getElementById(id);
+const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function log(msg, type = 'info') {
+    const box = $('log');
+    if (box.dataset.clean !== '1') { box.innerHTML = ''; box.dataset.clean = '1'; }
+    const p = document.createElement('p');
+    p.className = `logline log-${type} px-2.5 py-1.5 rounded-lg`;
+    p.innerHTML = `<span class="text-slate-400 font-mono text-[10px]">${new Date().toLocaleTimeString('ar-DZ')}</span> ${msg}`;
+    box.appendChild(p);
+    box.scrollTop = box.scrollHeight;
+}
+
+/* ---------- بوابة الصلاحية: أدمن فقط ---------- */
+onAuthStateChanged(auth, async (user) => {
+    if (!user) { location.replace('login.html'); return; }
+    try {
+        const snap = await getDocs(collection(db, 'users'));
+        const meDoc = snap.docs.find(d => d.id === user.uid);
+        const role = meDoc ? (meDoc.data().role || '') : '';
+        if (role !== 'admin') {
+            alert('⛔ هذه الأداة للإدارة فقط. صلاحيتك: ' + (role || 'غير معروفة'));
+            const routes = { reseller:'approve-vendors.html', merchant:'merchant-dashboard.html' };
+            location.replace(routes[role] || 'index.html');
+            return;
+        }
+        $('authGate').classList.add('hidden');
+        $('app').classList.remove('hidden');
+    } catch (e) {
+        console.error(e);
+        $('authGate').innerHTML = `<div class="text-center max-w-sm">
+            <div class="text-3xl mb-2">📡</div>
+            <p class="text-sm font-black text-rose-700 mb-1">تعذّر التحقق من صلاحيتك</p>
+            <p class="text-[11px] font-bold text-slate-500 mb-3">تحقّق من اتصالك ومن قواعد Firestore.</p>
+            <button onclick="location.reload()" class="se-btn se-btn-primary !text-xs">إعادة المحاولة</button>
+        </div>`;
+    }
+});
+
+/* ---------- الفحص ---------- */
+// المجموعات التي قد تحتوي بيانات مرتبطة بتاجر، وحقول الملكية المحتملة فيها
+const TARGETS = [
+    { name: 'products',          label: 'منتجات',     fields: ['user_id', 'merchant'] },
+    { name: 'orders',            label: 'طلبات',      fields: ['merchant', 'user_id'] },
+    { name: 'shipping_rates',    label: 'أسعار شحن',  fields: ['merchant'] },
+    { name: 'merchant_settings', label: 'إعدادات',    fields: ['merchant'], idIsOwner: true },
+];
+
+let orphans = {};   // { collectionName: [{id, owner, label}] }
+let ghostOwners = new Set();
+
+$('scanBtn').addEventListener('click', async () => {
+    const btn = $('scanBtn');
+    btn.disabled = true; btn.textContent = '⏳ جارٍ الفحص...';
+    $('log').dataset.clean = '0';
+    orphans = {}; ghostOwners = new Set();
+
+    try {
+        log('الخطوة 1: جلب قائمة التجار الموجودين فعلاً...', 'info');
+        const usersSnap = await getDocs(collection(db, 'users'));
+        const liveIds = new Set(usersSnap.docs.map(d => d.id));
+        log(`✅ وُجد <b>${liveIds.size}</b> مستخدماً حيّاً. هذه القائمة محميّة بالكامل.`, 'success');
+
+        if (liveIds.size === 0) {
+            log('⚠️ توقّف: قائمة المستخدمين فارغة. قد تكون مشكلة صلاحيات — لن نحذف شيئاً احتياطاً.', 'danger');
+            btn.disabled = false; btn.textContent = '🔍 ابدأ الفحص';
+            return;
         }
 
-        startBtn.addEventListener('click', async () => {
-            startBtn.disabled = true;
-            logDiv.innerHTML = "";
-            addLog("خطوة 1: جلب وتأمين قائمة التجار المسجلين في النظام حالياً لحماية بياناتهم...", "info");
-
+        let total = 0;
+        for (const t of TARGETS) {
+            log(`فحص مجموعة <b>${t.label}</b>...`, 'info');
+            let snap;
             try {
-                const usersSnapshot = await getDocs(collection(db, "users"));
-                const existingUsersIds = [];
-                
-                usersSnapshot.forEach((userDoc) => {
-                    existingUsersIds.push(userDoc.id);
-                });
-
-                addLog(`تم قفل قائمة الحماية لـ ${existingUsersIds.length} مستخدم موجود في الـ Firestore بنجاح.`, "success");
-
-                addLog("خطوة 2: فحص تواريخ الاشتراكات والمدد الزمنية للتجار...", "info");
-                const now = new Date();
-                const MS_IN_DAY = 24 * 60 * 60 * 1000;
-                const userPromises = [];
-
-                usersSnapshot.forEach((userDoc) => {
-                    const data = userDoc.data();
-                    const userId = userDoc.id;
-
-                    if (data.role !== 'merchant') return; 
-
-                    let createdAt;
-                    try {
-                        if (data.createdAt) {
-                            if (typeof data.createdAt.toDate === 'function') {
-                                createdAt = data.createdAt.toDate();
-                            } else if (data.createdAt instanceof Date) {
-                                createdAt = data.createdAt;
-                            } else {
-                                createdAt = new Date(data.createdAt);
-                            }
-                        } else {
-                            createdAt = new Date();
-                        }
-
-                        const diffTime = Math.abs(now - createdAt);
-                        const diffDays = Math.ceil(diffTime / MS_IN_DAY);
-
-                        if (data.is_approved === true) {
-                            if (diffDays >= 30) {
-                                const userRef = doc(db, "users", userId);
-                                userPromises.push(updateDoc(userRef, {
-                                    is_approved: false,
-                                    createdAt: serverTimestamp() 
-                                }));
-                                addLog(`التاجر (${data.name || userId}) انتهى اشتراكه. تم إلغاء تفعيله بنجاح. بضاعته محمية.`, 'warn');
-                            }
-                        } else if (data.is_approved === false) {
-                            if (diffDays >= 7) {
-                                const userRef = doc(db, "users", userId);
-                                userPromises.push(deleteDoc(userRef));
-                                addLog(`التاجر (${data.name || userId}) تجاوز فترة السماح (7 أيام). تم حذفه من قائمة الـ users.`, 'danger');
-                                
-                                const index = existingUsersIds.indexOf(userId);
-                                if (index > -1) existingUsersIds.splice(index, 1);
-                            } else {
-                                addLog(`التاجر (${data.name || userId}) غير مفعّل ولكنه في فترة السماح (يوم ${diffDays} من 7). بياناته محمية.`, 'info');
-                            }
-                        }
-                    } catch (e) {}
-                });
-
-                await Promise.all(userPromises);
-                addLog("اكتملت صيانة حسابات المدد والاشتراكات بنجاح.", "success");
-
-                addLog("خطوة 3: فحص وتنظيف البيانات الميتة واليتيمة (للتجار الذين حُذفوا كلياً فقط)...", "info");
-                
-                // 1. تنظيف جدول المنتجات (products)
-                const productsSnapshot = await getDocs(collection(db, "products"));
-                const productPromises = [];
-                let deletedProductsCount = 0;
-                productsSnapshot.forEach((productDoc) => {
-                    const productData = productDoc.data();
-                    const vendorUid = productData.user_id || productData.uid || productData.vendorId;
-                    
-                    // نحذف فقط إذا كان معرّف التاجر موجوداً في المستند ولكنه غير مسجل في قائمة الحماية لـ users
-                    if (vendorUid && !existingUsersIds.includes(vendorUid)) {
-                        productPromises.push(deleteDoc(doc(db, "products", productDoc.id)));
-                        deletedProductsCount++;
-                    }
-                });
-                await Promise.all(productPromises);
-                if(deletedProductsCount > 0) {
-                    addLog(`تم تنظيف ${deletedProductsCount} منتج ميت لتاجر محذوف كلياً من النظام.`, 'danger');
-                } else {
-                    addLog("جدول المنتجات سليم وجميع المنتجات تتبع تجاراً مسجلين.", "success");
-                }
-
-                // 2. تنظيف جدول أسعار الشحن (shipping_rates)
-                const shippingSnapshot = await getDocs(collection(db, "shipping_rates"));
-                const shippingPromises = [];
-                let deletedShippingCount = 0;
-                shippingSnapshot.forEach((shipDoc) => {
-                    const shipData = shipDoc.data();
-                    const merchantUid = shipData.merchant || shipData.user_id || shipData.uid;
-                    
-                    if (merchantUid && !existingUsersIds.includes(merchantUid)) {
-                        shippingPromises.push(deleteDoc(doc(db, "shipping_rates", shipDoc.id)));
-                        deletedShippingCount++;
-                    }
-                });
-                await Promise.all(shippingPromises);
-                if(deletedShippingCount > 0) {
-                    addLog(`تم تنظيف ${deletedShippingCount} سعر توصيل يتيم لتجار محذوفين.`, 'danger');
-                } else {
-                    addLog("جدول أسعار الشحن سليم ومحمي بالكامل.", "success");
-                }
-
-                // 3. تنظيف جدول إعدادات التجار (merchant_settings)
-                const settingsSnapshot = await getDocs(collection(db, "merchant_settings"));
-                const settingsPromises = [];
-                let deletedSettingsCount = 0;
-                settingsSnapshot.forEach((setDoc) => {
-                    const setData = setDoc.data();
-                    const merchantUid = setData.merchant || setDoc.id; // التحقق من الحقل أو معرف المستند نفسه
-                    
-                    if (merchantUid && !existingUsersIds.includes(merchantUid)) {
-                        settingsPromises.push(deleteDoc(doc(db, "merchant_settings", setDoc.id)));
-                        deletedSettingsCount++;
-                    }
-                });
-                await Promise.all(settingsPromises);
-                if(deletedSettingsCount > 0) {
-                    addLog(`تم تنظيف ${deletedSettingsCount} مستند إعدادات يتيم للتجار المحذوفين.`, 'danger');
-                } else {
-                    addLog("جدول إعدادات التجار نظيف ومحمي.", "success");
-                }
-
-                // 4. تنظيف جدول الطلبات (orders) - تم تأمينه لحماية طلبات التجار الآخرين
-                const ordersSnapshot = await getDocs(collection(db, "orders"));
-                const orderPromises = [];
-                let deletedOrdersCount = 0;
-                ordersSnapshot.forEach((orderDoc) => {
-                    const orderData = orderDoc.data();
-                    const merchantUid = orderData.merchant || orderData.user_id;
-                    
-                    // الشرط الآمن: نحذف فقط إذا كان معرّف التاجر موجوداً في مستند الطلب وغير مسجل في users
-                    if (merchantUid && !existingUsersIds.includes(merchantUid)) {
-                        orderPromises.push(deleteDoc(doc(db, "orders", orderDoc.id)));
-                        deletedOrdersCount++;
-                    }
-                });
-                await Promise.all(orderPromises);
-                if(deletedOrdersCount > 0) {
-                    addLog(`تم تنظيف ${deletedOrdersCount} طلب ميت تابع للتجار المحذوفين بنجاح.`, 'danger');
-                } else {
-                    addLog("جدول الطلبات سليم وتمت حماية كافة طلبات التجار الآخرين بنجاح.", "success");
-                }
-
-                addLog("✨ انتهت العملية بالكامل بنجاح وأمان تام! جميع بيانات التجار النشطين والمسجلين محمية بنسبة 100%.", "success");
-
-            } catch (error) {
-                addLog(`حدث خطأ غير متوقع: ${error.message}`, "danger");
+                snap = await getDocs(collection(db, t.name));
+            } catch (e) {
+                log(`⚠️ تعذّر قراءة ${t.label} — تُركت دون مساس. (${e.code || e.message})`, 'warn');
+                continue;
             }
-            startBtn.disabled = false;
-        });
 
-        // كود مطابقة الـ Authentication
-        compareBtn.addEventListener('click', async () => {
-            const rawText = authInput.value.trim();
-            if(!rawText) return alert("الرجاء لصق النص أولاً!");
-            compareBtn.disabled = true;
-            try {
-                const usersSnapshot = await getDocs(collection(db, "users"));
-                const firestoreUids = [];
-                usersSnapshot.forEach(doc => { firestoreUids.push(doc.id); });
-                const uidRegex = /[a-zA-Z0-9]{28}/g;
-                const foundUidsInText = rawText.match(uidRegex) || [];
-                const uniqueUidsInText = [...new Set(foundUidsInText)];
-                authResults.innerHTML = "<h4>🔴 حسابات معلقة في الـ Authentication:</h4>";
-                let orphanCount = 0;
-                uniqueUidsInText.forEach(uid => {
-                    if (!firestoreUids.includes(uid)) {
-                        orphanCount++;
-                        const item = document.createElement('div');
-                        item.className = 'result-item';
-                        item.innerHTML = `<div><strong>UID معلق:</strong> <code>${uid}</code></div>`;
-                        authResults.appendChild(item);
-                    }
-                });
-                if (orphanCount === 0) authResults.innerHTML = "<p style='color:#27ae60; font-weight:bold; text-align:center;'>🎉 نظيفة تماماً ومطابقة!</p>";
-            } catch (error) { alert(error.message); }
-            compareBtn.disabled = false;
-        });
-    </script>
+            const found = [];
+            let skipped = 0;
+            snap.forEach(d => {
+                const data = d.data() || {};
+                // معرّف المالك: من الحقول، أو من معرّف المستند نفسه (merchant_settings)
+                let owner = null;
+                for (const f of t.fields) {
+                    if (data[f]) { owner = String(data[f]); break; }
+                }
+                if (!owner && t.idIsOwner) owner = d.id;
+
+                // قاعدة أمان: لا نحذف سجلاً لا نعرف مالكه
+                if (!owner) { skipped++; return; }
+
+                if (!liveIds.has(owner)) {
+                    found.push({ id: d.id, owner, label: data.name || data.customer_name || data.wilaya_name || d.id });
+                    ghostOwners.add(owner);
+                }
+            });
+
+            orphans[t.name] = found;
+            total += found.length;
+            if (found.length) log(`   ↳ <b class="text-rose-600">${found.length}</b> سجل يتيم من أصل ${snap.size}.`, 'warn');
+            else log(`   ↳ نظيفة (${snap.size} سجل).`, 'success');
+            if (skipped) log(`   ↳ تُجوهل ${skipped} سجل بلا معرّف مالك (لم يُمَس).`, 'info');
+        }
+
+        // العرض
+        $('results').classList.remove('hidden');
+        $('cProducts').textContent = (orphans.products || []).length;
+        $('cOrders').textContent   = (orphans.orders || []).length;
+        $('cShipping').textContent = (orphans.shipping_rates || []).length;
+        $('cSettings').textContent = (orphans.merchant_settings || []).length;
+
+        if (ghostOwners.size) {
+            $('ownersBox').classList.remove('hidden');
+            $('ownersList').innerHTML = [...ghostOwners].map(o =>
+                `<span class="text-[10px] font-mono font-black bg-slate-100 border border-slate-200 px-2 py-1 rounded-lg">${esc(o.slice(0, 12))}…</span>`
+            ).join('');
+        }
+
+        if (total > 0) {
+            $('cleanBox').classList.remove('hidden');
+            $('okBox').classList.add('hidden');
+            log(`انتهى الفحص: <b>${total}</b> سجل يتيم يخصّ <b>${ghostOwners.size}</b> تاجراً محذوفاً.`, 'danger');
+        } else {
+            $('cleanBox').classList.add('hidden');
+            $('okBox').classList.remove('hidden');
+            log('انتهى الفحص: لا توجد بيانات يتيمة 🎉', 'success');
+        }
+    } catch (e) {
+        console.error(e);
+        log(`❌ فشل الفحص: ${esc(e.message)}`, 'danger');
+    }
+    btn.disabled = false; btn.textContent = '🔄 إعادة الفحص';
+});
+
+/* ---------- نسخة احتياطية CSV ---------- */
+$('csvBtn').addEventListener('click', () => {
+    const rows = [['collection', 'doc_id', 'owner_id', 'label']];
+    for (const [col, list] of Object.entries(orphans)) {
+        list.forEach(o => rows.push([col, o.id, o.owner, String(o.label).replace(/[",\n]/g, ' ')]));
+    }
+    if (rows.length === 1) { alert('لا توجد بيانات للتصدير.'); return; }
+    const csv = '\uFEFF' + rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `souqi-orphans-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    log(`📥 نُزّلت نسخة احتياطية بـ ${rows.length - 1} سجل.`, 'success');
+});
+
+/* ---------- تأكيد نصي قبل الحذف ---------- */
+$('confirmInput').addEventListener('input', e => {
+    $('deleteBtn').disabled = e.target.value.trim() !== 'حذف';
+});
+
+/* ---------- الحذف ---------- */
+$('deleteBtn').addEventListener('click', async () => {
+    if ($('confirmInput').value.trim() !== 'حذف') return;
+    const total = Object.values(orphans).reduce((s, l) => s + l.length, 0);
+    if (!confirm(`سيُحذف ${total} سجلاً يتيماً نهائياً.\nحسابات التجار لن تُمَس.\n\nهل أنت متأكد؟`)) return;
+
+    const btn = $('deleteBtn');
+    btn.disabled = true; btn.textContent = '⏳ جارٍ الحذف...';
+    let ok = 0, fail = 0;
+
+    for (const [col, list] of Object.entries(orphans)) {
+        for (const o of list) {
+            try { await deleteDoc(doc(db, col, o.id)); ok++; }
+            catch (e) { console.error(e); fail++; }
+        }
+        if (list.length) log(`🗑️ ${col}: حُذف ${list.length} سجل.`, 'danger');
+    }
+
+    log(`اكتمل التنظيف: <b>${ok}</b> محذوف${fail ? ` — فشل ${fail}` : ''}. حسابات التجار لم تُمَس.`, ok ? 'success' : 'warn');
+    alert(`✅ حُذف ${ok} سجل يتيم.${fail ? `\n⚠️ فشل ${fail} (تحقّق من قواعد Firestore).` : ''}`);
+
+    $('confirmInput').value = '';
+    btn.textContent = '🗑️ احذف اليتيم فقط';
+    $('cleanBox').classList.add('hidden');
+    $('scanBtn').click();   // أعد الفحص لتأكيد النتيجة
+});
+</script>
 </body>
 </html>

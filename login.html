@@ -2,9 +2,31 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
     <title>بوابة الدخول | SouqiExpress</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="سجّل دخولك أو افتح متجرك الإلكتروني على سوقي إكسبريس — منصة التجارة الجزائرية.">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=44">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -13,20 +35,33 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); 
         }
     </style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
+    <link rel="stylesheet" href="assets/css/theme.css?v=44">
+    <script src="assets/js/config.js?v=44"></script>
+    <script src="assets/js/subscription.js?v=44"></script>
 </head>
 <body class="auth-gradient min-h-screen flex items-center justify-center p-4 antialiased">
 
     <div id="successModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 transition-all duration-300">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl border border-gray-100 transform scale-95 transition-transform duration-300">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl border border-gray-100 transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
             <div class="w-16 h-16 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-100 shadow-inner animate-bounce">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">تم إنشاء الحساب بنجاح!</h3>
-            <p class="text-gray-500 text-xs sm:text-sm mb-6 leading-relaxed">أهلاً بك في منصتنا، يمكنك الآن تسجيل الدخول مباشرة باستخدام بريدك الإلكتروني بعد موافقة الإدارة إن كنت تاجراً.</p>
-            <button onclick="closeSuccessModal()" class="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white py-3.5 rounded-2xl font-bold shadow-lg shadow-blue-600/20 transition duration-300">
-                حسناً، تسجيل الدخول
+            <h3 class="text-xl font-bold text-gray-800 mb-2">تم إنشاء حسابك بنجاح! 🎉</h3>
+            <p class="text-gray-500 text-xs sm:text-sm mb-4 leading-relaxed">
+                بقيت خطوة واحدة: اختر <b class="text-gray-700">مسوّقاً معتمداً</b> من القائمة ليفعّل لك الحساب
+                ويبدأ اشتراكك الشهري. سنأخذك إلى القائمة الآن.
+            </p>
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-3 mb-5 text-[11px] font-bold text-blue-800 leading-relaxed">
+                💡 تواصل مع المسوّق عبر واتساب بضغطة واحدة، وبعد التفعيل ارجع وسجّل دخولك مباشرة.
+            </div>
+            <a href="resellers_list.html?reason=new" class="block w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white py-3.5 rounded-2xl font-bold shadow-lg shadow-emerald-600/20 transition duration-300 text-center">
+                👥 اختر مسوّقاً لتفعيل حسابي
+            </a>
+            <button onclick="closeSuccessModal()" class="w-full mt-2 text-gray-400 hover:text-gray-600 py-2 rounded-2xl font-bold text-xs transition">
+                لاحقاً، عد لتسجيل الدخول
             </button>
         </div>
     </div>
@@ -48,7 +83,7 @@
             <div id="registerFields" class="hidden space-y-4">
                 
                 <div class="flex flex-col items-center justify-center mb-2">
-                    <span class="text-xs text-gray-500 font-bold mb-2">الصورة الشخصية (اختياري)</span>
+                    <span class="text-xs text-gray-600 font-bold mb-2">شعار أو صورة متجرك <span class="text-rose-500">*</span></span>
                     <div class="relative group">
                         <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="previewAvatar(event)">
                         <button type="button" onclick="document.getElementById('avatarInput').click()" class="w-24 h-24 rounded-full bg-gray-50 border-2 border-dashed border-gray-200 hover:border-blue-500 flex flex-col items-center justify-center overflow-hidden transition relative shadow-inner group">
@@ -58,31 +93,35 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812-1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
-                                <span class="text-[9px] font-bold">إضافة صورة</span>
+                                <span class="text-[9px] font-bold">أضف شعارك</span>
                             </div>
                         </button>
                     </div>
+                    <p id="avatarHint" class="text-[10px] font-bold text-slate-400 mt-1.5 text-center">مطلوبة</p>
+                    <p class="text-[10px] font-bold text-slate-400 mt-0.5 text-center leading-relaxed max-w-[15rem]">
+                        تظهر لزبائنك في صفحة متجرك — الشعار يزيد الثقة والمبيعات.
+                    </p>
                 </div>
 
                 <div class="relative">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">👤</span>
-                    <input type="text" id="name" placeholder="الاسم الكامل" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
+                    <input type="text" id="name" minlength="3" maxlength="60" placeholder="الاسم الكامل *" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
                 </div>
 
                 <div class="relative">
                     <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">📞</span>
-                    <input type="tel" id="phone" placeholder="رقم الهاتف" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-left" dir="ltr">
+                    <input type="tel" id="phone" inputmode="tel" maxlength="14" placeholder="رقم الهاتف * (06/05/07)" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-left" dir="ltr">
                 </div>
             </div>
             
             <div class="relative">
                 <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">✉️</span>
-                <input type="email" id="email" required placeholder="البريد الإلكتروني" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
+                <input type="email" id="email" required placeholder="البريد الإلكتروني *" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-4 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
             </div>
 
             <div class="relative">
                 <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔒</span>
-                <input type="password" id="password" required placeholder="كلمة المرور" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-12 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
+                <input type="password" id="password" required minlength="6" placeholder="كلمة المرور * (6 أحرف فأكثر)" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-12 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
                 <button type="button" onclick="togglePasswordVisibility('password', 'eyeBtn')" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition text-sm select-none" id="eyeBtn">
                     👁️
                 </button>
@@ -90,7 +129,7 @@
 
             <div id="confirmPasswordFields" class="relative hidden">
                 <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔒</span>
-                <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-12 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
+                <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور *" class="w-full border border-gray-200 bg-gray-50/50 rounded-2xl pl-12 pr-11 py-3.5 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 text-xs sm:text-sm font-semibold transition text-right">
                 <button type="button" onclick="togglePasswordVisibility('confirmPassword', 'confirmEyeBtn')" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition text-sm select-none" id="confirmEyeBtn">
                     👁️
                 </button>
@@ -122,17 +161,7 @@
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
-            measurementId: "G-PGLFSTBVTH"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.SE_CONFIG.firebase);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
@@ -150,16 +179,43 @@
             }
         };
 
+        let avatarObjectUrl = null;
+
         window.previewAvatar = (event) => {
             const file = event.target.files[0];
             const preview = document.getElementById('avatarPreview');
             const placeholder = document.getElementById('avatarPlaceholder');
-            
-            if (file) {
-                preview.src = URL.createObjectURL(file);
-                preview.classList.remove('hidden');
-                placeholder.classList.add('hidden');
+            const hint = document.getElementById('avatarHint');
+
+            // نظّف الرابط السابق — createObjectURL يحجز ذاكرة حتى يُلغى
+            if (avatarObjectUrl) { URL.revokeObjectURL(avatarObjectUrl); avatarObjectUrl = null; }
+
+            const reset = (msg) => {
+                event.target.value = '';
+                preview.src = '';
+                preview.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+                if (hint && msg) { hint.textContent = msg; hint.className = 'text-[10px] font-bold text-rose-600 mt-1.5 text-center'; }
+            };
+
+            // إلغاء الاختيار: أعِد الحالة بدل إبقاء معاينة قديمة
+            if (!file) { reset(''); return; }
+
+            // تحقّق من النوع: كان يقبل PDF أو فيديو
+            if (!file.type || !file.type.startsWith('image/')) {
+                reset('⚠️ اختر ملف صورة فقط (JPG أو PNG)');
+                return;
             }
+            if (file.size > 8 * 1024 * 1024) {
+                reset('⚠️ الصورة أكبر من 8 ميغابايت، اختر صورة أصغر');
+                return;
+            }
+
+            avatarObjectUrl = URL.createObjectURL(file);
+            preview.src = avatarObjectUrl;
+            preview.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            if (hint) { hint.textContent = '✅ تم اختيار الصورة'; hint.className = 'text-[10px] font-bold text-emerald-600 mt-1.5 text-center'; }
         };
 
         window.toggleMode = () => {
@@ -176,7 +232,11 @@
             document.getElementById('name').required = !isLoginMode;
             document.getElementById('confirmPassword').required = !isLoginMode;
 
+            const hint = document.getElementById('avatarHint');
+            if (hint) { hint.textContent = 'مطلوبة'; hint.className = 'text-[10px] font-bold text-slate-400 mt-1.5 text-center'; }
+
             if (isLoginMode) {
+                if (avatarObjectUrl) { URL.revokeObjectURL(avatarObjectUrl); avatarObjectUrl = null; }
                 document.getElementById('avatarInput').value = '';
                 document.getElementById('avatarPreview').src = '';
                 document.getElementById('avatarPreview').classList.add('hidden');
@@ -185,6 +245,8 @@
                 document.getElementById('name').value = '';
                 document.getElementById('confirmPassword').value = '';
             }
+            // امسح كلمة المرور عند التبديل حتى لا تُرسل قيمة من المحاولة السابقة
+            document.getElementById('password').value = '';
         };
 
         window.closeSuccessModal = () => {
@@ -193,16 +255,48 @@
             modal.querySelector('div').classList.add('scale-95');
             setTimeout(() => {
                 modal.classList.add('hidden');
-                window.toggleMode(); 
+                // ارجع لوضع الدخول فقط إن كنّا في وضع التسجيل — كان يقلب
+                // الوضع بلا شرط فيفتح التسجيل بدل الدخول أحياناً.
+                if (!isLoginMode) window.toggleMode();
             }, 150);
         };
 
-        function convertImageToBase64(file) {
+        /* تصغير الصورة قبل التحويل إلى base64.
+           خطأ سابق: صورة الهاتف (3-5 ميغا) تتحوّل إلى base64 بحجم أكبر بـ33%
+           فتتجاوز حدّ مستند Firestore (1 ميغا) ويفشل إنشاء الحساب بلا سبب واضح.
+           هنا نُصغّرها إلى 300px ونضغطها JPEG حتى تبقى بضع عشرات من الكيلوبايت. */
+        function convertImageToBase64(file, maxSize = 300, quality = 0.8) {
             return new Promise((resolve, reject) => {
+                if (!file.type || !file.type.startsWith('image/')) {
+                    reject(new Error('الملف ليس صورة')); return;
+                }
                 const reader = new FileReader();
+                reader.onerror = () => reject(new Error('تعذّر قراءة الصورة'));
+                reader.onload = () => {
+                    const img = new Image();
+                    img.onerror = () => reject(new Error('صورة تالفة'));
+                    img.onload = () => {
+                        try {
+                            let { width: w, height: h } = img;
+                            if (w > maxSize || h > maxSize) {
+                                const r = Math.min(maxSize / w, maxSize / h);
+                                w = Math.round(w * r); h = Math.round(h * r);
+                            }
+                            const cv = document.createElement('canvas');
+                            cv.width = w; cv.height = h;
+                            cv.getContext('2d').drawImage(img, 0, 0, w, h);
+                            const out = cv.toDataURL('image/jpeg', quality);
+                            // حارس أخير: إن بقيت كبيرة، أعِد الضغط بجودة أقل
+                            if (out.length > 200000) {
+                                resolve(cv.toDataURL('image/jpeg', 0.5));
+                            } else {
+                                resolve(out);
+                            }
+                        } catch (e) { reject(e); }
+                    };
+                    img.src = reader.result;
+                };
                 reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
             });
         }
 
@@ -220,6 +314,20 @@
                     return 'كلمة المرور ضعيفة جداً، يجب أن تتكون من 6 أحرف أو رموز على الأقل.';
                 case 'auth/network-request-failed':
                     return 'فشل الاتصال بالشبكة، يرجى التحقق من اتصال الإنترنت لديك.';
+                case 'auth/too-many-requests':
+                    return 'محاولات كثيرة خلال وقت قصير. انتظر بضع دقائق ثم أعد المحاولة.';
+                case 'auth/user-disabled':
+                    return 'هذا الحساب موقوف. تواصل مع الإدارة لمعرفة السبب.';
+                case 'auth/operation-not-allowed':
+                    return 'التسجيل بالبريد غير مفعّل حالياً. تواصل مع الإدارة.';
+                case 'auth/requires-recent-login':
+                    return 'انتهت صلاحية جلستك. سجّل الدخول مجدداً.';
+                case 'permission-denied':
+                    return 'لا تملك صلاحية هذا الإجراء. تحقّق من قواعد الحماية.';
+                case 'unavailable':
+                    return 'الخدمة غير متاحة مؤقتاً. أعد المحاولة بعد قليل.';
+                case 'SAVE_FAILED':
+                    return 'أُنشئ حسابك لكن تعذّر حفظ بياناتك، فأُلغي الحساب لتتمكّن من إعادة المحاولة بنفس البريد. تحقّق من اتصالك وحاول مجدداً.';
                 default:
                     return 'حدث خطأ أثناء الاتصال بقاعدة البيانات، يرجى إعادة المحاولة.';
             }
@@ -238,12 +346,61 @@
             errorMessage.classList.add('hidden'); 
             errorActionContainer.classList.add('hidden');
 
+            const fail = (title, detail) => {
+                errorTitle.innerHTML = title;
+                errorDetails.textContent = detail;
+                errorMessage.classList.remove('hidden');
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            };
+
+            // تحقق عام: البريد
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+                fail("⚠️ بريد إلكتروني غير صالح", "تأكد من كتابة البريد بشكل صحيح، مثال: nom@gmail.com");
+                return;
+            }
+
             if (!isLoginMode) {
+                const nameVal = document.getElementById('name').value.trim();
+                const phoneVal = document.getElementById('phone').value.trim();
                 const confirmPassword = document.getElementById('confirmPassword').value;
+
+                // الاسم: مطلوب فعلاً — المسوّق يحتاجه ليعرف من يفعّل له
+                if (nameVal.length < 3) {
+                    fail("⚠️ الاسم ناقص", "اكتب اسمك الكامل (3 أحرف على الأقل) حتى يتعرّف عليك المسوّق عند التفعيل.");
+                    return;
+                }
+
+                // الهاتف: مطلوب — بدونه لا يستطيع المسوّق التواصل معك
+                const digits = phoneVal.replace(/\D/g, '');
+                const okPhone = /^0(5|6|7)[0-9]{8}$/.test(digits) || /^213(5|6|7)[0-9]{8}$/.test(digits);
+                if (!okPhone) {
+                    fail("⚠️ رقم هاتف غير صالح", "أدخل رقماً جزائرياً صحيحاً يبدأ بـ 05 أو 06 أو 07 ويتكوّن من 10 أرقام.");
+                    return;
+                }
+
+                // كلمة المرور: 6 أحرف حدّ Firebase — نمنعها هنا برسالة عربية واضحة
+                if (password.length < 6) {
+                    fail("⚠️ كلمة المرور قصيرة", "اختر كلمة مرور من 6 أحرف على الأقل لحماية حسابك.");
+                    return;
+                }
                 if (password !== confirmPassword) {
-                    errorTitle.innerHTML = "⚠️ خطأ في كلمة المرور";
-                    errorDetails.textContent = "كلمتا المرور غير متطابقتين، يرجى التأكد وإعادة الكتابة.";
-                    errorMessage.classList.remove('hidden');
+                    fail("⚠️ خطأ في كلمة المرور", "كلمتا المرور غير متطابقتين، يرجى التأكد وإعادة الكتابة.");
+                    return;
+                }
+
+                // صورة/شعار المتجر مطلوبة — تظهر للزبائن في متجرك وتزيد ثقتهم
+                const avatarF = document.getElementById('avatarInput').files[0];
+                if (!avatarF) {
+                    fail("⚠️ شعار المتجر مطلوب", "أضف صورة أو شعاراً لمتجرك — سيظهر للزبائن في صفحة متجرك ويزيد ثقتهم بك.");
+                    document.getElementById('avatarInput').closest('div').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+                if (!avatarF.type || !avatarF.type.startsWith('image/')) {
+                    fail("⚠️ الملف ليس صورة", "اختر ملف صورة بصيغة JPG أو PNG.");
+                    return;
+                }
+                if (avatarF.size > 8 * 1024 * 1024) {
+                    fail("⚠️ الصورة كبيرة جداً", "اختر صورة أصغر من 8 ميغابايت.");
                     return;
                 }
             }
@@ -260,18 +417,16 @@
                     let userDoc = await getDoc(userDocRef);
                     
                     if (!userDoc.exists()) {
-                        await setDoc(userDocRef, {
-                            uid: uid,
-                            name: email.split('@')[0],
-                            email: email,
-                            phone: "",
-                            role: "merchant",
-                            avatar: "",
-                            is_approved: false,
-                            emailVisibility: false,
-                            createdAt: new Date().toISOString()
-                        });
-                        userDoc = await getDoc(userDocRef);
+                        /* حساب موجود في Auth بلا مستند بيانات (بقايا تسجيل فاشل قديم).
+                           كنّا ننشئ له مستنداً تلقائياً بلا اسم ولا هاتف ولا شعار —
+                           وهو ما يناقض شرط اكتمال البيانات، ويصل المسوّق إلى تاجر
+                           لا يعرف اسمه ولا يستطيع الاتصال به.
+                           الصواب: نمنع الدخول ونطلب إكمال التسجيل. */
+                        await signOut(auth);
+                        errorTitle.innerHTML = "⚠️ بيانات حسابك غير مكتملة";
+                        errorDetails.textContent = "حسابك مسجّل لكن بياناته ناقصة. أنشئ حسابك من جديد بنفس البريد مع إكمال الاسم والهاتف وشعار المتجر، أو تواصل مع الإدارة.";
+                        errorMessage.classList.remove('hidden');
+                        return;
                     }
                     
                     const userData = userDoc.data();
@@ -280,10 +435,32 @@
 
                     if (userRole === 'merchant' && isApproved !== true) {
                         errorTitle.innerHTML = "⚠️ الحساب قيد المراجعة والتدقيق";
-                        errorDetails.textContent = "عذراً، حسابك كتاجر لم يتم تفعيله بعد. يرجى التواصل مع الشخص أو المسوق الشريك الذي وجهك إلينا لتفعيل حسابك، أو اضغط على الزر أدناه للانتقال إلى قائمة المسوقين المعتمدين واختيار الشخص المناسب لتفعيل حسابك مباشرة.";
+                        errorDetails.textContent = "حسابك كتاجر لم يُفعّل بعد. اختر مسوّقاً معتمداً من القائمة ليفعّل لك الحساب ويبدأ اشتراكك الشهري.";
                         errorMessage.classList.remove('hidden');
-                        errorActionContainer.classList.remove('hidden'); // إظهار الزر
+                        errorActionContainer.classList.remove('hidden');
                         await signOut(auth);
+                        setTimeout(() => { window.location.href = "resellers_list.html?reason=pending"; }, 2200);
+                        return;
+                    }
+
+                    // فحص انتهاء الاشتراك الشهري للتاجر
+                    if (userRole === 'merchant' && window.SE_SUB && !window.SE_SUB.status(userData).active) {
+                        const st = window.SE_SUB.status(userData);
+                        errorTitle.innerHTML = "⛔ انتهى اشتراكك الشهري";
+                        errorDetails.textContent = "انتهى اشتراكك بتاريخ " + window.SE_SUB.formatDate(st.end)
+                            + ". حسابك ومنتجاتك وطلباتك محفوظة كما هي — اختر مسوّقاً من القائمة ليجدّد لك الاشتراك ويعود متجرك للعمل فوراً.";
+                        errorMessage.classList.remove('hidden');
+                        errorActionContainer.classList.remove('hidden');
+                        try {
+                            sessionStorage.setItem("se_sub_notice", JSON.stringify({
+                                reason: "expired", name: userData.name || "", email: userData.email || "",
+                                end: st.end ? st.end.toISOString() : null,
+                                activated_by: userData.activated_by || "",
+                                activated_by_name: userData.activated_by_name || ""
+                            }));
+                        } catch (e) {}
+                        await signOut(auth);
+                        setTimeout(() => { window.location.href = "resellers_list.html?reason=expired"; }, 2600);
                         return;
                     }
 
@@ -305,27 +482,39 @@
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const uid = userCredential.user.uid;
 
-                    let avatarUrl = "";
-
-                    if (avatarFile) {
-                        try {
+                    /* من هنا فصاعداً: حساب Auth أُنشئ فعلاً.
+                       إن فشل أي شيء بعده (صورة تالفة، انقطاع شبكة، رفض قواعد
+                       Firestore) نحصل على "حساب يتيم": موجود في Auth بلا مستند
+                       بيانات — فلا يستطيع صاحبه الدخول ولا إعادة التسجيل بنفس
+                       البريد. لذلك نحذف حساب Auth عند أي فشل. */
+                    try {
+                        let avatarUrl = "";
+                        if (avatarFile) {
                             avatarUrl = await convertImageToBase64(avatarFile);
-                        } catch (imgErr) {
-                            console.error("خطأ في تجهيز الصورة:", imgErr);
                         }
+
+                        await setDoc(doc(db, "users", uid), {
+                            uid: uid,
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            role: "merchant",
+                            avatar: avatarUrl,
+                            is_approved: false,
+                            emailVisibility: false,
+                            createdAt: new Date().toISOString()
+                        });
+                    } catch (saveErr) {
+                        console.error("فشل حفظ بيانات الحساب:", saveErr);
+                        try { await userCredential.user.delete(); } catch (delErr) { console.error(delErr); }
+                        throw new Error('SAVE_FAILED');
                     }
 
-                    await setDoc(doc(db, "users", uid), {
-                        uid: uid,
-                        name: name,
-                        email: email,
-                        phone: phone,
-                        role: "merchant",
-                        avatar: avatarUrl,
-                        is_approved: false,
-                        emailVisibility: false,
-                        createdAt: new Date().toISOString()
-                    });
+                    try {
+                        sessionStorage.setItem("se_sub_notice", JSON.stringify({
+                            reason: "new", name: name, email: email, end: null
+                        }));
+                    } catch (e) {}
 
                     await signOut(auth);
 
@@ -340,7 +529,7 @@
                 console.error("Firebase Error:", err);
                 errorMessage.classList.remove('hidden');
                 errorTitle.innerHTML = "❌ فشل الإجراء";
-                errorDetails.textContent = getFriendlyErrorMessage(err.code);
+                errorDetails.textContent = getFriendlyErrorMessage(err.code || err.message);
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = isLoginMode ? 'دخول' : 'إنشاء حساب جديد';

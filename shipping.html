@@ -2,9 +2,30 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
     <title>إدارة الشحن والولايات SouqiExpress </title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=44">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -15,90 +36,55 @@
         body { font-family: 'Cairo', sans-serif; }
         
         /* تأثير كرت الزجاج الفاخر الموحد عبر المنصة */
-        .glass-card { 
-            background: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6); 
-        }
-        
         /* شريط تمرير داخلي منسق ومخفي للشفافية والبساطة */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
+    <link rel="stylesheet" href="assets/css/theme.css?v=44">
+    <script src="assets/js/config.js?v=44"></script>
+    <script src="assets/js/app.js?v=44"></script>
+    <script src="assets/js/subscription.js?v=44"></script>
+    <script src="assets/js/merchant-shell.js?v=44"></script>
+    <script src="assets/js/couriers.js?v=44"></script>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="text-slate-900 min-h-screen flex hidden bg-gradient-to-br from-slate-50 via-slate-100 to-blue-50/30 relative" id="main-body">
+<body class="se-admin flex h-screen overflow-hidden" id="main-body">
 
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/30 backdrop-blur-sm z-40 hidden md:hidden transition-all duration-300"></div>
+    <div id="shell"></div>
 
-    <aside id="sidebar" class="fixed inset-y-0 right-0 z-50 w-68 bg-white/90 backdrop-blur-xl border-l border-slate-200/80 shadow-xl shadow-slate-900/5 transform translate-x-full md:translate-x-0 transition-transform duration-300 ease-out flex flex-col h-full">
-        <div class="p-6 border-b border-slate-100/80 flex justify-between items-center bg-slate-50/40">
-            <div class="flex items-center gap-2.5 bg-gradient-to-tr from-blue-900 to-slate-900 text-white px-3.5 py-2 rounded-xl shadow-md transform rotate-1">
-                <span class="text-base">🏪</span>
-                <span class="font-black text-sm tracking-tight">Souqi<span class="text-emerald-400">Express</span></span>
-            </div>
-            <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-slate-700 w-8 h-8 rounded-lg flex items-center justify-center hover:bg-slate-100 font-bold transition-all">✕</button>
-        </div>
-
-        <nav class="flex-grow p-4 space-y-1.5 overflow-y-auto">
-            <a href="merchant-dashboard.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">📊</span> لوحة القيادة
-            </a>
-            <a href="products.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">📦</span> إدارة المنتجات
-            </a>
-            <a href="orders.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition-all duration-200 group">
-                <span class="text-base group-hover:scale-110 transition-transform">🛒</span> الطلبات الواردة
-            </a>
-            <a href="shipping.html" class="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-black bg-gradient-to-l from-blue-50 to-indigo-50/50 text-blue-600 border-r-4 border-blue-600 shadow-sm transition-all duration-200">
-                <span class="text-base">🚚</span> إدارة الشحن
-            </a>
-        </nav>
-
-        <div class="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span id="db-status-dot" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
-                <span id="db-status-text" class="text-xs font-bold text-slate-600">جاري فحص الحساب...</span>
-            </div>
-            <button onclick="logoutMerchant()" class="text-xs font-black text-red-500 hover:text-red-600 transition-colors">تسجيل خروج</button>
-        </div>
-    </aside>
-
-    <div class="flex-1 md:mr-64 min-w-0 flex flex-col">
+    <div class="flex-grow flex flex-col min-w-0 overflow-hidden">
+        <div id="shell-topbar"></div>
         
-        <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/60 p-4 md:px-6 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3.5 sticky top-0 z-30 shadow-sm">
-            
-            <div class="flex items-center gap-3 w-full md:w-auto">
-                <button onclick="toggleSidebar()" class="md:hidden p-2 border border-slate-200 rounded-xl text-slate-700 bg-slate-50 hover:bg-slate-100 transition-all active:scale-95 shrink-0">☰</button>
-                <h1 class="text-sm md:text-base font-black text-slate-800 tracking-tight flex items-center gap-2 leading-tight">
-                    <span class="text-base shrink-0">🚚</span> 
-                    <span>إعداد أسعار شحن الولايات الخاصة بمتجري</span>
-                </h1>
-            </div>
-            
-            <div class="flex items-center justify-between md:justify-end gap-3 w-full md:w-auto border-t border-slate-100 pt-2.5 md:border-t-0 md:pt-0 shrink-0">
-                <span id="merchant-name-badge" class="hidden bg-blue-50 text-blue-700 border border-blue-100 text-[11px] md:text-xs font-extrabold px-3 py-2 rounded-xl shadow-sm whitespace-nowrap"></span>
-                
-                <button id="addWilayaBtn" onclick="openAddWilayaModal()" disabled class="bg-blue-600 opacity-50 cursor-not-allowed text-white font-black text-[11px] md:text-xs px-4 py-2.5 rounded-xl transition-all shadow-md shadow-blue-600/10 flex items-center gap-1 whitespace-nowrap">
-                    ➕ إضافة ولاية جديدة
-                </button>
-            </div>
-        </header>
+        <main class="flex-grow overflow-y-auto p-4 md:p-6 space-y-5">
 
-        <main class="p-4 md:p-6 space-y-6 flex-1 overflow-y-auto">
-            
+            <!-- ترويسة القسم: نفس نمط بقية صفحات مركز التاجر -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <h2 class="text-xl md:text-2xl font-black tracking-tight">🚚 إدارة الشحن</h2>
+                    <p class="se-muted text-xs font-bold mt-1">حدّد أسعار التوصيل لكل ولاية — الزبون يراها في السلة فوراً.</p>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span id="merchant-name-badge" class="hidden se-badge se-badge-blue !text-[11px] whitespace-nowrap"></span>
+                    <button id="addWilayaBtn" onclick="openAddWilayaModal()" disabled
+                            class="se-btn se-btn-primary !text-xs whitespace-nowrap opacity-50 cursor-not-allowed">
+                        ➕ إضافة ولاية
+                    </button>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between relative overflow-hidden group">
+                <div class="se-card p-5 flex items-center justify-between relative overflow-hidden group">
                     <div>
-                        <p class="text-xs font-extrabold text-slate-400">ولاياتك المدعومة</p>
-                        <p id="stats-total-wilayas" class="text-2xl md:text-3xl font-black text-slate-900 mt-2 tracking-tight">0</p>
+                        <p class="text-xs font-extrabold se-muted">ولاياتك المدعومة</p>
+                        <p id="stats-total-wilayas" class="text-2xl md:text-3xl font-black mt-2 tracking-tight">0</p>
                     </div>
                     <span class="text-lg bg-blue-50/80 border border-blue-100/50 p-3 rounded-2xl text-blue-600 shadow-sm transition-transform group-hover:scale-110 duration-300">📍</span>
                 </div>
                 
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between relative overflow-hidden group border-r-4 border-emerald-500">
+                <div class="se-card p-5 flex items-center justify-between relative overflow-hidden group border-r-4 border-emerald-500">
                     <div>
                         <p class="text-xs font-extrabold text-emerald-500">الشحن نشط إلى</p>
                         <p id="stats-active-wilayas" class="text-2xl md:text-3xl font-black text-emerald-600 mt-2 tracking-tight">0</p>
@@ -106,7 +92,7 @@
                     <span class="text-lg bg-emerald-50/80 border border-emerald-100/50 p-3 rounded-2xl text-emerald-600 shadow-sm transition-transform group-hover:scale-110 duration-300">✅</span>
                 </div>
                 
-                <div class="glass-card p-5 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between relative overflow-hidden group border-r-4 border-rose-500">
+                <div class="se-card p-5 flex items-center justify-between relative overflow-hidden group border-r-4 border-rose-500">
                     <div>
                         <p class="text-xs font-extrabold text-rose-500">الشحن متوقف إلى</p>
                         <p id="stats-inactive-wilayas" class="text-2xl md:text-3xl font-black text-rose-600 mt-2 tracking-tight">0</p>
@@ -115,14 +101,84 @@
                 </div>
             </div>
 
-            <div class="glass-card rounded-3xl shadow-sm overflow-hidden border border-slate-200/60 bg-white/75">
-                <div class="p-5 bg-slate-50/80 border-b border-slate-200/60">
+            <!-- ========= الربط مع شركات التوصيل ========= -->
+            <div class="se-card p-4 md:p-5 space-y-4">
+                <div class="flex items-start justify-between gap-2 flex-wrap">
+                    <div>
+                        <h3 class="text-sm font-black text-slate-800">🚚 الربط مع شركة التوصيل</h3>
+                        <p class="text-[11px] text-slate-400 font-bold mt-1">أرسل طلباتك مباشرة إلى شركة التوصيل واحصل على رقم التتبّع تلقائياً.</p>
+                    </div>
+                    <span id="courierStatusBadge" class="text-[10px] font-black px-3 py-1.5 rounded-full bg-slate-100 text-slate-500">غير مربوط</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 mb-1">شركة التوصيل</label>
+                        <select id="courierSelect" aria-label="اختر شركة التوصيل" onchange="renderCourierFields()" class="se-input !text-sm !font-bold !p-2.5">
+                            <option value="">— لا يوجد ربط (يدوي) —</option>
+                        </select>
+                        <p id="courierNote" class="text-[10px] text-slate-400 font-bold mt-1"></p>
+                    </div>
+                    <div id="fromWilayaWrap" class="hidden">
+                        <label class="block text-[10px] font-black text-slate-500 mb-1">ولاية الانطلاق (مخزنك)</label>
+                        <select id="courierFromWilaya" class="se-input !text-sm !font-bold !p-2.5"></select>
+                    </div>
+                </div>
+
+                <div id="courierFields" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+
+                <div id="courierHelp" class="hidden text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-200 rounded-xl p-2.5"></div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="testCourier()" id="testCourierBtn" class="bg-slate-900 text-white font-black text-[11px] px-4 py-2.5 rounded-xl">🔌 اختبار الاتصال</button>
+                    <button onclick="saveCourier()" id="saveCourierBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-black text-[11px] px-4 py-2.5 rounded-xl">💾 حفظ الربط</button>
+                    <button onclick="syncCourierRates()" id="syncRatesBtn" class="bg-emerald-50 text-emerald-700 font-black text-[11px] px-4 py-2.5 rounded-xl">🔄 جلب الأسعار من الشركة</button>
+                    <label class="flex items-center gap-2 text-[11px] font-black text-slate-600 mr-auto cursor-pointer">
+                        <input type="checkbox" id="courierAutoShip" class="rounded border-slate-300">
+                        إرسال تلقائي عند تأكيد الطلب
+                    </label>
+                </div>
+
+                <div id="courierResult" class="hidden text-[11px] font-bold rounded-xl p-3"></div>
+
+                <details class="text-[11px] text-slate-500 font-bold">
+                    <summary class="cursor-pointer text-blue-600">📖 لا تملك مفاتيح API؟ استعمل التصدير بدل الربط</summary>
+                    <div class="mt-2 space-y-2 leading-relaxed">
+                        <p>كل شركات التوصيل الجزائرية تقبل رفع ملف Excel/CSV من لوحتها. من صفحة <span class="text-blue-600">الطلبات الواردة</span> اضغط «تصدير لشركة التوصيل» واختر الصيغة، ثم ارفع الملف في لوحة الشركة.</p>
+                        <p class="text-slate-400">هذه الطريقة تعمل دائماً ولا تحتاج أي مفاتيح.</p>
+                    </div>
+                </details>
+            </div>
+
+            <!-- أدوات جماعية توفّر على التاجر تعديل 58 ولاية يدوياً -->
+            <div class="se-card p-4 md:p-5 space-y-3">
+                <h3 class="text-sm font-black text-slate-800">⚡ تسعير جماعي سريع</h3>
+                <div class="flex flex-wrap items-end gap-2">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 mb-1">سعر المنزل</label>
+                        <input type="number" id="bulkHome" aria-label="سعر المنزل الجماعي" min="0" placeholder="مثال 600" class="w-28 text-sm font-bold p-2.5 border border-slate-200 rounded-xl text-center focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 mb-1">سعر المكتب</label>
+                        <input type="number" id="bulkDesk" aria-label="سعر المكتب الجماعي" min="0" placeholder="مثال 400" class="w-28 text-sm font-bold p-2.5 border border-slate-200 rounded-xl text-center focus:border-blue-500 focus:outline-none">
+                    </div>
+                    <button onclick="applyBulkPricing()" class="bg-blue-600 hover:bg-blue-700 text-white font-black text-[11px] px-4 py-2.5 rounded-xl shadow-sm">تطبيق على الكل</button>
+                    <button onclick="bulkToggle(true)" class="bg-emerald-50 text-emerald-700 font-black text-[11px] px-4 py-2.5 rounded-xl">✅ تفعيل الكل</button>
+                    <button onclick="bulkToggle(false)" class="bg-rose-50 text-rose-700 font-black text-[11px] px-4 py-2.5 rounded-xl">❌ إيقاف الكل</button>
+                    <button onclick="addAllWilayas()" id="addAllBtn" class="bg-slate-900 text-white font-black text-[11px] px-4 py-2.5 rounded-xl mr-auto">🇩🇿 إضافة كل الولايات (58)</button>
+                </div>
+                <p class="text-[10px] text-slate-400 font-bold">يعدّل الأسعار المعروضة في الجدول أدناه — لا يُحفظ إلا بعد الضغط على «حفظ الكل».</p>
+            </div>
+
+            <div class="se-card overflow-hidden !p-0">
+                <div class="p-5 border-b flex items-center justify-between gap-2 flex-wrap" style="background:var(--se-bg);border-color:var(--se-border)">
                     <h3 class="text-sm font-black text-slate-800">قائمة أسعار الشحن لمتجرك</h3>
+                    <button onclick="saveAllRates()" id="saveAllBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] px-4 py-2 rounded-xl shadow-sm">💾 حفظ الكل</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-right border-collapse min-w-[850px]">
                         <thead>
-                            <tr class="bg-slate-50/40 border-b border-slate-200/60 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                            <tr class="border-b se-muted text-xs font-bold uppercase tracking-wider" style="background:var(--se-bg);border-color:var(--se-border)">
                                 <th class="p-4 w-24">رمز الولاية</th>
                                 <th class="p-4">اسم الولاية</th>
                                 <th class="p-4">سعر التوصيل للمنزل (د.ج)</th>
@@ -131,7 +187,7 @@
                                 <th class="p-4 text-center w-36">الإجراءات</th>
                             </tr>
                         </thead>
-                        <tbody id="shipping-table-body" class="divide-y divide-slate-100 text-sm font-semibold text-slate-700">
+                        <tbody id="shipping-table-body" class="divide-y text-sm font-semibold" style="border-color:var(--se-border)">
                             <tr>
                                 <td colspan="6" class="p-12 text-center text-slate-400 font-bold">
                                     <div class="flex items-center justify-center gap-2.5">
@@ -147,8 +203,8 @@
     </div>
 
     <div id="addWilayaModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4 transition-all">
-        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[90vh]">
-            <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+        <div class="se-card w-full max-w-md !p-0 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-5 border-b flex justify-between items-center" style="background:var(--se-bg);border-color:var(--se-border)">
                 <h3 class="font-black text-slate-800 text-base flex items-center gap-1.5">
                     <span>➕</span> إضافة ولاية وأسعار شحن لمتجرك
                 </h3>
@@ -158,37 +214,37 @@
             <form id="addWilayaForm" onsubmit="createNewShippingRate(event)" class="p-6 space-y-5 overflow-y-auto flex-grow text-sm font-semibold text-slate-700">
                 <div>
                     <label class="block text-xs font-extrabold text-slate-500 mb-2">اختر الولاية:</label>
-                    <select id="modal-wilaya-select" onchange="handleWilayaSelectChange()" required class="w-full p-3 border border-slate-200 rounded-xl bg-white text-sm font-bold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
+                    <select id="modal-wilaya-select" aria-label="اختر الولاية" onchange="handleWilayaSelectChange()" required class="se-input !p-3 !text-sm  !font-bold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
                     </select>
                 </div>
 
                 <div id="custom-wilaya-fields" class="hidden grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200 transition-all">
                     <div>
                         <label class="block text-xs font-extrabold text-slate-500 mb-1.5">رمز الولاية:</label>
-                        <input type="text" id="modal-custom-code" placeholder="مثال: 59" class="w-full p-3 border border-slate-200 rounded-xl bg-white text-sm font-black focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all text-center">
+                        <input type="text" id="modal-custom-code" placeholder="مثال: 59" class="se-input !p-3 !text-sm  !font-black focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all text-center">
                     </div>
                     <div>
                         <label class="block text-xs font-extrabold text-slate-500 mb-1.5">اسم الولاية:</label>
-                        <input type="text" id="modal-custom-name" placeholder="مثال: بوسعادة" class="w-full p-3 border border-slate-200 rounded-xl bg-white text-sm font-bold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
+                        <input type="text" id="modal-custom-name" placeholder="مثال: بوسعادة" class="se-input !p-3 !text-sm  !font-bold focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-extrabold text-slate-500 mb-2">سعر توصيل المنزل (د.ج):</label>
-                        <input type="number" id="modal-home-price" value="600" min="0" required class="w-full p-3 border border-slate-200 rounded-xl bg-white font-black text-sm text-center focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
+                        <input type="number" id="modal-home-price" aria-label="سعر التوصيل للمنزل بالدينار" value="600" min="0" required class="se-input !p-3 !font-black  !text-sm text-center focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
                     </div>
                     <div>
                         <label class="block text-xs font-extrabold text-slate-500 mb-2">سعر توصيل المكتب (د.ج):</label>
-                        <input type="number" id="modal-desk-price" value="350" min="0" required class="w-full p-3 border border-slate-200 rounded-xl bg-white font-black text-sm text-center focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
+                        <input type="number" id="modal-desk-price" aria-label="سعر التوصيل للمكتب بالدينار" value="350" min="0" required class="se-input !p-3 !font-black  !text-sm text-center focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all">
                     </div>
                 </div>
                 
                 <div class="pt-3 flex gap-3">
-                    <button type="submit" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-sm py-3.5 rounded-xl shadow-lg shadow-blue-600/10 hover:shadow-xl hover:shadow-blue-600/20 hover:-translate-y-0.5 active:scale-98 transition-all">
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-sm py-3.5 rounded-xl shadow-lg shadow-blue-600/10 hover:shadow-xl hover:shadow-blue-600/20 hover:-translate-y-0.5 active:scale-95 transition-all">
                         🚀 إضافة وتفعيل الآن
                     </button>
-                    <button type="button" onclick="closeAddWilayaModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm px-5 py-3.5 rounded-xl transition-all active:scale-98">
+                    <button type="button" onclick="closeAddWilayaModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm px-5 py-3.5 rounded-xl transition-all active:scale-95">
                         إلغاء
                     </button>
                 </div>
@@ -196,20 +252,12 @@
         </div>
     </div>
     <script>
-        // إعدادات الفايربيز الموحدة لـ Walid Market
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:7b3a80ba4acea3e29c3ec3",
-            measurementId: "G-YX3PT078PG"
-        };
-
-        firebase.initializeApp(firebaseConfig);
+        // إعدادات الفايربيز الموحّدة
+        firebase.initializeApp(window.SE_CONFIG.firebase);
         const db = firebase.firestore();
         const auth = firebase.auth();
+
+        SHELL.mount('shipping', 'إدارة الشحن');
 
         let currentUser = null;
         let existingWilayaCodes = []; // لتخزين الأكواد المضافة مسبقاً وتجنب تكرارها
@@ -219,12 +267,12 @@
             { code: "01", name: "أدرار" }, { code: "02", name: "الشلف" }, { code: "03", name: "الأغواط" }, { code: "04", name: "أم البواقي" },
             { code: "05", name: "باتنة" }, { code: "06", name: "بجاية" }, { code: "07", name: "بسكرة" }, { code: "08", name: "بشار" },
             { code: "09", name: "البليدة" }, { code: "10", name: "البويرة" }, { code: "11", name: "تمنراست" }, { code: "12", name: "تبسة" },
-            { code: "13", name: "تلمسان" }, { code: "14", name: "تيارت" }, { code: "15", name: "تيزي وزو" }, { code: "16", name: "الجزائر العاصمة" },
+            { code: "13", name: "تلمسان" }, { code: "14", name: "تيارت" }, { code: "15", name: "تيزي وزو" }, { code: "16", name: "الجزائر" },
             { code: "17", name: "الجلفة" }, { code: "18", name: "جيجل" }, { code: "19", name: "سطيف" }, { code: "20", name: "سعيدة" },
             { code: "21", name: "سكيكدة" }, { code: "22", name: "سيدي بلعباس" }, { code: "23", name: "عنابة" }, { code: "24", name: "قالمة" },
             { code: "25", name: "قسنطينة" }, { code: "26", name: "المدية" }, { code: "27", name: "مستغانم" }, { code: "28", name: "المسيلة" },
             { code: "29", name: "معسكر" }, { code: "30", name: "ورقلة" }, { code: "31", name: "وهران" }, { code: "32", name: "البيض" },
-            { code: "33", name: "إليزي" }, { code: "34", name: "برج bوعريريج" }, { code: "35", name: "بومرداس" }, { code: "36", name: "الطارف" },
+            { code: "33", name: "إليزي" }, { code: "34", name: "برج بوعريريج" }, { code: "35", name: "بومرداس" }, { code: "36", name: "الطارف" },
             { code: "37", name: "تندوف" }, { code: "38", name: "تيسمسيلت" }, { code: "39", name: "الوادي" }, { code: "40", name: "خنشلة" },
             { code: "41", name: "سوق أهراس" }, { code: "42", name: "تيبازة" }, { code: "43", name: "ميلة" }, { code: "44", name: "عين الدفلى" },
             { code: "45", name: "النعامة" }, { code: "46", name: "عين تموشنت" }, { code: "47", name: "غرداية" }, { code: "48", name: "غليزان" },
@@ -238,9 +286,29 @@
             if (!user) {
                 window.location.href = 'login.html'; // توجيه لصفحة تسجيل الدخول الصحيحة للمشروع
             } else {
+                // التحقق من الرتبة والتفعيل والاشتراك الشهري
+                try {
+                    const snap = await db.collection('users').doc(user.uid).get();
+                    const d = snap.exists ? (snap.data() || {}) : {};
+                    if (!snap.exists || (d.role !== 'merchant' && d.role !== 'admin')) {
+                        window.location.replace('login.html'); return;
+                    }
+                    if (d.role === 'merchant' && d.is_approved !== true) {
+                        if (window.SE_SUB) { window.SE_SUB.redirectExpired(d); return; }
+                        window.location.replace('login.html'); return;
+                    }
+                    if (d.role === 'merchant' && window.SE_SUB && !window.SE_SUB.status(d).active) {
+                        window.SE_SUB.redirectExpired(d); return;
+                    }
+                    if (d.role === 'merchant' && window.SE_SUB) { try { window.SE_SUB.mountBanner(d); } catch (e) {} }
+                } catch (e) {
+                    console.error('فشل التحقق من الحساب:', e);
+                }
+
                 currentUser = user;
-                document.getElementById('main-body').classList.remove('hidden');
+                initCourierUI();
                 await fetchShippingRates();
+                await loadCourierCfg();
             }
         });
 
@@ -264,8 +332,7 @@
             document.getElementById('merchant-name-badge').innerText = `🏪 متجر: ${merchantName}`;
             document.getElementById('merchant-name-badge').classList.remove('hidden');
             
-            document.getElementById('db-status-dot').className = "w-2 h-2 rounded-full bg-emerald-500 animate-pulse";
-            document.getElementById('db-status-text').innerText = "متصل بحسابك السحابي";
+            SHELL.setStatus(true, "متصل بحسابك السحابي");
 
             try {
                 const snapshot = await db.collection('shipping_rates')
@@ -280,6 +347,8 @@
                 // ترتيب تصاعدي حسب كود الولاية برمجياً
                 records.sort((a, b) => String(a.wilaya_code).localeCompare(String(b.wilaya_code), undefined, {numeric: true}));
 
+                window.__RATE_IDS__ = records.map(r => r.id);
+                window.__RATES_CACHE__ = records;
                 renderTable(records);
             } catch (error) {
                 console.error(error);
@@ -292,7 +361,7 @@
             tableBody.innerHTML = "";
 
             if (rates.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500 font-medium">👋 مرحباً بك في Walid Market! جدول شحن متجرك فارغ حالياً. اضغط على زر "إضافة ولاية جديدة" بالأعلى لتحديد أسعار الشحن الخاصة بك.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500 font-medium">👋 جدول شحن متجرك فارغ. اضغط «🇩🇿 إضافة كل الولايات (58)» بعد تحديد سعرَي المنزل والمكتب، أو أضف ولاية واحدة يدوياً.</td></tr>`;
                 document.getElementById('stats-total-wilayas').innerText = "0";
                 document.getElementById('stats-active-wilayas').innerText = "0";
                 document.getElementById('stats-inactive-wilayas').innerText = "0";
@@ -305,8 +374,9 @@
 
             rates.forEach((rate) => {
                 const id        = rate.id;
-                const code      = rate.wilaya_code || '--';
-                const name      = rate.wilaya_name || 'ولاية غير مسمى';
+                const code      = String(rate.wilaya_code || '--').replace(/[^0-9A-Za-z\-]/g,'');
+                const esc = window.SE ? SE.escape : (x => String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])));
+                const name      = esc(rate.wilaya_name || 'ولاية غير مسمى');
                 const homePrice = rate.home_price ?? 0;
                 const deskPrice = rate.desk_price ?? 0;
                 const isActive  = rate.is_active ?? true;
@@ -314,14 +384,14 @@
                 if (isActive) activeWilayas++; else inactiveWilayas++;
 
                 const rowHTML = `
-                    <tr class="hover:bg-slate-50 transition">
+                    <tr class="se-row transition">
                         <td class="p-4 font-bold text-slate-500">${code}</td>
-                        <td class="p-4 font-bold text-gray-800 text-sm">📍 ${code} - ${name}</td>
+                        <td class="p-4 font-bold text-sm">📍 ${code} - ${name}</td>
                         <td class="p-4">
-                            <input type="number" id="home-${id}" value="${homePrice}" class="w-full max-w-[120px] text-sm font-bold p-2 border border-slate-200 rounded-xl bg-white text-black text-center focus:border-blue-500 focus:outline-none">
+                            <input type="number" id="home-${id}" value="${homePrice}" class="se-input !w-full !max-w-[120px] !text-sm !font-bold !p-2 !text-center">
                         </td>
                         <td class="p-4">
-                            <input type="number" id="desk-${id}" value="${deskPrice}" class="w-full max-w-[120px] text-sm font-bold p-2 border border-slate-200 rounded-xl bg-white text-black text-center focus:border-blue-500 focus:outline-none">
+                            <input type="number" id="desk-${id}" value="${deskPrice}" class="se-input !w-full !max-w-[120px] !text-sm !font-bold !p-2 !text-center">
                         </td>
                         <td class="p-4">
                             <select id="status-${id}" class="text-xs font-bold rounded-xl px-3 py-2 border cursor-pointer focus:outline-none ${isActive ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-rose-50 border-rose-200 text-rose-700'}">
@@ -329,13 +399,15 @@
                                 <option value="false" ${!isActive ? 'selected' : ''}>❌ متوقف</option>
                             </select>
                         </td>
-                        <td class="p-4 text-center flex items-center justify-center gap-2">
-                            <button onclick="saveRate('${id}')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm">
-                                💾 حفظ
-                            </button>
-                            <button onclick="deleteRate('${id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm">
-                                🗑️ حذف
-                            </button>
+                        <td class="p-4 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="saveRate('${id}')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm whitespace-nowrap">
+                                    💾 حفظ
+                                </button>
+                                <button onclick="deleteRate('${id}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-3 py-2 rounded-xl transition shadow-sm whitespace-nowrap">
+                                    🗑️ حذف
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -353,9 +425,14 @@
                 const deskInput  = document.getElementById(`desk-${recordId}`).value;
                 const statusSel  = document.getElementById(`status-${recordId}`).value;
 
+                const h = Number(homeInput), d = Number(deskInput);
+                if (!isFinite(h) || !isFinite(d) || h < 0 || d < 0) {
+                    alert("⚠️ أسعار التوصيل يجب أن تكون أرقاماً غير سالبة.");
+                    return;
+                }
                 await db.collection('shipping_rates').doc(recordId).update({
-                    home_price: Number(homeInput),
-                    desk_price: Number(deskInput),
+                    home_price: h,
+                    desk_price: d,
                     is_active: (statusSel === 'true')
                 });
                 await fetchShippingRates();
@@ -364,6 +441,226 @@
                 alert("تعذر حفظ التعديلات السحابية.");
             }
         }
+
+        /* ===================== الربط مع شركات التوصيل ===================== */
+        let courierCfg = {};
+
+        function initCourierUI() {
+            const sel = document.getElementById('courierSelect');
+            sel.innerHTML = '<option value="">— لا يوجد ربط (يدوي) —</option>' +
+                Object.values(SEC.COURIERS).map(c => `<option value="${c.id}">${SE.escape(c.name)}</option>`).join('');
+            const fw = document.getElementById('courierFromWilaya');
+            fw.innerHTML = (window.SE_WILAYAS || []).map((w, i) =>
+                `<option value="${i + 1}">${String(i + 1).padStart(2, '0')} - ${SE.escape(w)}</option>`).join('');
+        }
+
+        window.renderCourierFields = function () {
+            const id = document.getElementById('courierSelect').value;
+            const box = document.getElementById('courierFields');
+            const help = document.getElementById('courierHelp');
+            const note = document.getElementById('courierNote');
+            const fwWrap = document.getElementById('fromWilayaWrap');
+
+            if (!id) {
+                box.innerHTML = ''; help.classList.add('hidden'); note.textContent = '';
+                fwWrap.classList.add('hidden'); return;
+            }
+            const def = SEC.COURIERS[id];
+            note.textContent = def.note || '';
+            fwWrap.classList.toggle('hidden', !def.needsFromWilaya);
+            help.classList.remove('hidden');
+            help.textContent = 'ℹ️ ' + (def.help || '');
+            box.innerHTML = def.fields.map(f => `
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 mb-1">${SE.escape(f.label)}</label>
+                    <input type="${f.type}" id="cf_${f.key}" dir="ltr" placeholder="${SE.escape(f.placeholder || '')}"
+                        value="${SE.escape(courierCfg[f.key] || '')}"
+                        class="se-input !text-sm !font-bold !p-2.5">
+                </div>`).join('');
+        };
+
+        function readCourierForm() {
+            const id = document.getElementById('courierSelect').value;
+            const cfg = { courier: id, gateway: courierCfg.gateway || SEC.DEFAULT_GATEWAY };
+            if (!id) return cfg;
+            SEC.COURIERS[id].fields.forEach(f => {
+                const el = document.getElementById('cf_' + f.key);
+                if (el) cfg[f.key] = el.value.trim();
+            });
+            if (SEC.COURIERS[id].needsFromWilaya) cfg.fromWilaya = document.getElementById('courierFromWilaya').value;
+            cfg.autoShip = document.getElementById('courierAutoShip').checked;
+            return cfg;
+        }
+
+        function showCourierResult(ok, msg) {
+            const box = document.getElementById('courierResult');
+            box.className = 'text-[11px] font-bold rounded-xl p-3 ' +
+                (ok ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                    : 'bg-rose-50 text-rose-800 border border-rose-200');
+            box.innerHTML = msg;
+            box.classList.remove('hidden');
+        }
+
+        function setCourierBadge(linked, name) {
+            const b = document.getElementById('courierStatusBadge');
+            b.textContent = linked ? ('✅ مربوط: ' + name) : 'غير مربوط';
+            b.className = 'text-[10px] font-black px-3 py-1.5 rounded-full ' +
+                (linked ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-500');
+        }
+
+        window.testCourier = async function () {
+            const cfg = readCourierForm();
+            if (!cfg.courier) return showCourierResult(false, 'اختر شركة توصيل أولاً.');
+            const btn = document.getElementById('testCourierBtn');
+            btn.disabled = true; btn.textContent = '⏳ جاري الاختبار...';
+            const r = await SEC.testConnection(cfg);
+            btn.disabled = false; btn.textContent = '🔌 اختبار الاتصال';
+            if (r.ok) {
+                const fee = r.sample && (r.sample.deliveryFee ?? r.sample.total);
+                showCourierResult(true, '✅ الاتصال ناجح! المفاتيح صحيحة.' + (fee != null ? ` (تسعيرة تجريبية: ${fee} د.ج)` : ''));
+            } else {
+                showCourierResult(false, '❌ فشل الاتصال: ' + SE.escape(r.error || 'خطأ غير معروف') +
+                    (r.network ? '<br><span class="text-slate-500">إن تكرّر هذا، استعمل «تصدير لشركة التوصيل» من صفحة الطلبات — يعمل دائماً بلا مفاتيح.</span>' : ''));
+            }
+        };
+
+        window.saveCourier = async function () {
+            if (!currentUser) return;
+            const cfg = readCourierForm();
+            const btn = document.getElementById('saveCourierBtn');
+            btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
+            try {
+                await db.collection('merchant_settings').doc(currentUser.uid)
+                    .set({ merchant: currentUser.uid, courier: cfg }, { merge: true });
+                courierCfg = cfg;
+                setCourierBadge(!!cfg.courier, cfg.courier ? SEC.COURIERS[cfg.courier].name : '');
+                showCourierResult(true, '💾 تم حفظ إعدادات الربط بنجاح.');
+            } catch (e) {
+                console.error(e);
+                showCourierResult(false, '❌ تعذّر الحفظ. تحقّق من قواعد Firestore.');
+            } finally {
+                btn.disabled = false; btn.textContent = '💾 حفظ الربط';
+            }
+        };
+
+        window.syncCourierRates = async function () {
+            const cfg = readCourierForm();
+            if (!cfg.courier) return showCourierResult(false, 'اختر شركة توصيل أولاً.');
+            const ids = window.__RATE_IDS__ || [];
+            if (!ids.length) return showCourierResult(false, 'أضف ولايات إلى جدولك أولاً.');
+            if (!confirm(`جلب الأسعار الرسمية لـ ${ids.length} ولاية من ${SEC.COURIERS[cfg.courier].name}؟`)) return;
+
+            const btn = document.getElementById('syncRatesBtn');
+            btn.disabled = true; btn.textContent = '⏳ جاري الجلب...';
+            let ok = 0, fail = 0;
+            for (const rate of (window.__RATES_CACHE__ || [])) {
+                const code = Number(rate.wilaya_code) || SEC.wilayaCode(rate.wilaya_name);
+                if (!code) { fail++; continue; }
+                const [home, desk] = await Promise.all([
+                    SEC.getRate(cfg, code, 'home'),
+                    SEC.getRate(cfg, code, 'desk')
+                ]);
+                if (home.ok || desk.ok) {
+                    const h = home.ok ? (home.data.deliveryFee ?? home.data.total) : null;
+                    const d = desk.ok ? (desk.data.deliveryFee ?? desk.data.total) : null;
+                    if (h != null) { const el = document.getElementById('home-' + rate.id); if (el) el.value = h; }
+                    if (d != null) { const el = document.getElementById('desk-' + rate.id); if (el) el.value = d; }
+                    ok++;
+                } else { fail++; }
+            }
+            btn.disabled = false; btn.textContent = '🔄 جلب الأسعار من الشركة';
+            showCourierResult(ok > 0, ok > 0
+                ? `✅ تم جلب أسعار ${ok} ولاية${fail ? ` (تعذّر ${fail})` : ''}. اضغط «حفظ الكل» لتخزينها.`
+                : '❌ تعذّر جلب الأسعار. تحقّق من المفاتيح أو استعمل التسعير الجماعي اليدوي.');
+        };
+
+        async function loadCourierCfg() {
+            if (!currentUser) return;
+            try {
+                const snap = await db.collection('merchant_settings').doc(currentUser.uid).get();
+                const data = snap.exists ? (snap.data() || {}) : {};
+                courierCfg = data.courier || {};
+                if (courierCfg.courier && SEC.COURIERS[courierCfg.courier]) {
+                    document.getElementById('courierSelect').value = courierCfg.courier;
+                    renderCourierFields();
+                    if (courierCfg.fromWilaya) document.getElementById('courierFromWilaya').value = courierCfg.fromWilaya;
+                    document.getElementById('courierAutoShip').checked = !!courierCfg.autoShip;
+                    setCourierBadge(true, SEC.COURIERS[courierCfg.courier].name);
+                }
+            } catch (e) { console.warn('courier cfg', e); }
+        }
+
+        /* ===== عمليات جماعية ===== */
+        window.applyBulkPricing = function () {
+            const h = document.getElementById('bulkHome').value;
+            const d = document.getElementById('bulkDesk').value;
+            if (h === '' && d === '') { alert('اكتب سعراً واحداً على الأقل.'); return; }
+            (window.__RATE_IDS__ || []).forEach(id => {
+                if (h !== '') { const el = document.getElementById('home-' + id); if (el) el.value = Number(h); }
+                if (d !== '') { const el = document.getElementById('desk-' + id); if (el) el.value = Number(d); }
+            });
+            alert('✅ تم تطبيق الأسعار على الجدول. اضغط «حفظ الكل» لتخزينها.');
+        };
+
+        window.bulkToggle = function (active) {
+            (window.__RATE_IDS__ || []).forEach(id => {
+                const el = document.getElementById('status-' + id);
+                if (el) el.value = active ? 'true' : 'false';
+            });
+            alert((active ? '✅ تم تفعيل' : '❌ تم إيقاف') + ' كل الولايات في الجدول. اضغط «حفظ الكل».');
+        };
+
+        window.saveAllRates = async function () {
+            const ids = window.__RATE_IDS__ || [];
+            if (!ids.length) { alert('لا توجد ولايات لحفظها.'); return; }
+            if (!confirm(`حفظ التعديلات على ${ids.length} ولاية؟`)) return;
+            const btn = document.getElementById('saveAllBtn');
+            btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
+            let ok = 0, fail = 0;
+            for (const id of ids) {
+                try {
+                    const h = document.getElementById('home-' + id), dd = document.getElementById('desk-' + id), st = document.getElementById('status-' + id);
+                    if (!h || !dd || !st) continue;
+                    const hv = Number(h.value), dv = Number(dd.value);
+                    if (!isFinite(hv) || !isFinite(dv) || hv < 0 || dv < 0) { fail++; continue; }
+                    await db.collection('shipping_rates').doc(id).update({
+                        home_price: hv,
+                        desk_price: dv,
+                        is_active: st.value === 'true'
+                    });
+                    ok++;
+                } catch (e) { console.error(e); fail++; }
+            }
+            btn.disabled = false; btn.textContent = '💾 حفظ الكل';
+            alert(`تم حفظ ${ok} ولاية${fail ? ` — فشل ${fail}` : ''}.`);
+            await fetchShippingRates();
+        };
+
+        window.addAllWilayas = async function () {
+            if (!currentUser) return;
+            const h = Number(document.getElementById('bulkHome').value) || 0;
+            const d = Number(document.getElementById('bulkDesk').value) || 0;
+            if (!h && !d) { alert('⚠️ حدّد سعر المنزل والمكتب أولاً في التسعير الجماعي.'); return; }
+            const missing = dzWilayas.filter(w => !existingWilayaCodes.includes(String(w.code)));
+            if (!missing.length) { alert('كل الولايات مضافة بالفعل 🎉'); return; }
+            if (!confirm(`إضافة ${missing.length} ولاية بسعر ${h} للمنزل و${d} للمكتب؟`)) return;
+            const btn = document.getElementById('addAllBtn');
+            btn.disabled = true; btn.textContent = '⏳ جاري الإضافة...';
+            let ok = 0;
+            for (const w of missing) {
+                try {
+                    await db.collection('shipping_rates').add({
+                        merchant: currentUser.uid, wilaya_code: w.code, wilaya_name: w.name,
+                        home_price: h, desk_price: d, is_active: true,
+                        created: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    ok++;
+                } catch (e) { console.error(e); }
+            }
+            btn.disabled = false; btn.textContent = '🇩🇿 إضافة كل الولايات (58)';
+            alert(`✅ تمت إضافة ${ok} ولاية.`);
+            await fetchShippingRates();
+        };
 
         async function deleteRate(recordId) {
             if (!confirm("هل أنت متأكد من حذف سعر الشحن لهذه الولاية نهائياً؟")) return;
@@ -381,7 +678,7 @@
             selectEl.innerHTML = "";
             
             // تصفية وعرض الولايات غير المضافة مسبقاً فقط لتجنب التكرار والمشاكل
-            const availableWilayas = dzWilayas.filter(w => !existingWilayaCodes.includes(w.code));
+            const availableWilayas = dzWilayas.filter(w => !existingWilayaCodes.includes(String(w.code)));
 
             if (availableWilayas.length === 0) {
                 const opt = document.createElement('option');
@@ -458,6 +755,21 @@
                 const homePrice = document.getElementById('modal-home-price').value;
                 const deskPrice = document.getElementById('modal-desk-price').value;
 
+                // تحقّق: اسم الولاية والأسعار
+                if (!wilayaName || String(wilayaName).trim().length < 2) {
+                    alert("⚠️ اكتب اسم الولاية بشكل صحيح.");
+                    return;
+                }
+                const h = Number(homePrice), d = Number(deskPrice);
+                if (homePrice === '' || deskPrice === '' || !isFinite(h) || !isFinite(d)) {
+                    alert("⚠️ أدخل سعر التوصيل للمنزل وللمكتب.");
+                    return;
+                }
+                if (h < 0 || d < 0) {
+                    alert("⚠️ لا يمكن أن يكون سعر التوصيل سالباً.");
+                    return;
+                }
+
                 await db.collection('shipping_rates').add({
                     merchant: currentMerchantId,
                     wilaya_code: wilayaCode,
@@ -480,11 +792,6 @@
             auth.signOut().then(() => {
                 window.location.href = 'login.html';
             }).catch(err => console.error("خطأ أثناء خروج التاجر:", err));
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('translate-x-full');
-            document.getElementById('sidebarOverlay').classList.toggle('hidden');
         }
     </script>
 </body>

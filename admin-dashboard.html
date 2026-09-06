@@ -2,25 +2,54 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
     <title>لوحة تحكم المدير العام</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=44">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; }
     </style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
+    <link rel="stylesheet" href="assets/css/theme.css?v=44">
+    <script src="assets/js/config.js?v=44"></script>
+    <script src="assets/js/subscription.js?v=44"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+<body class="se-admin min-h-screen flex flex-col">
 
     <header class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-blue-600 text-white p-2 rounded-xl font-black shadow-md shadow-blue-200">DZ</div>
-                <h1 class="text-lg font-black text-gray-900 tracking-tight">منصة المتجر الإلكتروني <span class="text-blue-600 text-xs font-bold bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100/50 mr-1">لوحة المدير</span></h1>
+            <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div class="bg-blue-600 text-white p-2 rounded-xl font-black shadow-md shadow-blue-200 flex-shrink-0">DZ</div>
+                <h1 class="text-sm sm:text-lg font-black text-gray-900 tracking-tight truncate">منصة المتجر الإلكتروني <span class="text-blue-600 text-xs font-bold bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100/50 mr-1">لوحة المدير</span></h1>
             </div>
-            <button id="logoutBtn" class="bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2">
-                تسجيل الخروج
-            </button>
+            <div class="flex items-center gap-2">
+                <a href="Cleanup1.html" class="bg-slate-100 text-slate-700 hover:bg-slate-200 px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap" title="حذف بيانات التجار المحذوفين">🧹 <span class="hidden sm:inline">تنظيف البيانات</span></a>
+                <button id="logoutBtn" class="bg-red-50 text-red-600 hover:bg-red-100 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap">
+                    تسجيل الخروج
+                </button>
+            </div>
         </div>
     </header>
 
@@ -61,7 +90,7 @@
 
             <!-- نموذج إضافة المسوق المحدث -->
             <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                <h2 class="text-md font-black text-gray-800 mb-4 flex items-center gap-2">
+                <h2 class="text-base font-black text-gray-800 mb-4 flex items-center gap-2">
                     <span class="bg-blue-100 text-blue-600 p-1.5 rounded-lg text-xs">👤</span> تسجيل مسوق (Reseller) جديد
                 </h2>
                 <form id="addResellerForm" class="space-y-4">
@@ -82,8 +111,8 @@
                         <input type="text" id="resPassword" required minlength="6" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition font-mono" placeholder="اكتب كلمة مرور قوية (6 أحرف على الأقل)">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1">رصيد التفعيلات المتاحة له (Max Activations)</label>
-                        <input type="number" id="resMaxActivations" value="5" min="0" required class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition font-bold">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">رصيد النقاط <span class="text-gray-400 font-normal">(نقطة واحدة = شهر اشتراك)</span></label>
+                        <input type="number" id="resMaxActivations" value="12" min="1" max="10000" required aria-label="رصيد النقاط" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition font-bold">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-500 mb-1">صورة الحساب / الهوية</label>
@@ -109,7 +138,7 @@
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                 <div class="p-6 border-b border-gray-50 flex items-center justify-between flex-wrap gap-4">
                     <div>
-                        <h2 class="text-md font-black text-gray-800">إدارة حسابات المسوقين</h2>
+                        <h2 class="text-base font-black text-gray-800">إدارة حسابات المسوقين</h2>
                         <p class="text-xs text-gray-400 mt-0.5">التحكم في رصيد التفعيلات الممنوحة للمسوقين بالموقع</p>
                     </div>
                     <input type="text" id="searchResellersInput" placeholder="بحث باسم أو بريد المسوق..." class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500 w-48 font-bold">
@@ -119,7 +148,7 @@
                         <thead>
                             <tr class="bg-gray-50/70 text-gray-400 text-xs font-bold border-b border-gray-100">
                                 <th class="py-3 px-6">المسوق</th>
-                                <th class="py-3 text-center">الرصيد المتاح</th>
+                                <th class="py-3 text-center">رصيد النقاط<br><span class="text-[9px] font-normal text-gray-400">نقطة = شهر</span></th>
                                 <th class="py-3 text-center">المستهلك</th>
                                 <th class="py-3 text-center">تاريخ الإنضمام</th>
                                 <th class="py-3 text-left px-6">إجراءات</th>
@@ -134,7 +163,7 @@
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                 <div class="p-6 border-b border-gray-50 flex items-center justify-between flex-wrap gap-4">
                     <div>
-                        <h2 class="text-md font-black text-gray-800">طلبات وحسابات التجار (Merchants)</h2>
+                        <h2 class="text-base font-black text-gray-800">طلبات وحسابات التجار (Merchants)</h2>
                         <p class="text-xs text-gray-400 mt-0.5">إجمالي التجار المسجلين: <span id="statTotalMerchants" class="font-bold text-gray-700">0</span> تاجر</p>
                     </div>
                     <input type="text" id="searchMerchantsInput" placeholder="بحث باسم، بريد أو هاتف..." class="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500 w-48 font-bold">
@@ -164,21 +193,11 @@
     </footer>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signOut, onAuthStateChanged, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:3a7cdfb831c0e3b09c3ec3",
-            measurementId: "G-PGLFSTBVTH"
-        };
-
-        const app = initializeApp(firebaseConfig);
+        const app = initializeApp(window.SE_CONFIG.firebase);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
@@ -192,8 +211,13 @@
                     if (userDoc.exists() && userDoc.data().role === 'admin') {
                         init();
                     } else {
-                        console.log("الحساب المسجل ليس أدمن، سيتم تشغيل اللوحة للتجربة العامة حالياً.");
-                        init();
+                        // ثغرة سابقة: كانت اللوحة تُفتح لأي مستخدم مسجّل «للتجربة»،
+                        // فيصل غير الأدمن إلى حسابات التجار والمسوّقين وأدوات الحذف.
+                        const role = userDoc.exists() ? (userDoc.data().role || 'مستخدم') : 'غير مسجّل';
+                        alert('⛔ هذه اللوحة للإدارة فقط. صلاحيتك الحالية: ' + role);
+                        const routes = { reseller: 'approve-vendors.html', merchant: 'merchant-dashboard.html' };
+                        location.replace(routes[role] || 'index.html');
+                        return;
                     }
                 } catch (e) {
                     console.error("خطأ أثناء التحقق من الرتبة:", e);
@@ -271,7 +295,6 @@
                 grandTotalMax += maxAct;
 
                 const userEmail = res.email || 'غير متاح';
-                const userPassword = res.password || 'غير متوفرة';
                 const userPhone = res.phone || 'غير متوفر';
                 const avatarUrl = res.avatar || 'https://placehold.co/100x100?text=مسوق';
                 const joinDate = res.created ? new Date(res.created).toLocaleDateString('ar-EG') : 'غير محدد';
@@ -292,31 +315,31 @@
                                     <div class="flex items-center gap-1">
                                         <span class="text-[11px] text-gray-400 font-bold">البريد:</span>
                                         <p class="text-xs text-blue-600 font-mono bg-blue-50 px-1.5 py-0.5 rounded-md break-all">${userEmail}</p>
-                                        <button onclick="copyToClipboard('${userEmail}')" class="text-gray-400 hover:text-blue-600 p-0.5 transition">
+                                        <button data-copy="${esc(userEmail)}" class="text-gray-400 hover:text-blue-600 p-0.5 transition">
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
                                         </button>
                                     </div>
-                                    <div class="flex items-center gap-1">
-                                        <span class="text-[11px] text-gray-400 font-bold">السر:</span>
-                                        <p class="text-xs text-gray-600 font-mono bg-gray-100 px-1.5 py-0.5 rounded-md">${userPassword}</p>
-                                        <button onclick="copyToClipboard('${userPassword}')" class="text-gray-400 hover:text-gray-600 p-0.5 transition">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[11px] text-gray-400 font-bold">كلمة السر:</span>
+                                        <span class="text-[10px] font-black text-emerald-700 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded-md">🔒 محمية</span>
+                                        <button data-reset-pass="${esc(userEmail)}" class="text-[10px] font-black text-blue-600 hover:text-blue-800 underline transition" title="إرسال رابط إعادة تعيين كلمة المرور">
+                                            إعادة تعيين
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </td>
                         <td class="py-4 text-center">
-                            <input type="number" id="inputMax_${res.id}" value="${maxAct}" min="0" class="w-14 border border-gray-200 rounded-lg p-1 text-center font-bold">
+                            <input type="number" id="inputMax_${res.id}" value="${maxAct}" min="0" max="10000" title="رصيد النقاط (نقطة = شهر)" class="w-14 border border-gray-200 rounded-lg p-1 text-center font-bold">
                         </td>
                         <td class="py-4 text-center">
-                            <span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full text-xs font-bold">${curAct} مستهلك</span>
+                            <span class="bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full text-xs font-bold">${curAct} نقطة مستهلكة</span>
                         </td>
                         <td class="py-4 text-center text-xs text-gray-500">${joinDate}</td>
                         <td class="py-4 text-left">
                             <div class="flex items-center justify-end gap-1.5 px-4 flex-wrap">
                                 <button id="btnSave_${res.id}" class="bg-blue-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-blue-700 transition">حفظ</button>
-                                ${userPhone && userPhone !== 'غير متوفر' ? `<a href="https://wa.me/${userPhone.replace(/\D/g, '')}" target="_blank" class="bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-emerald-100 transition">واتساب</a>` : ''}
+                                ${userPhone && userPhone !== 'غير متوفر' ? `<a href="https://wa.me/${userPhone.replace(/\D/g, '')}" target="_blank" class="bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-emerald-100 transition" rel="noopener noreferrer">واتساب</a>` : ''}
                                 <button id="btnDelRes_${res.id}" class="bg-red-50 text-red-500 px-2.5 py-1.5 rounded-xl text-xs font-bold hover:bg-red-100 transition">حذف</button>
                             </div>
                         </td>
@@ -353,6 +376,34 @@
             }
         }
 
+        /* تهريب HTML — يمنع كسر السمات وحقن كود (XSS).
+           كان الهاتف/البريد يُحقن داخل onclick="copyToClipboard('...')"،
+           وعلامة اقتباس واحدة في البيانات تكفي لتنفيذ كود دخيل لدى الأدمن. */
+        const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+
+        // تفويض النسخ: آمن لأن القيمة تُقرأ من السمة لا من كود مُنفَّذ
+        document.addEventListener('click', async e => {
+            const btn = e.target.closest('[data-copy]');
+            if (btn) { copyToClipboard(btn.getAttribute('data-copy')); return; }
+
+            // إعادة تعيين كلمة المرور — البديل الآمن عن تخزينها بنص صريح
+            const rb = e.target.closest('[data-reset-pass]');
+            if (rb) {
+                const mail = rb.getAttribute('data-reset-pass');
+                if (!mail || mail === 'غير متوفر') { alert('لا يوجد بريد صالح لهذا الحساب.'); return; }
+                if (!confirm(`إرسال رابط إعادة تعيين كلمة المرور إلى:\n${mail}؟`)) return;
+                try {
+                    await sendPasswordResetEmail(auth, mail);
+                    alert('✅ أُرسل الرابط. اطلب من صاحب الحساب فتح بريده.');
+                } catch (err) {
+                    console.error(err);
+                    alert('❌ تعذّر الإرسال: ' + (err.code || err.message));
+                }
+            }
+        });
+
         function renderMerchantsTable(list) {
             const tableBody = document.getElementById('merchantsTableBody');
             const noData = document.getElementById('noMerchantsMessage');
@@ -376,19 +427,29 @@
                 const merchantEmail = mer.email || 'غير متوفر';
                 const merchantPhone = mer.phone || 'غير متوفر';
 
+                const subSt = window.SE_SUB ? window.SE_SUB.status(mer) : { end: null };
+                const subBadge = window.SE_SUB ? window.SE_SUB.badge(mer) : '';
+                const subEnd = subSt.end ? ('حتى ' + window.SE_SUB.formatDate(subSt.end)) : 'بلا تاريخ اشتراك';
+
                 let actionButtons = '';
                 if (!isApproved) {
                     actionButtons = `
                         <div class="flex items-center justify-end gap-1.5 flex-wrap px-4">
                             <button id="btnApprove_${mer.id}" class="bg-green-100 text-green-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-green-200 transition">تفعيل الحساب ✅</button>
-                            ${mer.phone && mer.phone !== 'غير متوفر' ? `<a href="https://wa.me/${mer.phone.replace(/\D/g, '')}" target="_blank" class="bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-emerald-100 transition">واتساب</a>` : ''}
+                            ${mer.phone && mer.phone !== 'غير متوفر' ? `<a href="https://wa.me/${mer.phone.replace(/\D/g, '')}" target="_blank" class="bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-emerald-100 transition" rel="noopener noreferrer">واتساب</a>` : ''}
                             ${mer.email ? `<a href="mailto:${mer.email}?subject=بخصوص تفعيل حسابك كتاجر" class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-blue-100 transition">مراسلة</a>` : ''}
                             <button id="btnDelMer_${mer.id}" class="bg-red-50 text-red-500 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-red-100 transition">حذف</button>
                         </div>
                     `;
                 } else {
                     actionButtons = `
-                        <div class="flex items-center justify-end gap-1.5 px-4">
+                        <div class="flex items-center justify-end gap-1.5 flex-wrap px-4">
+                            <select id="selMonths_${mer.id}" class="bg-white border border-gray-200 rounded-xl px-2 py-1.5 text-[11px] font-black text-gray-700 focus:outline-none focus:border-blue-500">
+                                <option value="1">1 شهر</option><option value="3">3 أشهر</option>
+                                <option value="6">6 أشهر</option><option value="12">سنة</option>
+                            </select>
+                            <button id="btnRenew_${mer.id}" class="bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-emerald-200 transition">🔄 تجديد</button>
+                            <button id="btnExpire_${mer.id}" class="bg-amber-50 text-amber-600 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-amber-100 transition" title="إنهاء الاشتراك فوراً">⛔ إنهاء</button>
                             <button id="btnApprove_${mer.id}" class="bg-gray-100 text-gray-700 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-gray-200 transition">إلغاء التفعيل</button>
                             <button id="btnDelMer_${mer.id}" class="bg-red-50 text-red-500 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-red-100 transition">حذف</button>
                         </div>
@@ -403,7 +464,7 @@
                                 <p class="font-bold text-gray-800">${mer.name || 'بدون اسم'}</p>
                                 <div class="flex items-center gap-1 mt-0.5">
                                     <span class="text-xs font-mono text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded-md">${merchantEmail}</span>
-                                    <button onclick="copyToClipboard('${merchantEmail}')" class="text-gray-400 hover:text-green-600 p-0.5 transition">
+                                    <button data-copy="${esc(merchantEmail)}" class="text-gray-400 hover:text-green-600 p-0.5 transition">
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
                                     </button>
                                 </div>
@@ -413,12 +474,18 @@
                             <div class="flex items-center justify-center gap-1">
                                 <span class="font-mono text-xs bg-emerald-50 text-emerald-700 px-2 py-1 rounded-lg font-bold">${merchantPhone}</span>
                                 ${mer.phone && mer.phone !== 'غير متوفر' ? `
-                                <button onclick="copyToClipboard('${mer.phone}')" class="text-gray-400 hover:text-emerald-600 p-0.5 transition" title="نسخ رقم الهاتف">
+                                <button data-copy="${esc(mer.phone)}" class="text-gray-400 hover:text-emerald-600 p-0.5 transition" title="نسخ رقم الهاتف">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
                                 </button>` : ''}
                             </div>
                         </td>
-                        <td class="py-4 text-center">${merchantStatusBadge}</td>
+                        <td class="py-4 text-center">
+                            <div class="flex flex-col items-center gap-1">
+                                ${merchantStatusBadge}
+                                ${isApproved ? subBadge : ''}
+                                ${isApproved ? `<span class="text-[10px] font-bold text-gray-400">${subEnd}</span>` : ''}
+                            </div>
+                        </td>
                         <td class="py-4 text-center text-gray-500 text-xs">${joinDate}</td>
                         <td class="py-4 text-left">${actionButtons}</td>
                     </tr>`;
@@ -427,7 +494,51 @@
             list.forEach(mer => {
                 document.getElementById(`btnApprove_${mer.id}`).addEventListener('click', () => updateMerchantApproval(mer.id, !mer.is_approved));
                 document.getElementById(`btnDelMer_${mer.id}`).addEventListener('click', () => deleteMerchant(mer.id));
+                const rn = document.getElementById(`btnRenew_${mer.id}`);
+                if (rn) rn.addEventListener('click', () => {
+                    const m = Number(document.getElementById(`selMonths_${mer.id}`).value) || 1;
+                    renewMerchantSubscription(mer.id, mer, m);
+                });
+                const ex = document.getElementById(`btnExpire_${mer.id}`);
+                if (ex) ex.addEventListener('click', () => expireMerchantSubscription(mer.id));
             });
+        }
+
+        async function renewMerchantSubscription(userId, merData, months) {
+            const r = window.SE_SUB
+                ? window.SE_SUB.buildRenewal(merData || {}, months)
+                : (() => { const n = new Date(); return { subscription_start: n.toISOString(), subscription_end: new Date(n.getTime() + months*30*86400000).toISOString(), subscription_months: months }; })();
+            const endTxt = window.SE_SUB ? window.SE_SUB.formatDate(r.subscription_end) : r.subscription_end;
+            if (!confirm(`تجديد اشتراك هذا التاجر ${months} شهر؟\nسيصبح صالحاً حتى: ${endTxt}`)) return;
+            try {
+                await updateDoc(doc(db, "users", userId), {
+                    is_approved: true,
+                    subscription_start: r.subscription_start,
+                    subscription_end: r.subscription_end,
+                    subscription_months: r.subscription_months,
+                    subscription_updated_at: new Date().toISOString()
+                });
+                alert("تم تجديد الاشتراك ✅ صالح حتى " + endTxt);
+                loadMerchants();
+            } catch (e) {
+                console.error(e);
+                alert("فشل تجديد الاشتراك. تحقّق من قواعد Firestore.");
+            }
+        }
+
+        async function expireMerchantSubscription(userId) {
+            if (!confirm("إنهاء اشتراك هذا التاجر فوراً؟\nسيُمنع من دخول لوحته ويُوجَّه لصفحة المسوقين، لكن بياناته تبقى محفوظة.")) return;
+            try {
+                await updateDoc(doc(db, "users", userId), {
+                    subscription_end: new Date(Date.now() - 60000).toISOString(),
+                    subscription_updated_at: new Date().toISOString()
+                });
+                alert("تم إنهاء الاشتراك.");
+                loadMerchants();
+            } catch (e) {
+                console.error(e);
+                alert("فشل إنهاء الاشتراك.");
+            }
         }
 
         async function updateMerchantApproval(userId, isApprovedStatus) {
@@ -458,14 +569,38 @@
             const email = document.getElementById('resEmail').value;
             const phone = document.getElementById('resPhone').value; // سحب رقم الهاتف
             const password = document.getElementById('resPassword').value;
-            const maxActivations = parseInt(document.getElementById('resMaxActivations').value) || 0;
+            const maxActivations = parseInt(document.getElementById('resMaxActivations').value, 10);
             const imageInput = document.getElementById('resImage');
             const alertMsg = document.getElementById('alertMessage');
             const submitBtn = document.getElementById('submitResBtn');
-            
+
             alertMsg.classList.add('hidden');
+
+            /* تحقّق من المدخلات قبل لمس Firebase */
+            const showErr = (msg) => {
+                alertMsg.textContent = msg;
+                alertMsg.className = "mt-4 text-center text-sm font-bold text-red-700 bg-red-50 p-3 rounded-xl border border-red-200";
+                alertMsg.classList.remove('hidden');
+            };
+            if (name.trim().length < 3) { showErr("⚠️ اكتب اسم المسوّق كاملاً (3 أحرف على الأقل)."); return; }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) { showErr("⚠️ البريد الإلكتروني غير صالح."); return; }
+            const digits = String(phone).replace(/\D/g, '');
+            if (!/^0(5|6|7)[0-9]{8}$/.test(digits) && !/^213(5|6|7)[0-9]{8}$/.test(digits)) {
+                showErr("⚠️ رقم هاتف جزائري غير صالح (يبدأ بـ 05 أو 06 أو 07)."); return;
+            }
+            if (password.length < 6) { showErr("⚠️ كلمة المرور يجب أن تكون 6 أحرف على الأقل."); return; }
+            if (!Number.isFinite(maxActivations) || maxActivations <= 0 || maxActivations > 10000) {
+                showErr("⚠️ رصيد النقاط يجب أن يكون رقماً بين 1 و 10000. (كل نقطة = شهر اشتراك واحد)"); return;
+            }
+
             submitBtn.disabled = true;
             submitBtn.textContent = "جاري إنشاء الحساب فوريّاً...";
+
+            /* تطبيق Firebase ثانوي معزول.
+               خطأ خطير سابق: createUserWithEmailAndPassword على النسخة الرئيسية
+               يسجّل دخول الحساب الجديد تلقائياً — فيُطرد الأدمن من لوحته
+               ويجد نفسه مسجّلاً كمسوّق. النسخة الثانوية تمنع ذلك تماماً. */
+            let secApp = null, secAuth = null, createdUser = null;
 
             try {
                 let base64Avatar = "";
@@ -476,17 +611,23 @@
                     base64Avatar = await convertImageToBase64(imageInput.files[0]);
                 }
 
-                // 1. إنشاء الحساب في نظام Firebase Authentication
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const uid = userCredential.user.uid;
+                // 1. إنشاء الحساب عبر نسخة ثانوية حتى لا تتبدّل جلسة الأدمن
+                secApp = initializeApp(window.SE_CONFIG.firebase, 'secondary-' + Date.now());
+                secAuth = getAuth(secApp);
+                const userCredential = await createUserWithEmailAndPassword(secAuth, email.trim(), password);
+                createdUser = userCredential.user;
+                const uid = createdUser.uid;
 
                 // 2. التخزين الفوري بداخل Firestore
                 await setDoc(doc(db, "users", uid), {
                     uid: uid,
-                    name: name,
-                    email: email,
-                    phone: phone, // تخزين رقم الواتساب داخل حقل phone
-                    password: password,
+                    name: name.trim(),
+                    email: email.trim(),
+                    phone: phone.trim(), // تخزين رقم الواتساب داخل حقل phone
+                    // ⚠️ لا نخزّن كلمة المرور هنا إطلاقاً.
+                    // Firebase Auth يديرها مشفّرة بالفعل؛ نسخها في Firestore
+                    // يعني أن أي تسريب لقاعدة البيانات = تسريب كلمات مرور صريحة.
+                    // لاستعادة الحساب: استعمل "إرسال رابط إعادة تعيين" أدناه.
                     role: 'reseller',
                     max_activations: maxActivations,
                     current_activations: 0,
@@ -506,6 +647,12 @@
                 fetchSystemStats();
             } catch (err) {
                 console.error(err);
+                /* تراجع: إن أُنشئ الحساب في Auth ثم فشل حفظ بياناته،
+                   نحذفه حتى لا يبقى "مسوّق يتيم" لا يستطيع الدخول
+                   ولا يمكن إعادة إنشائه بنفس البريد. */
+                if (createdUser) {
+                    try { await createdUser.delete(); } catch (e) { console.error('فشل التراجع:', e); }
+                }
                 if (err.message && err.message.includes("حجم الصورة")) {
                     alertMsg.textContent = `❌ ${err.message}`;
                 } else if (err.code === 'auth/email-already-in-use') {
@@ -518,16 +665,31 @@
                 alertMsg.className = "mt-4 text-center text-sm font-bold text-red-700 bg-red-50 p-3 rounded-xl border border-red-200";
                 alertMsg.classList.remove('hidden');
             } finally {
+                // نظّف التطبيق الثانوي دائماً (نجح أو فشل) حتى لا تتراكم النسخ
+                if (secAuth) { try { await secAuth.signOut(); } catch (e) {} }
+                if (secApp)  { try { await deleteApp(secApp); } catch (e) {} }
                 submitBtn.disabled = false;
                 submitBtn.textContent = "إضافة وتفعيل الحساب مباشرة";
             }
         });
 
         async function updateMaxActivations(userId) {
-            const updatedMax = parseInt(document.getElementById(`inputMax_${userId}`).value) || 0;
+            const updatedMax = parseInt(document.getElementById(`inputMax_${userId}`).value, 10);
+            // تحقّق: كان يقبل نصاً أو سالباً فيتحوّل إلى 0 ويشلّ المسوّق بلا سبب
+            if (!Number.isFinite(updatedMax) || updatedMax < 0 || updatedMax > 10000) {
+                alert("⚠️ رصيد النقاط يجب أن يكون رقماً بين 0 و 10000.\n(كل نقطة = شهر اشتراك واحد)");
+                return;
+            }
+            // لا تسمح برصيد أقل مما استُهلك فعلاً
+            const res = allResellers.find(r => r.id === userId);
+            const used = res ? Number(res.current_activations || 0) : 0;
+            if (updatedMax < used) {
+                alert(`⚠️ المسوّق استهلك ${used} نقطة بالفعل.\nلا يمكن جعل رصيده أقل من ذلك.`);
+                return;
+            }
             try {
                 await updateDoc(doc(db, "users", userId), { max_activations: updatedMax });
-                alert("تم تحديث الرصيد للمسوق بنجاح! 🎉");
+                alert(`تم تحديث الرصيد إلى ${updatedMax} نقطة 🎉`);
                 loadResellers();
             } catch (e) { alert("خطأ أثناء تحديث الرصيد في فايربيز."); }
         }

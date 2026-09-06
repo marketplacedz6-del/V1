@@ -2,502 +2,507 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوقي إكسبريس | SouqiExpress - المنصة الرسمية</title>
-    <!-- Tailwind CSS لتقديم تصميم عصري واحترافي -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
+    <meta name="theme-color" content="#0284c7">
+    <title>سوقي إكسبريس | SouqiExpress - تسوق آمن والدفع عند الاستلام في الجزائر</title>
+    <meta name="description" content="منصة سوقي إكسبريس الجزائرية: تسوق آلاف المنتجات من تجار موثوقين، توصيل لـ 58 ولاية والدفع عند الاستلام.">
+    <meta name="keywords" content="سوقي اكسبريس, تسوق الجزائر, الدفع عند الاستلام, توصيل 58 ولاية, متجر الكتروني جزائري">
+    <link rel="canonical" href="./index.html">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Open Graph / مشاركة اجتماعية -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="سوقي إكسبريس | SouqiExpress">
+    <meta property="og:description" content="تسوق بأمان مع الدفع عند الاستلام وتوصيل سريع لكل الولايات الجزائرية.">
+    <meta property="og:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s512/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=44">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome للأيقونات الاحترافية -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0284c7', 
-                            600: '#0369a1',
-                            900: '#1e3a8a', 
-                            950: '#172554'
-                        }
-                    }
-                }
-            }
-        }
+    <link rel="stylesheet" href="assets/css/theme.css?v=44">
+    <script src="assets/js/config.js?v=44"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "OnlineStore",
+      "name": "SouqiExpress",
+      "alternateName": "سوقي إكسبريس",
+      "url": "https://souqiexpress.example",
+      "areaServed": "DZ",
+      "paymentAccepted": "Cash on delivery"
+    }
     </script>
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            scroll-behavior: smooth;
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0284c7;
-        }
-    </style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
-<body class="bg-slate-50/50 text-slate-800 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col">
 
-    <!-- شريط الإعلان العلوي المميز للمنصة -->
-    <div class="bg-gradient-to-l from-primary-900 to-primary-600 text-white text-xs font-bold py-2.5 px-4 text-center relative z-50">
+    <!-- شريط الإعلان العلوي -->
+    <div class="text-white text-xs font-bold py-2.5 px-4 text-center relative z-30 se-noprint" style="background:linear-gradient(270deg,var(--se-primary-900),var(--se-primary))">
         <div class="container mx-auto flex items-center justify-center gap-2 flex-wrap">
-            <span>⚡ تخفيضات كبرى متوفرة الآن! التوصيل متوفر لـ 58 ولاية والدفع عند الاستلام 🇩🇿</span>
+            <span>⚡ تخفيضات كبرى الآن! التوصيل لـ 58 ولاية والدفع عند الاستلام 🇩🇿</span>
             <a href="#shop-section" class="underline hover:text-sky-200 transition">تسوق الآن</a>
         </div>
     </div>
 
-    <!-- Header (شريط التنقل الرئيسي المطور) -->
-    <header class="bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-40 shadow-sm transition-all">
-        <div class="container mx-auto px-4 py-3.5 flex items-center justify-between gap-4">
-            
-            <!-- الشعار التفاعلي -->
-            <div class="flex items-center gap-3">
-                <a href="index.html" class="flex items-center gap-2.5 group">
-                    <div class="w-10 h-10 bg-gradient-to-tr from-primary-500 to-primary-900 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/20 transform group-hover:scale-105 transition-transform overflow-hidden p-1 bg-white">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s512/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg" class="w-full h-full object-cover rounded-lg" alt="SouqiExpress Logo">
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="font-black text-xl text-primary-900 tracking-wide leading-none">Souqi<span class="text-primary-500">Express</span></span>
-                        <span class="text-[9px] font-bold text-emerald-600 tracking-widest mt-0.5">سوقي إكسبريس</span>
-                    </div>
-                </a>
-            </div>
+    <!-- الهيدر -->
+    <header class="se-surface backdrop-blur-md border-b sticky top-0 z-40 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between gap-3">
+            <a href="index.html" class="flex items-center gap-2.5 group flex-shrink-0">
+                <div class="w-10 h-10 rounded-xl overflow-hidden bg-white shadow-md p-1 group-hover:scale-105 transition-transform">
+                    <img id="brandLogo" src="" class="w-full h-full object-cover rounded-lg" alt="SouqiExpress Logo">
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-black text-xl tracking-wide leading-none" style="color:var(--se-primary-900)">Souqi<span style="color:var(--se-primary)">Express</span></span>
+                    <span class="text-[9px] font-bold text-emerald-600 tracking-widest mt-0.5">سوقي إكسبريس</span>
+                </div>
+            </a>
 
-            <!-- شريط البحث السريع والذكي -->
+            <!-- بحث سطح المكتب -->
             <div class="flex-1 max-w-md relative hidden md:block">
-                <input type="text" id="searchInput" placeholder="ما الذي تبحث عنه اليوم?" class="w-full bg-slate-100/80 text-slate-700 text-sm pl-4 pr-11 py-2 rounded-xl border border-transparent focus:border-primary-500 focus:bg-white focus:outline-none transition-all">
-                <span class="absolute right-4 top-2.5 text-slate-400">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
+                <input type="text" id="searchInput" placeholder="ابحث عن منتج، ماركة أو فئة..." class="se-input !pr-11">
+                <span class="absolute right-4 top-3 se-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
             </div>
 
-            <!-- أزرار التحكم -->
-            <div class="flex items-center gap-3">
-                <a href="about.html" class="hidden sm:flex items-center gap-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/60 text-slate-700 text-xs font-bold px-3 py-2 rounded-xl transition">
-                    <i class="fa-solid fa-circle-info text-slate-500"></i>
-                    <span>من نحن</span>
+            <div class="flex items-center gap-2">
+                <button data-se-theme-toggle class="se-btn se-btn-ghost !px-3 !py-2.5" title="تبديل الوضع الليلي">
+                    <i data-se-theme-icon class="fa-solid fa-moon"></i>
+                </button>
+                <a href="about.html" class="hidden lg:flex se-btn se-btn-ghost"><i class="fa-solid fa-circle-info"></i><span>من نحن</span></a>
+                <a href="wishlist.html" class="hidden sm:flex se-btn se-btn-ghost relative">
+                    <i class="fa-regular fa-heart"></i>
+                    <span data-se-wish-count class="absolute -top-2 -left-2 bg-rose-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
                 </a>
-
-                <a href="login.html" class="hidden sm:flex items-center gap-1.5 bg-primary-900 hover:bg-primary-950 text-white text-xs font-bold px-3 py-2 rounded-xl transition shadow-sm">
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                    <span>تسجيل الدخول</span>
-                </a>
-                
-                <a href="cart.html" class="relative flex items-center gap-2.5 bg-slate-50 hover:bg-primary-50 border border-slate-100 hover:border-primary-100 px-4 py-2 rounded-xl transition group">
-                    <div class="relative">
-                        <i class="fa-solid fa-basket-shopping text-slate-600 group-hover:text-primary-500 text-lg transition"></i>
-                        <span id="cartCountBadge" class="absolute -top-2.5 -left-2.5 bg-emerald-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm transition-all scale-0">0</span>
-                    </div>
-                    <div class="text-right hidden md:block">
-                        <p class="text-[10px] text-slate-400 font-bold leading-none mb-0.5">سلة المشتريات</p>
-                        <p class="text-xs font-black text-slate-800" id="cartTotalText">0 د.ج</p>
-                    </div>
+                <a href="login.html" class="hidden sm:flex se-btn se-btn-primary"><i class="fa-solid fa-right-to-bracket"></i><span>دخول التجار</span></a>
+                <a href="cart.html" class="relative flex items-center gap-2.5 se-btn se-btn-ghost">
+                    <span class="relative">
+                        <i class="fa-solid fa-basket-shopping text-lg"></i>
+                        <span data-se-cart-count class="absolute -top-2.5 -left-2.5 bg-emerald-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white scale-0 transition-transform">0</span>
+                    </span>
+                    <span class="text-right hidden md:block">
+                        <span class="block text-[10px] se-muted font-bold leading-none mb-0.5">السلة</span>
+                        <span data-se-cart-total class="block text-xs font-black">0 د.ج</span>
+                    </span>
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- شريط البحث للهواتف المحمولة -->
-    <div class="bg-white border-b border-slate-100 p-3 md:hidden sticky top-[69px] z-30 shadow-sm space-y-2">
+    <!-- بحث الهواتف -->
+    <div class="se-surface border-b p-3 md:hidden z-30 space-y-2 se-noprint">
         <div class="relative">
-            <input type="text" id="mobileSearchInput" placeholder="ما الذي تبحث عنه اليوم؟" class="w-full bg-slate-100/80 text-slate-700 text-sm pl-4 pr-11 py-2.5 rounded-xl border border-transparent focus:border-primary-500 focus:bg-white focus:outline-none transition-all">
-            <span class="absolute right-4 top-3 text-slate-400">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </span>
-        </div>
-        <div class="grid grid-cols-2 gap-2 sm:hidden">
-            <a href="about.html" class="bg-slate-50 text-center border border-slate-200 text-slate-700 text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1">
-                <i class="fa-solid fa-circle-info"></i> <span>من نحن</span>
-            </a>
-            <a href="login.html" class="bg-primary-900 text-center text-white text-xs font-bold py-2 rounded-lg transition flex items-center justify-center gap-1">
-                <i class="fa-solid fa-right-to-bracket"></i> <span>تسجيل الدخول</span>
-            </a>
+            <input type="text" id="mobileSearchInput" placeholder="ابحث عن منتج..." class="se-input !pr-11">
+            <span class="absolute right-4 top-3 se-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
         </div>
     </div>
 
-    <!-- المحتوى الرئيسي للمنصة -->
     <main class="flex-grow">
 
-        <!-- Hero Section -->
-        <section class="bg-gradient-to-b from-primary-50 to-white py-12 lg:py-20 overflow-hidden relative">
-            <div class="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none bg-cover bg-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s512/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg');"></div>
-            <div class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-                <div class="lg:col-span-7 space-y-6 text-center lg:text-right">
-                    <span class="bg-primary-100 text-primary-900 text-xs font-black px-4 py-2 rounded-full inline-block tracking-wide">
-                        🏬 سوقي إكسبريس - الخيار الأول في الجزائر
-                    </span>
-                    <h1 class="text-3xl lg:text-6xl font-black text-slate-900 leading-tight lg:leading-snug">
+        <!-- Hero -->
+        <section class="py-12 lg:py-20 relative overflow-hidden" style="background:linear-gradient(180deg, rgba(2,132,199,.08), transparent)">
+            <div class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-right se-reveal">
+                    <span class="se-badge se-badge-blue !text-xs !px-4 !py-2">🏬 الخيار الأول للتسوق في الجزائر</span>
+                    <h1 class="text-3xl lg:text-6xl font-black leading-tight lg:leading-snug">
                         تسوق بكل أمان،<br>
-                        الدفع <span class="text-primary-500 underline decoration-wavy decoration-emerald-400">عند الاستلام</span>!
+                        الدفع <span style="color:var(--se-primary)" class="underline decoration-wavy decoration-emerald-400">عند الاستلام</span>!
                     </h1>
-                    <p class="text-slate-600 text-base lg:text-lg font-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
-                        منصة سوقي إكسبريس توفر لكم أرقى المنتجات الحصرية بأسعار تنافسية مع خدمة توصيل فائقة السرعة لباب المنزل.
+                    <p class="se-muted text-base lg:text-lg font-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
+                        منصة سوقي إكسبريس تجمع أفضل التجار الجزائريين في مكان واحد، مع توصيل سريع لباب منزلك في كل الولايات.
                     </p>
-                    <div class="flex items-center justify-center lg:justify-start gap-4 flex-wrap pt-2">
-                        <a href="#shop-section" class="bg-gradient-to-r from-primary-900 to-primary-600 text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-primary-900/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2">
-                            <span>ابدأ التسوق الآن</span>
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </a>
+                    <div class="flex items-center justify-center lg:justify-start gap-3 flex-wrap pt-2">
+                        <a href="#shop-section" class="se-btn se-btn-primary !text-sm !py-4 !px-8">ابدأ التسوق الآن <i class="fa-solid fa-arrow-left"></i></a>
+                        <a href="login.html" class="se-btn se-btn-ghost !text-sm !py-4 !px-8">انضم كتاجر</a>
+                    </div>
+                    <!-- مؤشرات ثقة -->
+                    <div class="grid grid-cols-3 gap-3 pt-6 max-w-lg mx-auto lg:mx-0">
+                        <div class="se-card p-3 text-center"><div class="text-lg font-black" style="color:var(--se-primary)">58</div><div class="text-[10px] font-bold se-muted">ولاية مغطاة</div></div>
+                        <div class="se-card p-3 text-center"><div class="text-lg font-black text-emerald-600">100%</div><div class="text-[10px] font-bold se-muted">دفع عند الاستلام</div></div>
+                        <div class="se-card p-3 text-center"><div class="text-lg font-black text-amber-500">24/7</div><div class="text-[10px] font-bold se-muted">دعم متواصل</div></div>
                     </div>
                 </div>
 
-                <div class="lg:col-span-5 relative hidden lg:block">
-                    <div class="absolute inset-0 bg-primary-500/10 rounded-[40px] rotate-6 transform scale-105"></div>
-                    <div class="relative bg-white p-4 rounded-[36px] shadow-2xl border border-slate-100">
-                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s512/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg" class="w-full rounded-[24px] object-cover h-[380px]" alt="SouqiExpress Premium Products">
+                <div class="lg:col-span-5 relative hidden lg:block se-reveal">
+                    <div class="absolute inset-0 rounded-[40px] rotate-6 scale-105" style="background:rgba(2,132,199,.10)"></div>
+                    <div class="relative se-card p-4 !rounded-[36px]">
+                        <img id="heroImage" src="" class="w-full rounded-[24px] object-cover h-[380px]" alt="منتجات سوقي إكسبريس">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- قسم التصنيفات المميزة -->
-        <section class="py-12 container mx-auto px-4">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+        <!-- مزايا سريعة -->
+        <section class="container mx-auto px-4 -mt-4 mb-6">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="se-card p-4 flex items-center gap-3 se-reveal"><i class="fa-solid fa-truck-fast text-xl" style="color:var(--se-primary)"></i><div><div class="text-xs font-black">توصيل سريع</div><div class="text-[10px] se-muted font-bold">2-5 أيام عمل</div></div></div>
+                <div class="se-card p-4 flex items-center gap-3 se-reveal"><i class="fa-solid fa-hand-holding-dollar text-xl text-emerald-500"></i><div><div class="text-xs font-black">ادفع عند الاستلام</div><div class="text-[10px] se-muted font-bold">بدون بطاقة بنكية</div></div></div>
+                <div class="se-card p-4 flex items-center gap-3 se-reveal"><i class="fa-solid fa-shield-halved text-xl text-amber-500"></i><div><div class="text-xs font-black">تجار موثوقون</div><div class="text-[10px] se-muted font-bold">مراجعة يدوية</div></div></div>
+                <div class="se-card p-4 flex items-center gap-3 se-reveal"><i class="fa-solid fa-rotate-left text-xl text-rose-500"></i><div><div class="text-xs font-black">إمكانية المعاينة</div><div class="text-[10px] se-muted font-bold">قبل الدفع</div></div></div>
+            </div>
+        </section>
+
+        <!-- التصنيفات -->
+        <section class="py-10 container mx-auto px-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
                 <div class="text-center sm:text-right">
-                    <h2 class="text-2xl font-black text-slate-950">تصفح بالتصنيفات</h2>
-                    <p class="text-xs text-slate-400 font-bold mt-1">اكتشف أرقى مجموعاتنا المختارة بعناية لأجلك</p>
-                </div>
-                <div class="w-full sm:w-auto min-w-[200px]">
-                    <select id="categoryFilter" class="w-full bg-white border border-slate-200 text-slate-700 rounded-2xl px-4 py-3 text-xs font-bold focus:outline-none focus:ring-4 focus:ring-primary-500/10 cursor-pointer">
-                        <option value="all">🔍 عرض جميع الفئات</option>
-                    </select>
+                    <h2 class="text-2xl font-black">تصفح بالتصنيفات</h2>
+                    <p class="text-xs se-muted font-bold mt-1">اكتشف أرقى مجموعاتنا المختارة بعناية لأجلك</p>
                 </div>
             </div>
-
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="categoriesVisualGrid">
-                <!-- الفئات البصرية المباشرة -->
-                <div onclick="selectCategory('makeup')" class="bg-white rounded-3xl p-4 border border-slate-100 hover:border-primary-200 cursor-pointer group shadow-sm transition">
-                    <div class="h-44 rounded-2xl overflow-hidden relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="مكياج وعناية">
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-slate-800 text-sm">مكياج وعناية</span>
-                        <div class="w-8 h-8 rounded-xl bg-primary-50 group-hover:bg-primary-500 text-primary-500 group-hover:text-white flex items-center justify-center text-xs transition">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </div>
-                    </div>
+                <div onclick="selectCategory('makeup')" class="se-card p-4 cursor-pointer group se-hover-lift se-reveal">
+                    <div class="h-36 sm:h-44 rounded-2xl overflow-hidden mb-4"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="مكياج وعناية"></div>
+                    <div class="flex items-center justify-between"><span class="font-bold text-sm">مكياج وعناية</span><span class="w-8 h-8 rounded-xl flex items-center justify-center text-xs" style="background:rgba(2,132,199,.1);color:var(--se-primary)"><i class="fa-solid fa-arrow-left"></i></span></div>
                 </div>
-                <div onclick="selectCategory('sunglasses')" class="bg-white rounded-3xl p-4 border border-slate-100 hover:border-primary-200 cursor-pointer group shadow-sm transition">
-                    <div class="h-44 rounded-2xl overflow-hidden relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="نظارات شمسية">
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-slate-800 text-sm">نظارات شمسية</span>
-                        <div class="w-8 h-8 rounded-xl bg-primary-50 group-hover:bg-primary-500 text-primary-500 group-hover:text-white flex items-center justify-center text-xs transition">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </div>
-                    </div>
+                <div onclick="selectCategory('sunglasses')" class="se-card p-4 cursor-pointer group se-hover-lift se-reveal">
+                    <div class="h-36 sm:h-44 rounded-2xl overflow-hidden mb-4"><img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="نظارات شمسية"></div>
+                    <div class="flex items-center justify-between"><span class="font-bold text-sm">نظارات شمسية</span><span class="w-8 h-8 rounded-xl flex items-center justify-center text-xs" style="background:rgba(2,132,199,.1);color:var(--se-primary)"><i class="fa-solid fa-arrow-left"></i></span></div>
                 </div>
-                <div onclick="selectCategory('shoes')" class="bg-white rounded-3xl p-4 border border-slate-100 hover:border-primary-200 cursor-pointer group shadow-sm transition">
-                    <div class="h-44 rounded-2xl overflow-hidden relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="أحذية">
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-slate-800 text-sm">أحذية عصرية</span>
-                        <div class="w-8 h-8 rounded-xl bg-primary-50 group-hover:bg-primary-500 text-primary-500 group-hover:text-white flex items-center justify-center text-xs transition">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </div>
-                    </div>
+                <div onclick="selectCategory('shoes')" class="se-card p-4 cursor-pointer group se-hover-lift se-reveal">
+                    <div class="h-36 sm:h-44 rounded-2xl overflow-hidden mb-4"><img src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?w=400" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="أحذية عصرية"></div>
+                    <div class="flex items-center justify-between"><span class="font-bold text-sm">أحذية عصرية</span><span class="w-8 h-8 rounded-xl flex items-center justify-center text-xs" style="background:rgba(2,132,199,.1);color:var(--se-primary)"><i class="fa-solid fa-arrow-left"></i></span></div>
                 </div>
-                <div onclick="selectCategory('hijabs')" class="bg-white rounded-3xl p-4 border border-slate-100 hover:border-primary-200 cursor-pointer group shadow-sm transition">
-                    <div class="h-44 rounded-2xl overflow-hidden relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="حجابات وملابس">
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <span class="font-bold text-slate-800 text-sm">حجابات وملابس</span>
-                        <div class="w-8 h-8 rounded-xl bg-primary-50 group-hover:bg-primary-500 text-primary-500 group-hover:text-white flex items-center justify-center text-xs transition">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </div>
-                    </div>
+                <div onclick="selectCategory('hijabs')" class="se-card p-4 cursor-pointer group se-hover-lift se-reveal">
+                    <div class="h-36 sm:h-44 rounded-2xl overflow-hidden mb-4"><img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="حجابات وملابس"></div>
+                    <div class="flex items-center justify-between"><span class="font-bold text-sm">حجابات وملابس</span><span class="w-8 h-8 rounded-xl flex items-center justify-center text-xs" style="background:rgba(2,132,199,.1);color:var(--se-primary)"><i class="fa-solid fa-arrow-left"></i></span></div>
                 </div>
             </div>
         </section>
 
-        <!-- قسم المتجر وعرض المنتجات (تم تحديثه بالكامل وإزالة الفئات) -->
-        <section id="shop-section" class="py-12 bg-slate-100/50">
+        <!-- المتجر -->
+        <section id="shop-section" class="py-10" style="background:rgba(148,163,184,.07)">
             <div class="container mx-auto px-4">
-                <div class="mb-8 text-center md:text-right">
-                    <h2 class="text-2xl font-black text-slate-900 flex items-center justify-center md:justify-start gap-2">
-                        منتجات مميزة لك <span class="text-primary-500">🔥</span>
-                    </h2>
-                    <p class="text-xs text-slate-400 font-bold mt-1">تصفح المنتجات الحصرية النشطة في المنصة حالياً</p>
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                    <div class="text-center md:text-right">
+                        <h2 class="text-2xl font-black flex items-center justify-center md:justify-start gap-2">منتجات مميزة لك <span style="color:var(--se-primary)">🔥</span></h2>
+                        <p class="text-xs se-muted font-bold mt-1"><span id="resultCount">0</span> منتج متاح حالياً في المنصة</p>
+                    </div>
+                    <div class="grid grid-cols-2 sm:flex gap-2 w-full md:w-auto">
+                        <select id="categoryFilter" class="se-input !py-2.5 !text-xs cursor-pointer"><option value="all">🔍 كل الفئات</option></select>
+                        <select id="sortSelect" class="se-input !py-2.5 !text-xs cursor-pointer">
+                            <option value="newest">🆕 الأحدث</option>
+                            <option value="price-asc">💰 الأرخص أولاً</option>
+                            <option value="price-desc">💎 الأغلى أولاً</option>
+                            <option value="name">🔤 حسب الاسم</option>
+                        </select>
+                    </div>
                 </div>
-                
-                <!-- شبكة المنتجات التفاعلية -->
-                <div id="productsGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-                    <!-- سيتم توليد المنتجات هنا ديناميكياً بواسطة السكريبت بالأسفل بدون فئات ومع توجيه مباشر -->
+
+                <!-- فلترة السعر -->
+                <div class="se-card p-4 mb-6 flex flex-wrap items-center gap-3">
+                    <span class="text-xs font-black">نطاق السعر:</span>
+                    <input id="minPrice" type="number" min="0" placeholder="من" class="se-input !py-2 !text-xs w-24">
+                    <input id="maxPrice" type="number" min="0" placeholder="إلى" class="se-input !py-2 !text-xs w-24">
+                    <button onclick="applyFilters()" class="se-btn se-btn-primary !py-2 !px-4 !text-[11px]">تطبيق</button>
+                    <button onclick="resetFilters()" class="se-btn se-btn-ghost !py-2 !px-4 !text-[11px]">إعادة ضبط</button>
+                    <span class="text-[10px] se-muted font-bold ms-auto hidden sm:block">الأسعار بالدينار الجزائري</span>
+                </div>
+
+                <div id="productsGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"></div>
+
+                <div class="text-center mt-8">
+                    <button id="loadMoreBtn" onclick="loadMore()" class="se-btn se-btn-ghost !px-8 hidden">عرض المزيد من المنتجات <i class="fa-solid fa-chevron-down"></i></button>
                 </div>
             </div>
         </section>
 
+        <!-- شوهدت مؤخراً -->
+        <section id="recentSection" class="py-10 container mx-auto px-4 hidden">
+            <h2 class="text-xl font-black mb-4">👀 شاهدتها مؤخراً</h2>
+            <div id="recentGrid" class="flex gap-4 overflow-x-auto no-scrollbar pb-2"></div>
+        </section>
+
+        <!-- دعوة للتجار -->
+        <section class="container mx-auto px-4 py-10">
+            <div class="se-card p-8 text-center space-y-4 se-reveal" style="background:linear-gradient(120deg, rgba(2,132,199,.10), rgba(16,185,129,.10))">
+                <h2 class="text-2xl font-black">هل أنت تاجر؟ ابدأ البيع اليوم 🚀</h2>
+                <p class="se-muted text-sm font-bold max-w-2xl mx-auto leading-relaxed">أنشئ متجرك الخاص على سوقي إكسبريس مجاناً، أضف منتجاتك، وحدد أسعار الشحن لكل ولاية، واستقبل طلباتك مباشرة على لوحة التحكم.</p>
+                <div class="flex justify-center gap-3 flex-wrap">
+                    <a href="login.html" class="se-btn se-btn-primary">إنشاء متجري الآن</a>
+                    <a href="about.html" class="se-btn se-btn-ghost">تعرف أكثر على المنصة</a>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- الفوتر الرسمي والفاخر للمنصة -->
-    <footer class="bg-slate-950 text-slate-400 border-t border-slate-900 pt-16 pb-8">
+    <!-- الفوتر -->
+    <footer class="bg-slate-950 text-slate-400 border-t border-slate-900 pt-14 pb-8">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 text-center md:text-right">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10 text-center md:text-right">
                 <div class="space-y-4">
                     <div class="flex items-center justify-center md:justify-start gap-2">
-                        <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center overflow-hidden p-0.5 shadow-sm">
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s512/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg" class="w-full h-full object-cover rounded-md" alt="SouqiExpress Logo Footer">
-                        </div>
-                        <span class="font-black text-xl text-white">Souqi<span class="text-primary-500">Express</span></span>
+                        <div class="w-8 h-8 bg-white rounded-lg overflow-hidden p-0.5"><img id="footerLogo" src="" class="w-full h-full object-cover rounded-md" alt="logo"></div>
+                        <span class="font-black text-xl text-white">Souqi<span class="text-sky-400">Express</span></span>
                     </div>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        منصة سوقي إكسبريس هي المنصة الجزائرية الأفضل لتلبية احتياجاتكم من أرقى المنتجات بأعلى معايير الجودة والأمان.
-                    </p>
-                    
-                    <div class="flex items-center justify-center md:justify-start gap-3 pt-2">
-                        <a href="https://web.facebook.com/profile.php?id=61591647221843" target="_blank" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-blue-600 text-slate-300 hover:text-white flex items-center justify-center transition text-base shadow-sm">
-                            <i class="fa-brands fa-facebook-f"></i>
-                        </a>
-                        <a href="https://www.instagram.com/souqiexpress/" target="_blank" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-pink-600 text-slate-300 hover:text-white flex items-center justify-center transition text-base shadow-sm">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-                        <a href="https://vm.tiktok.com/ZS9M34AXNoePJ-g3JZ7/" target="_blank" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-black text-slate-300 hover:text-white flex items-center justify-center transition text-base shadow-sm">
-                            <i class="fa-brands fa-tiktok"></i>
-                        </a> 
-                    </div>
+                    <p class="text-xs leading-relaxed">منصة سوقي إكسبريس الجزائرية لتلبية احتياجاتكم من أرقى المنتجات بأعلى معايير الجودة والأمان.</p>
+                    <div class="flex items-center justify-center md:justify-start gap-3 pt-1" id="socialLinks"></div>
                 </div>
-
                 <div>
-                    <h4 class="font-black text-white text-sm mb-4">التصنيفات الشائعة</h4>
+                    <h4 class="font-black text-white text-sm mb-4">روابط سريعة</h4>
                     <ul class="space-y-2.5 text-xs">
-                        <li><a href="#shop-section" class="hover:text-primary-400 transition">مستحضرات التجميل</a></li>
-                        <li><a href="#shop-section" class="hover:text-primary-400 transition">أحذية نسائية ورجالية</a></li>
-                        <li><a href="#shop-section" class="hover:text-primary-400 transition">نظارات شمسية بريميوم</a></li>
-                        <li><a href="#shop-section" class="hover:text-primary-400 transition">حجابات وملابس منسقة</a></li>
+                        <li><a href="index.html#shop-section" class="hover:text-sky-400 transition">كل المنتجات</a></li>
+                        <li><a href="wishlist.html" class="hover:text-sky-400 transition">قائمة المفضلة</a></li>
+                        <li><a href="cart.html" class="hover:text-sky-400 transition">سلة المشتريات</a></li>
+                        <li><a href="about.html" class="hover:text-sky-400 transition">من نحن</a></li>
                     </ul>
                 </div>
-
                 <div>
-                    <h4 class="font-black text-white text-sm mb-4">الدعم والمساعدة</h4>
+                    <h4 class="font-black text-white text-sm mb-4">للتجار</h4>
                     <ul class="space-y-2.5 text-xs">
-                        <li><a href="#" class="hover:text-primary-400 transition">اتصل بنا / الدعم المباشر</a></li>
-                        <li><a href="#" class="hover:text-primary-400 transition">سياسة الخصوصية للمنصة</a></li>
+                        <li><a href="login.html" class="hover:text-sky-400 transition">تسجيل الدخول</a></li>
+                        <li><a href="login.html" class="hover:text-sky-400 transition">فتح متجر جديد</a></li>
+                        <li><a href="about.html" class="hover:text-sky-400 transition">كيف تعمل المنصة</a></li>
                     </ul>
                 </div>
-
-                <div class="space-y-4">
+                <div class="space-y-3">
                     <h4 class="font-black text-white text-sm">تسوق آمن ومحمي 100%</h4>
-                    <p class="text-xs leading-relaxed text-slate-400">جميع معاملاتكم وحساباتكم مشفرة ومحمية بأقوى بروتوكولات الأمان الإلكتروني الفعالة.</p>
+                    <p class="text-xs leading-relaxed">جميع معاملاتكم مشفرة ومحمية. الدفع يتم نقداً عند استلام الطرد فقط.</p>
+                    <div class="flex justify-center md:justify-start gap-2 pt-1 text-lg"><span>🇩🇿</span><span>🚚</span><span>💵</span><span>🔒</span></div>
                 </div>
             </div>
-
-            <div class="pt-8 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
-                <p class="text-slate-500">&copy; 2026 سوقي إكسبريس SouqiExpress.جميع الحقوق محفوظة.</p>
+            <div class="pt-6 border-t border-slate-900 text-center text-xs text-slate-500">
+                <p>&copy; 2026 سوقي إكسبريس SouqiExpress — جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
+
+    <script src="assets/js/app.js?v=44"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // 🔥 إعدادات الفايربيز الرسمية الخاصة بـ Walid Shop
-        const firebaseConfig = {
-            apiKey: "AIzaSyAIfkBI0WhxZr1hCyiuYcbVYAy3wXAJxCU",
-            authDomain: "walid-shop.firebaseapp.com",
-            projectId: "walid-shop",
-            storageBucket: "walid-shop.firebasestorage.app",
-            messagingSenderId: "3705207162",
-            appId: "1:3705207162:web:7b3a80ba4acea3e29c3ec3",
-            measurementId: "G-YX3PT078PG"
-        };
+        const CFG = window.SE_CONFIG;
+        document.getElementById('brandLogo').src = CFG.logo;
+        document.getElementById('footerLogo').src = CFG.logo;
+        document.getElementById('heroImage').src = CFG.logo;
+        document.getElementById('socialLinks').innerHTML = `
+            <a href="${CFG.social.facebook}" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-blue-600 text-slate-300 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="${CFG.social.instagram}" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-pink-600 text-slate-300 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-instagram"></i></a>
+            <a href="${CFG.social.tiktok}" target="_blank" rel="noopener" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-black text-slate-300 hover:text-white flex items-center justify-center transition"><i class="fa-brands fa-tiktok"></i></a>`;
 
-        // تهيئة الفايربيز وقاعدة البيانات
-        const app = initializeApp(firebaseConfig);
+        SE.mountTabbar('home');
+
+        const app = initializeApp(CFG.firebase);
         const db = getFirestore(app);
-        
-        // المتغيرات العامة
-        window.allProducts = [];
-        window.cart = [];
 
-        // قاعدة بيانات وهمية متقدمة كـ Fallback في حال كانت قاعدة بيانات Firebase فارغة
+        const PAGE = 8;
+        let shown = PAGE;
+        window.allProducts = [];
+        let filtered = [];
+
         const mockProducts = [
-            {
-                id: "mock1",
-                name: "أحمر شفاه كلاسيكي Rouge à Lèvres",
-                price: 2500,
-                category: "makeup",
-                image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400",
-                is_active: true,
-                description: "أحمر شفاه كلاسيكي مطفي غني بالمرطبات الطبيعية، لشفاه ممتلئة وجذابة تدوم طوال اليوم مع لمسة ناعمة وأنيقة للغاية."
-            },
-            {
-                id: "mock2",
-                name: "نظارات شمسية راي بان Ray-Ban Classic",
-                price: 4000,
-                category: "sunglasses",
-                image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400",
-                is_active: true,
-                description: "نظارات شمسية عصرية بعدسات ممتازة ومستقطبة لحماية كاملة لعينيك من الأشعة فوق البنفسجية، بتصميم إيطالي فريد وجذاب للغاية."
-            },
-            {
-                id: "mock3",
-                name: "حذاء كعب عالي Talon Rouge",
-                price: 5000,
-                category: "shoes",
-                image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400",
-                is_active: true,
-                description: "حذاء نسائي فاخر ذو كعب عالي ومثالي للمناسبات السعيدة والأعراس، مصنوع من أجود أنواع المواد والجلود المريحة في الارتداء."
-            },
-            {
-                id: "mock4",
-                name: "حجاب فضفاض تركي أصلي Elegance",
-                price: 3200,
-                category: "hijabs",
-                image: "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?w=400",
-                is_active: true,
-                description: "حجاب تركي بتصميم فضفاض رائع ومصنوع من قماش فاخر وخفيف الوزن، مثالي للارتداء اليومي في فصلي الصيف والربيع."
-            }
+            { id:"mock1", name:"أحمر شفاه كلاسيكي Rouge à Lèvres", price:2500, category:"makeup", image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400", is_active:true, stock:12, description:"أحمر شفاه مطفي غني بالمرطبات الطبيعية." },
+            { id:"mock2", name:"نظارات شمسية Ray-Ban Classic", price:4000, category:"sunglasses", image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400", is_active:true, stock:5, description:"عدسات مستقطبة وحماية كاملة من الأشعة." },
+            { id:"mock3", name:"حذاء كعب عالي Talon Rouge", price:5000, category:"shoes", image:"https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400", is_active:true, stock:3, description:"حذاء نسائي فاخر مثالي للمناسبات." },
+            { id:"mock4", name:"حجاب تركي أصلي Elegance", price:3200, category:"hijabs", image:"https://images.unsplash.com/photo-1609357605129-26f69add5d6e?w=400", is_active:true, stock:20, description:"قماش فاخر خفيف الوزن للارتداء اليومي." },
+            { id:"mock5", name:"طقم مكياج احترافي 12 قطعة", price:6800, category:"makeup", image:"https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400", is_active:true, stock:8, description:"طقم متكامل بجودة احترافية." },
+            { id:"mock6", name:"حذاء رياضي رجالي Sport Pro", price:7500, category:"shoes", image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400", is_active:true, stock:15, description:"مريح وخفيف مناسب للجري اليومي." },
+            { id:"mock7", name:"نظارة شمسية عصرية للنساء", price:3500, category:"sunglasses", image:"https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=400", is_active:true, stock:0, description:"تصميم أنيق يناسب كل الإطلالات." },
+            { id:"mock8", name:"عباية عصرية مطرزة", price:9500, category:"hijabs", image:"https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=400", is_active:true, stock:6, description:"تطريز يدوي فاخر بخامة ممتازة." }
         ];
 
-        // دالة التوجيه لصفحة تفاصيل المنتج بـ ID المحدد
-        window.navigateToProduct = function(productId) {
-            window.location.href = `product-details.html?id=${productId}`;
+        /* هياكل تحميل */
+        function renderSkeletons(n = 8) {
+            document.getElementById('productsGrid').innerHTML = Array.from({ length: n }).map(() => `
+                <div class="se-card overflow-hidden">
+                    <div class="se-skeleton h-40 sm:h-52 !rounded-none"></div>
+                    <div class="p-4 space-y-2">
+                        <div class="se-skeleton h-3 w-3/4 mx-auto"></div>
+                        <div class="se-skeleton h-3 w-1/2 mx-auto"></div>
+                        <div class="se-skeleton h-9 w-full mt-3"></div>
+                    </div>
+                </div>`).join('');
         }
 
-        // دالة عرض المنتجات في الصفحة (تم إخفاء الفئات، دمج زر أطلب الآن، وجعل الكرت بالكامل يدعم التوجيه السلس)
-        window.renderProducts = function(products) {
-            const grid = document.getElementById('productsGrid');
-            if (!grid) return;
-            
-            if (products.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm space-y-3">
-                        <span class="text-4xl block">📦</span>
-                        <p class="text-slate-400 font-bold text-sm">لم نجد أي منتجات تطابق بحثك حالياً.</p>
-                    </div>`;
-                return;
-            }
+        window.navigateToProduct = id => location.href = `product-details.html?id=${encodeURIComponent(id)}`;
 
-            grid.innerHTML = products.map(p => {
-                const productImg = p.image ? (Array.isArray(p.image) ? p.image[0] : p.image) : 'https://placehold.co/400x400?text=SouqiExpress';
-                const formattedPrice = p.price ? Number(p.price).toLocaleString() : "0";
-                const fakeOriginalPrice = p.price ? Number(p.price * 1.35).toFixed(0) : "0"; 
+        window.quickAdd = function (id) {
+            const p = window.allProducts.find(x => x.id === id);
+            if (!p) return;
+            if (p.stock !== undefined && p.stock <= 0) return SE.toast('❌ هذا المنتج غير متوفر حالياً', 'error');
+            SE.cart.add(p, 1);
+        };
+        window.toggleWish = function (id) {
+            const p = window.allProducts.find(x => x.id === id);
+            if (p) { SE.wishlist.toggle(p); SE.wishlist.sync(); }
+        };
 
-                return `
-                <!-- الكرت بالكامل أصبح يدعم التوجيه عند الضغط عليه بدلاً من الـ Modal -->
-                <div onclick="navigateToProduct('${p.id}')" class="bg-white rounded-3xl shadow-sm border border-slate-100/80 overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group relative cursor-pointer">
-                    
-                    <!-- شارة الخصم المميزة للمنصة -->
-                    <span class="absolute top-3 left-3 bg-rose-500 text-white text-[10px] font-black px-2.5 py-1 rounded-full z-10 shadow-sm animate-bounce">
-                        تخفيض -25%
-                    </span>
-
-                    <div>
-                        <!-- صورة كارت المنتج التفاعلية -->
-                        <div class="h-44 sm:h-56 overflow-hidden bg-slate-50 relative">
-                            <img src="${productImg}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${p.name || ''}">
-                            <span class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm text-primary-500 text-[10px] font-black px-2.5 py-1 rounded-lg shadow-sm">
-                                متوفر في المخزن ⚡
-                            </span>
-                        </div>
-                        
-                        <!-- تفاصيل معلومات الكارت (تم إخفاء الفئة تماماً بناءً على طلبك) -->
-                        <div class="p-4 sm:p-5 text-center">
-                            <h3 class="font-bold text-slate-800 text-xs sm:text-sm truncate mt-1 hover:text-primary-500 transition-colors">${p.name || 'منتج بدون اسم'}</h3>
-                            
-                            <!-- نظام التقييم الكلاسيكي بالنجوم المذهبة -->
-                            <div class="flex justify-center gap-0.5 my-1.5 text-amber-400 text-xs">
-                                ★★★★★
-                            </div>
-
-                            <div class="flex items-center justify-center gap-2">
-                                <span class="text-sm sm:text-lg font-black text-slate-900">${formattedPrice} د.ج</span>
-                                <span class="text-[11px] sm:text-xs text-slate-400 line-through">${Number(fakeOriginalPrice).toLocaleString()} د.ج</span>
-                            </div>
-                        </div>
+        function cardHTML(p) {
+            const img = p.image ? (Array.isArray(p.image) ? p.image[0] : p.image) : 'https://placehold.co/400x400?text=SouqiExpress';
+            const out = p.stock !== undefined && p.stock <= 0;
+            const low = !out && p.stock !== undefined && p.stock <= 5;
+            const old = Math.round(Number(p.price || 0) * 1.35);
+            return `
+            <div class="se-card overflow-hidden se-hover-lift se-reveal flex flex-col relative group">
+                <span class="absolute top-2 left-2 z-10 se-badge se-badge-red !text-[9px] !px-2 !py-0.5">${out ? 'نفدت الكمية' : '-25%'}</span>
+                <button data-se-wish-id="${p.id}" onclick="event.stopPropagation(); toggleWish('${p.id}')" class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/90 shadow flex items-center justify-center text-slate-400 hover:scale-110 transition" title="أضف للمفضلة">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+                <div onclick="navigateToProduct('${p.id}')" class="cursor-pointer">
+                    <div class="aspect-square overflow-hidden bg-slate-100 relative">
+                        <img src="${img}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${out ? 'opacity-50 grayscale' : ''}" alt="${SE.escape(p.name || '')}">
+                        ${low ? `<span class="absolute bottom-2 right-2 se-badge !text-[9px] !px-2 !py-0.5" style="background:#fff;color:#b45309">🔥 بقي ${p.stock}</span>` : ''}
                     </div>
-                    
-                    <!-- زر أطلب الآن الموحد والموجه مباشرة لصفحة تفاصيل المنتج -->
-                    <div class="p-4 sm:p-5 pt-0">
-                        <button onclick="event.stopPropagation(); navigateToProduct('${p.id}')" class="w-full bg-gradient-to-r from-primary-900 to-primary-600 hover:from-primary-950 hover:to-primary-700 text-white py-3 rounded-xl font-bold text-xs text-center transition-all duration-300 block shadow-md shadow-primary-900/10 active:scale-95">
-                            أطلب الآن
-                        </button>
+                    <div class="p-2.5 sm:p-4 text-center space-y-1">
+                        <h3 class="font-bold text-[11px] sm:text-sm se-line-clamp-2 leading-snug min-h-[2.1rem] sm:min-h-[2.4rem]">${SE.escape(p.name || 'منتج بدون اسم')}</h3>
+                        <div class="text-amber-400 text-[10px] sm:text-xs">★★★★★</div>
+                        <div class="flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-0.5">
+                            <span class="text-[13px] sm:text-lg font-black whitespace-nowrap">${SE.money(p.price)}</span>
+                            <span class="text-[10px] sm:text-[11px] se-muted line-through whitespace-nowrap">${old.toLocaleString()} د.ج</span>
+                        </div>
                     </div>
                 </div>
-                `;
-            }).join('');
+                <div class="p-2.5 sm:p-4 pt-0 flex gap-1.5 sm:gap-2">
+                    <button onclick="navigateToProduct('${p.id}')" class="flex-1 min-w-0 se-btn se-btn-primary !px-1 !py-2.5 !text-[11px] !gap-1" ${out ? 'disabled' : ''}>${out ? 'غير متوفر' : 'أطلب الآن'}</button>
+                    <button onclick="quickAdd('${p.id}')" class="se-btn se-btn-ghost !px-0 !py-2.5 w-9 flex-shrink-0" title="أضف للسلة" aria-label="أضف للسلة" ${out ? 'disabled' : ''}><i class="fa-solid fa-cart-plus"></i></button>
+                </div>
+            </div>`;
         }
 
-        // دالة الفلترة والبحث المشترك
-        window.filterProducts = function() {
-            const searchInputVal = document.getElementById('searchInput').value.toLowerCase().trim();
-            const mobileSearchInputVal = document.getElementById('mobileSearchInput').value.toLowerCase().trim();
-            const queryVal = searchInputVal || mobileSearchInputVal;
-            
-            const catId = document.getElementById('categoryFilter').value;
-            
-            const filtered = window.allProducts.filter(p => {
-                const matchName = p.name ? p.name.toLowerCase().includes(queryVal) : false;
-                const matchCat = (catId === 'all' || p.category === catId);
-                return matchName && matchCat;
-            });
-            
-            window.renderProducts(filtered);
-        }
-
-        // ربط أحداث البحث والفلترة بالعناصر
-        document.getElementById('searchInput').addEventListener('input', window.filterProducts);
-        document.getElementById('mobileSearchInput').addEventListener('input', window.filterProducts);
-        document.getElementById('categoryFilter').addEventListener('change', window.filterProducts);
-
-        // الدالة الأساسية لتشغيل الصفحة وجلب البيانات من Firebase مع الـ fallback الذكي
-        async function init() {
-            try {
-                // 1. جلب التصنيفات الحقيقية من Firebase إذا كانت متوفرة
-                const categoriesSnapshot = await getDocs(collection(db, 'categories'));
-                const catFilter = document.getElementById('categoryFilter');
-                
-                categoriesSnapshot.forEach(docSnap => {
-                    const catData = docSnap.data();
-                    const option = document.createElement('option');
-                    option.value = docSnap.id;
-                    option.textContent = catData.name;
-                    catFilter.appendChild(option);
-                });
-
-                // 2. جلب المنتجات النشطة فقط من Firebase
-                const q = query(collection(db, 'products'), where('is_active', '==', true));
-                const productsSnapshot = await getDocs(q);
-                
-                let fetchedProducts = productsSnapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
-                
-                if (fetchedProducts.length > 0) {
-                    window.allProducts = fetchedProducts;
-                } else {
-                    window.allProducts = mockProducts;
-                }
-                
-                // ترتيب المنتجات برمجياً من الأحدث للأقدم
-                window.allProducts.sort((a, b) => new Date(b.created || 0) - new Date(a.created || 0));
-                
-                // عرض المنتجات فوراً
-                window.renderProducts(window.allProducts);
-            } catch (err) {
-                console.warn("جاري استخدام قاعدة البيانات الاحتياطية للمنصة لضمان التشغيل الدائم والسلس:", err);
-                window.allProducts = mockProducts;
-                window.renderProducts(window.allProducts);
+        window.renderProducts = function (list) {
+            const grid = document.getElementById('productsGrid');
+            document.getElementById('resultCount').textContent = list.length;
+            if (!list.length) {
+                grid.innerHTML = `<div class="col-span-full text-center py-16 se-card space-y-3">
+                    <span class="text-4xl block">📦</span>
+                    <p class="se-muted font-bold text-sm">لم نجد أي منتجات تطابق بحثك.</p>
+                    <button onclick="resetFilters()" class="se-btn se-btn-ghost">إعادة ضبط الفلاتر</button>
+                </div>`;
+                document.getElementById('loadMoreBtn').classList.add('hidden');
+                return;
             }
+            grid.innerHTML = list.slice(0, shown).map(cardHTML).join('');
+            document.getElementById('loadMoreBtn').classList.toggle('hidden', list.length <= shown);
+            SE.observeReveal();
+            SE.wishlist.sync();
+        };
+
+        window.applyFilters = function () {
+            const q = (document.getElementById('searchInput').value || document.getElementById('mobileSearchInput').value || '').toLowerCase().trim();
+            const cat = document.getElementById('categoryFilter').value;
+            const min = parseFloat(document.getElementById('minPrice').value);
+            const max = parseFloat(document.getElementById('maxPrice').value);
+            const sort = document.getElementById('sortSelect').value;
+
+            filtered = window.allProducts.filter(p => {
+                const name = (p.name || '').toLowerCase();
+                const desc = (p.description || '').toLowerCase();
+                const okQ = !q || name.includes(q) || desc.includes(q);
+                const okC = cat === 'all' || p.category === cat;
+                const price = Number(p.price) || 0;
+                const okMin = isNaN(min) || price >= min;
+                const okMax = isNaN(max) || price <= max;
+                return okQ && okC && okMin && okMax;
+            });
+
+            if (sort === 'price-asc') filtered.sort((a, b) => (a.price || 0) - (b.price || 0));
+            else if (sort === 'price-desc') filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
+            else if (sort === 'name') filtered.sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ar'));
+            else filtered.sort((a, b) => new Date(b.created || 0) - new Date(a.created || 0));
+
+            shown = PAGE;
+            window.renderProducts(filtered);
+        };
+
+        window.resetFilters = function () {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            document.getElementById('categoryFilter').value = 'all';
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('sortSelect').value = 'newest';
+            applyFilters();
+        };
+
+        window.loadMore = function () { shown += PAGE; window.renderProducts(filtered); };
+
+        window.selectCategory = function (cat) {
+            const sel = document.getElementById('categoryFilter');
+            if ([...sel.options].some(o => o.value === cat)) sel.value = cat;
+            applyFilters();
+            document.getElementById('shop-section').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // بحث فوري مع تأخير بسيط
+        let t;
+        const onSearch = e => {
+            clearTimeout(t);
+            const other = e.target.id === 'searchInput' ? 'mobileSearchInput' : 'searchInput';
+            document.getElementById(other).value = e.target.value;
+            t = setTimeout(applyFilters, 220);
+        };
+        document.getElementById('searchInput').addEventListener('input', onSearch);
+        document.getElementById('mobileSearchInput').addEventListener('input', onSearch);
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+        document.getElementById('sortSelect').addEventListener('change', applyFilters);
+
+        /* شوهدت مؤخراً */
+        function renderRecent() {
+            const items = SE.recent.all();
+            if (!items.length) return;
+            document.getElementById('recentSection').classList.remove('hidden');
+            document.getElementById('recentGrid').innerHTML = items.map(p => `
+                <a href="product-details.html?id=${encodeURIComponent(p.id)}" class="se-card w-36 flex-shrink-0 overflow-hidden">
+                    <div class="h-28 bg-slate-100 overflow-hidden"><img src="${p.image || ''}" loading="lazy" class="w-full h-full object-cover"></div>
+                    <div class="p-2 text-center"><div class="text-[11px] font-bold se-line-clamp-2">${SE.escape(p.name || '')}</div><div class="text-[11px] font-black mt-1">${SE.money(p.price)}</div></div>
+                </a>`).join('');
         }
 
-        // تشغيل التطبيق بالكامل عند تحميل الصفحة
+        async function init() {
+            renderSkeletons();
+            try {
+                const catFilter = document.getElementById('categoryFilter');
+                try {
+                    const cats = await getDocs(collection(db, 'categories'));
+                    cats.forEach(d => {
+                        const o = document.createElement('option');
+                        o.value = d.id; o.textContent = d.data().name;
+                        catFilter.appendChild(o);
+                    });
+                } catch (e) { console.warn('categories', e); }
+
+                const snap = await getDocs(query(collection(db, 'products'), where('is_active', '==', true)));
+                const fetched = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                window.allProducts = fetched.length ? fetched : mockProducts;
+            } catch (err) {
+                console.warn('استخدام البيانات الاحتياطية:', err);
+                window.allProducts = mockProducts;
+            }
+            // فئات احتياطية إن لم توجد في قاعدة البيانات
+            const sel = document.getElementById('categoryFilter');
+            if (sel.options.length <= 1) {
+                [...new Set(window.allProducts.map(p => p.category).filter(Boolean))].forEach(c => {
+                    const o = document.createElement('option'); o.value = c;
+                    o.textContent = ({ makeup:'مكياج وعناية', sunglasses:'نظارات شمسية', shoes:'أحذية', hijabs:'حجابات وملابس' })[c] || c;
+                    sel.appendChild(o);
+                });
+            }
+            applyFilters();
+            renderRecent();
+        }
         init();
     </script>
 </body>

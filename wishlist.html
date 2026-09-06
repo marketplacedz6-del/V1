@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
+    <meta name="theme-color" content="#0284c7">
+    <title>المفضلة | SouqiExpress</title>
+    <meta name="description" content="قائمة المنتجات المفضّلة لديك على سوقي إكسبريس — احفظ ما يعجبك واشترِه لاحقاً.">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=44">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/theme.css?v=44">
+    <script src="assets/js/config.js?v=44"></script>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="se-surface sticky top-0 z-40 border-b">
+        <div class="container mx-auto px-4 py-3.5 flex items-center justify-between gap-3">
+            <a href="index.html" class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl overflow-hidden bg-white shadow-sm p-0.5">
+                    <img id="brandLogo" src="" class="w-full h-full object-cover rounded-lg" alt="SouqiExpress">
+                </div>
+                <div class="flex flex-col leading-none">
+                    <span class="font-black text-lg" style="color:var(--se-primary-900)">Souqi<span style="color:var(--se-primary)">Express</span></span>
+                    <span class="text-[9px] font-bold text-rose-500 tracking-widest mt-0.5">قائمة المفضلة</span>
+                </div>
+            </a>
+            <div class="flex items-center gap-2">
+                <button data-se-theme-toggle aria-label="الوضع الليلي" title="الوضع الليلي" class="se-btn se-btn-ghost !px-3 !py-2"><i data-se-theme-icon class="fa-solid fa-moon"></i></button>
+                <a href="cart.html" class="se-btn se-btn-ghost relative">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span data-se-cart-count class="absolute -top-2 -left-2 bg-emerald-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-black mb-1">المفضلة ❤️</h1>
+        <p class="se-muted text-xs font-bold mb-6">المنتجات التي أعجبتك محفوظة هنا على جهازك.</p>
+
+        <div id="empty" class="se-card p-12 text-center space-y-4 hidden">
+            <div class="text-6xl">💔</div>
+            <h2 class="text-xl font-black">لا توجد منتجات مفضلة بعد</h2>
+            <p class="se-muted text-sm font-bold">اضغط على أيقونة القلب في أي منتج لحفظه هنا.</p>
+            <a href="index.html#shop-section" class="se-btn se-btn-primary">تصفح المنتجات</a>
+        </div>
+
+        <div id="grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </main>
+
+    <footer class="se-surface border-t py-6 text-center text-xs font-bold se-muted mt-8">
+        © 2026 <span style="color:var(--se-primary)">SouqiExpress</span> — جميع الحقوق محفوظة.
+    </footer>
+
+    <script src="assets/js/app.js?v=44"></script>
+    <script>
+        document.getElementById('brandLogo').src = SE_CONFIG.logo;
+        SE.mountTabbar('wish');
+
+        function render() {
+            const items = SE.wishlist.all();
+            document.getElementById('empty').classList.toggle('hidden', items.length > 0);
+            document.getElementById('grid').innerHTML = items.map(p => `
+                <div class="se-card overflow-hidden se-hover-lift se-reveal flex flex-col">
+                    <a href="product-details.html?id=${encodeURIComponent(p.id)}" class="block h-40 sm:h-52 overflow-hidden bg-slate-100">
+                        <img src="${p.image || 'https://placehold.co/400x400?text=SouqiExpress'}" class="w-full h-full object-cover hover:scale-105 transition duration-500" alt="">
+                    </a>
+                    <div class="p-4 text-center flex-1 flex flex-col justify-between gap-3">
+                        <h3 class="font-bold text-xs sm:text-sm se-line-clamp-2">${SE.escape(p.name || '')}</h3>
+                        <div class="font-black text-sm">${SE.money(p.price)}</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a href="product-details.html?id=${encodeURIComponent(p.id)}" class="se-btn se-btn-primary !px-2 !py-2.5 !text-[11px]">اطلب الآن</a>
+                            <button onclick='removeItem(${JSON.stringify(p.id)})' class="se-btn se-btn-ghost !px-2 !py-2.5 !text-[11px] text-rose-500">إزالة</button>
+                        </div>
+                    </div>
+                </div>`).join('');
+            SE.observeReveal();
+        }
+        window.removeItem = function (id) {
+            SE.wishlist.toggle({ id });
+            render();
+        };
+        render();
+    </script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/jpeg" href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyBMAK2bLeu1XK4sbC16cwWBDDMXUm2ECySR-zUjoO8jAfIMA1vTbqLM4aeGzNPti_DKhuQdDR4Yi9VYvv_tORcrMDHSuAq9lczXIln_7XJ2N-zi1GgN00ZPDT6K8TaBBIa8_JhLpgslBdmgjALDSBffk65-dRfcYb2x0qIWikiA1xhkEJnbLr5SwnVAyB/s192/ccac0bc7-0b03-481e-8c8a-e136a9ca8df7.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="se-critical">
+    /* أنماط حرجة مدمجة — خط دفاع أخير.
+       إن تعذّر تحميل tailwind.css أو theme.css لأي سبب (شبكة، Service Worker،
+       كاش تالف) تبقى الصفحة *مقروءة ومرتّبة* بدل أن تظهر نصاً ضخماً متراكباً.
+       لا تحذف هذه الكتلة. */
+    *{box-sizing:border-box}
+*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;font-size:16px}
+    body{margin:0;font-family:'Cairo','Tajawal','Noto Kufi Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+         font-size:15px;line-height:1.7;background:#f8fafc;color:#0f172a;
+         overflow-wrap:break-word;word-break:normal}
+    img,svg,video{max-width:100%;height:auto;display:block}
+    h1{font-size:1.6rem;line-height:1.35;margin:.6rem 0}
+    h2{font-size:1.3rem;line-height:1.4;margin:.6rem 0}
+    h3{font-size:1.1rem;line-height:1.45;margin:.5rem 0}
+    p,li,td,th,span,div,label,a{font-size:inherit}
+    button,input,select,textarea{font-family:inherit;font-size:1rem;max-width:100%}
+    table{border-collapse:collapse;width:100%}
+    [hidden],.hidden{display:none !important}
+    </style>
+    <meta name="theme-color" content="#0284c7">
+    <title>الزبائن | مركز التاجر</title>
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=44">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/theme.css?v=44">
+    <style>body{font-family:'Cairo',sans-serif}</style>
+    <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
+</head>
+<body class="se-admin flex h-screen overflow-hidden">
+
+    <div id="shell"></div>
+
+    <div class="flex-grow flex flex-col min-w-0 overflow-hidden">
+        <div id="shell-topbar"></div>
+
+        <main class="flex-grow overflow-y-auto p-4 md:p-6 space-y-4">
+
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-black tracking-tight">👥 الزبائن</h2>
+                    <p class="se-muted text-xs font-bold mt-1">قاعدة زبائنك مبنية تلقائياً من طلباتك — تعرّف على الأوفياء والمتعثّرين.</p>
+                </div>
+                <button onclick="exportCustomers()" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px]">⬇️ تصدير CSV</button>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="se-card p-4"><p class="text-[11px] font-extrabold se-muted">إجمالي الزبائن</p><h3 id="cTotal" class="text-xl font-black mt-1">0</h3></div>
+                <div class="se-card p-4"><p class="text-[11px] font-extrabold se-muted">زبائن متكررون</p><h3 id="cRepeat" class="text-xl font-black mt-1 text-emerald-600">0</h3></div>
+                <div class="se-card p-4"><p class="text-[11px] font-extrabold se-muted">متوسط الإنفاق</p><h3 id="cAvg" class="text-xl font-black mt-1">0</h3></div>
+                <div class="se-card p-4"><p class="text-[11px] font-extrabold se-muted">⚠️ متعثّرون</p><h3 id="cRisk" class="text-xl font-black mt-1 text-rose-600">0</h3></div>
+            </div>
+
+            <div class="se-card p-3 flex flex-col sm:flex-row gap-2">
+                <div class="relative flex-1">
+                    <input id="cSearch" oninput="renderCustomers()" placeholder="ابحث بالاسم أو الهاتف..." class="se-input !pr-10">
+                    <span class="absolute right-3.5 top-1/2 -translate-y-1/2 se-muted text-sm"><i class="fa-solid fa-magnifying-glass"></i></span>
+                </div>
+                <select id="cSort" onchange="renderCustomers()" class="se-input sm:w-48 !py-2.5 cursor-pointer">
+                    <option value="spent">💰 الأكثر إنفاقاً</option>
+                    <option value="orders">🧾 الأكثر طلباً</option>
+                    <option value="recent">🕒 الأحدث</option>
+                    <option value="risk">⚠️ الأكثر إلغاءً</option>
+                </select>
+            </div>
+
+            <div id="cList" class="space-y-3"></div>
+            <div id="cEmpty" class="se-card p-10 text-center hidden">
+                <div class="text-5xl mb-3">👥</div>
+                <p class="font-black text-sm">لا يوجد زبائن بعد</p>
+                <p class="se-muted text-xs font-bold mt-1">ستظهر هنا تلقائياً بمجرد وصول أول طلب.</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/config.js?v=44"></script>
+    <script src="assets/js/app.js?v=44"></script>
+    <script src="assets/js/subscription.js?v=44"></script>
+    <script src="assets/js/merchant-shell.js?v=44"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, doc, getDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        SHELL.mount('customers', 'الزبائن');
+
+        const app = initializeApp(window.SE_CONFIG.firebase);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let customers = [];
+        const esc = SE.escape;
+        const money = n => (Number(n) || 0).toLocaleString('en-US') + ' د.ج';
+
+        function orderDate(o) {
+            const raw = o.created_at || o.created || null;
+            if (!raw) return null;
+            if (raw.toDate) return raw.toDate();
+            const d = new Date(raw);
+            return isNaN(d) ? null : d;
+        }
+        function orderValue(o) {
+            if (o.total_price != null) return Number(o.total_price) || 0;
+            return (Number(o.unit_price) || 0) * (Number(o.quantity) || 1);
+        }
+        function wilayaOf(o) {
+            if (o.wilaya) return o.wilaya;
+            const m = String(o.address || '').match(/ولاية:\s*([^|]+)/);
+            return m ? m[1].trim() : '';
+        }
+
+        (async function init() {
+            const merchant = await SHELL.guard({ auth, db, onAuthStateChanged, getDoc, doc, signOut });
+            if (!merchant) return;
+            try {
+                let snap = await getDocs(query(collection(db, 'orders'), where('merchant', '==', merchant.id)));
+                let orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                if (!orders.length) {
+                    snap = await getDocs(query(collection(db, 'orders'), where('user_id', '==', merchant.id)));
+                    orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                }
+                buildCustomers(orders);
+                SHELL.setStatus(true, `${customers.length} زبون`);
+                SHELL.setPending(orders.filter(o => (o.status || 'pending') === 'pending').length);
+                renderCustomers();
+            } catch (e) {
+                console.error(e);
+                SHELL.setStatus(false, 'تعذّر جلب البيانات ❌');
+            }
+        })();
+
+        /* تجميع الطلبات حسب رقم الهاتف (المُعرّف الأدق للزبون) */
+        function buildCustomers(orders) {
+            const map = {};
+            orders.forEach(o => {
+                const phone = String(o.phone_number || '').trim();
+                if (!phone) return;
+                if (!map[phone]) map[phone] = {
+                    phone, name: o.customer_name || 'زبون', wilaya: wilayaOf(o),
+                    orders: 0, completed: 0, cancelled: 0, spent: 0, last: null, items: []
+                };
+                const c = map[phone];
+                c.orders++;
+                const st = o.status === 'cancel' ? 'cancelled' : (o.status || 'pending');
+                if (st === 'completed') { c.completed++; c.spent += orderValue(o); }
+                if (st === 'cancelled') c.cancelled++;
+                const d = orderDate(o);
+                if (d && (!c.last || d > c.last)) { c.last = d; c.name = o.customer_name || c.name; c.wilaya = wilayaOf(o) || c.wilaya; }
+                if (o.product_name) c.items.push(o.product_name);
+            });
+            customers = Object.values(map);
+
+            document.getElementById('cTotal').textContent = customers.length;
+            document.getElementById('cRepeat').textContent = customers.filter(c => c.orders > 1).length;
+            const paid = customers.filter(c => c.spent > 0);
+            document.getElementById('cAvg').textContent = money(paid.length ? Math.round(paid.reduce((s, c) => s + c.spent, 0) / paid.length) : 0);
+            document.getElementById('cRisk').textContent = customers.filter(isRisky).length;
+        }
+
+        // زبون متعثّر: ألغى أكثر مما أكمل، وله طلبان فأكثر
+        function isRisky(c) { return c.orders >= 2 && c.cancelled > c.completed; }
+
+        window.renderCustomers = function () {
+            const q = (document.getElementById('cSearch').value || '').toLowerCase().trim();
+            const sort = document.getElementById('cSort').value;
+            let list = customers.filter(c => !q || c.name.toLowerCase().includes(q) || c.phone.includes(q));
+
+            if (sort === 'orders') list.sort((a, b) => b.orders - a.orders);
+            else if (sort === 'recent') list.sort((a, b) => (b.last || 0) - (a.last || 0));
+            else if (sort === 'risk') list.sort((a, b) => b.cancelled - a.cancelled);
+            else list.sort((a, b) => b.spent - a.spent);
+
+            document.getElementById('cEmpty').classList.toggle('hidden', list.length > 0);
+            document.getElementById('cList').innerHTML = list.slice(0, 100).map(c => {
+                const risky = isRisky(c);
+                const vip = c.completed >= 3;
+                const rate = c.orders ? Math.round(c.completed / c.orders * 100) : 0;
+                const top = [...new Set(c.items)].slice(0, 2).join('، ');
+                return `
+                <div class="se-card p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-lg flex-shrink-0 ${vip ? 'bg-amber-100 text-amber-700' : risky ? 'bg-rose-100 text-rose-600' : 'bg-blue-50 text-blue-600'}">
+                        ${vip ? '⭐' : risky ? '⚠️' : '👤'}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="font-black text-sm truncate">${esc(c.name)}</span>
+                            ${vip ? '<span class="se-badge" style="background:rgba(245,158,11,.15);color:#b45309">زبون مميّز</span>' : ''}
+                            ${risky ? '<span class="se-badge se-badge-red">إلغاءات متكررة</span>' : ''}
+                        </div>
+                        <div class="text-[11px] se-muted font-bold mt-1 truncate">
+                            📞 ${esc(c.phone)} ${c.wilaya ? '• 📍 ' + esc(c.wilaya) : ''} ${c.last ? '• آخر طلب ' + c.last.toLocaleDateString('ar-DZ') : ''}
+                        </div>
+                        ${top ? `<div class="text-[10px] se-muted font-bold mt-0.5 truncate">🛍️ ${esc(top)}</div>` : ''}
+                    </div>
+                    <div class="grid grid-cols-3 gap-3 text-center flex-shrink-0">
+                        <div><div class="text-sm font-black">${c.orders}</div><div class="text-[9px] se-muted font-bold">طلب</div></div>
+                        <div><div class="text-sm font-black ${rate >= 70 ? 'text-emerald-600' : rate >= 40 ? 'text-amber-600' : 'text-rose-600'}">${rate}%</div><div class="text-[9px] se-muted font-bold">تأكيد</div></div>
+                        <div><div class="text-sm font-black">${money(c.spent).replace(' د.ج', '')}</div><div class="text-[9px] se-muted font-bold">د.ج</div></div>
+                    </div>
+                    <div class="flex gap-1.5 flex-shrink-0">
+                        <a href="tel:${esc(c.phone)}" class="se-btn se-btn-ghost !px-2.5 !py-2 !text-[11px]">📞</a>
+                        <a href="https://wa.me/213${c.phone.replace(/^0/, '')}" target="_blank" rel="noopener" class="se-btn se-btn-ghost !px-2.5 !py-2 !text-[11px] text-emerald-600">💬</a>
+                    </div>
+                </div>`;
+            }).join('');
+        };
+
+        window.exportCustomers = function () {
+            if (!customers.length) return SE.toast('لا يوجد زبائن للتصدير', 'error');
+            const head = ['الاسم', 'الهاتف', 'الولاية', 'عدد الطلبات', 'مكتملة', 'ملغاة', 'نسبة التأكيد', 'إجمالي الإنفاق', 'آخر طلب'];
+            const rows = customers.map(c => [c.name, c.phone, c.wilaya, c.orders, c.completed, c.cancelled,
+                (c.orders ? Math.round(c.completed / c.orders * 100) : 0) + '%', c.spent,
+                c.last ? c.last.toLocaleDateString('en-CA') : '']);
+            const csv = [head, ...rows].map(r => r.map(x => `"${String(x).replace(/"/g, '""')}"`).join(',')).join('\n');
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `customers-${new Date().toISOString().slice(0, 10)}.csv`;
+            a.click(); URL.revokeObjectURL(a.href);
+            SE.toast('⬇️ تم تصدير ' + rows.length + ' زبون', 'success');
+        };
+
+        // إتاحة الزبائن في البحث السريع
+        SHELL.registerSearch(q => !q ? [] : customers
+            .filter(c => c.name.toLowerCase().includes(q) || c.phone.includes(q))
+            .slice(0, 5)
+            .map(c => ({ icon: '👤', title: c.name, sub: c.phone + ' • ' + c.orders + ' طلب', go: 'customers.html' })));
+    </script>
+</body>
+</html>
