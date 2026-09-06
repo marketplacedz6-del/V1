@@ -1,5 +1,5 @@
 /* SouqiExpress Service Worker — تصفح سريع وعمل جزئي بدون إنترنت */
-const CACHE = "souqi-express-v43";
+const CACHE = "souqi-express-v44";
 
 /* صفحات لوحة التاجر: يجب أن تكون محدّثة دائماً — لا تُخزَّن إطلاقاً */
 const NEVER_CACHE = [
@@ -30,6 +30,7 @@ const CORE = [
   "./assets/js/integrations.js",
   "./assets/js/couriers.js",
   "./assets/js/subscription.js",
+  "./assets/js/intelligence.js",
   "./assets/js/merchant-shell.js",
   "./landing.html",
   "./manifest.json"

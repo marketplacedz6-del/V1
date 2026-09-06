@@ -26,10 +26,10 @@
     </style>
     <meta name="theme-color" content="#0284c7">
     <title>لوحة القيادة | مركز التاجر</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=43">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=44">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/theme.css?v=43">
+    <link rel="stylesheet" href="assets/css/theme.css?v=44">
     <style>
         body { font-family: 'Cairo', sans-serif; }
         .kpi { position: relative; overflow: hidden; }
@@ -47,6 +47,23 @@
         <div id="shell-topbar"></div>
 
         <main class="flex-grow overflow-y-auto p-4 md:p-6 space-y-5">
+
+            <!-- 🧠 مركز الذكاء التحليلي -->
+            <div id="aiPanel" class="se-card p-4 md:p-5 hidden" style="background:linear-gradient(120deg, rgba(2,132,199,.07), rgba(16,185,129,.05))">
+                <div class="flex items-center justify-between gap-3 flex-wrap mb-3">
+                    <div class="min-w-0">
+                        <h3 class="text-sm md:text-base font-black flex items-center gap-2">🧠 تحليل ذكي لمتجرك</h3>
+                        <p class="se-muted text-[11px] font-bold mt-0.5">قراءة تلقائية لبياناتك — مرتّبة حسب الأثر على أرباحك.</p>
+                    </div>
+                    <span id="aiHealth" class="se-badge !text-[11px] whitespace-nowrap"></span>
+                </div>
+                <div id="aiRecs" class="space-y-2"></div>
+                <div id="aiEmpty" class="hidden text-center py-6">
+                    <div class="text-3xl mb-1">✨</div>
+                    <p class="font-black text-xs">كل شيء يسير جيداً</p>
+                    <p class="se-muted text-[11px] font-bold mt-0.5">لا توجد مشاكل تحتاج تدخّلك الآن.</p>
+                </div>
+            </div>
 
             <!-- الترويسة + فلتر المدة -->
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
@@ -154,10 +171,11 @@
     </div>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="assets/js/config.js?v=43"></script>
-    <script src="assets/js/app.js?v=43"></script>
-    <script src="assets/js/subscription.js?v=43"></script>
-    <script src="assets/js/merchant-shell.js?v=43"></script>
+    <script src="assets/js/config.js?v=44"></script>
+    <script src="assets/js/app.js?v=44"></script>
+    <script src="assets/js/subscription.js?v=44"></script>
+    <script src="assets/js/intelligence.js?v=44"></script>
+    <script src="assets/js/merchant-shell.js?v=44"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, doc, getDoc, getDocs, query, where, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -231,7 +249,52 @@
         };
 
         /* ============ العرض ============ */
+        /* يعرض تحليل SE_AI: نعرض أهم 5 توصيات فقط — القائمة الطويلة
+           تُهمَل، والهدف أن يتصرّف التاجر لا أن يقرأ تقريراً. */
+        function renderAI() {
+            if (!window.SE_AI) return;
+            const panel = document.getElementById('aiPanel');
+            try {
+                const a = SE_AI.analyze({ orders: allOrders, products: allProducts });
+                panel.classList.remove('hidden');
+
+                const hb = document.getElementById('aiHealth');
+                const r = a.health.deliveryRate;
+                if (r === null) {
+                    hb.textContent = 'بيانات غير كافية بعد';
+                    hb.className = 'se-badge !text-[11px] whitespace-nowrap';
+                } else {
+                    hb.textContent = `نسبة التسليم ${r}% · ${a.health.verdict}`;
+                    hb.className = 'se-badge !text-[11px] whitespace-nowrap ' +
+                        (r >= 70 ? 'se-badge-green' : r >= 50 ? '' : 'se-badge-red');
+                    if (r >= 50 && r < 70) hb.style.cssText = 'background:rgba(245,158,11,.16);color:#b45309';
+                }
+
+                const box = document.getElementById('aiRecs');
+                const empty = document.getElementById('aiEmpty');
+                const list = (a.recommendations || []).slice(0, 5);
+                empty.classList.toggle('hidden', list.length > 0);
+
+                const tone = { high: 'border-rose-300', mid: 'border-amber-300', info: 'border-sky-300', low: 'border-slate-200' };
+                box.innerHTML = list.map(x => `
+                    <div class="se-surface border-r-4 ${tone[x.severity] || 'border-slate-200'} rounded-xl p-3">
+                        <div class="flex items-start gap-2">
+                            <span class="text-base flex-shrink-0">${x.icon}</span>
+                            <div class="min-w-0 flex-1">
+                                <p class="font-black text-xs leading-snug">${SE.escape(x.title)}</p>
+                                <p class="se-muted text-[11px] font-bold mt-0.5 leading-relaxed">${SE.escape(x.detail)}</p>
+                                <p class="text-[11px] font-black mt-1" style="color:var(--se-primary)">← ${SE.escape(x.action)}</p>
+                            </div>
+                        </div>
+                    </div>`).join('');
+            } catch (e) {
+                console.error('AI:', e);
+                panel.classList.add('hidden');   // لا نُظهر لوحة مكسورة
+            }
+        }
+
         function render() {
+            renderAI();
             const priceMap = {};
             allProducts.forEach(p => priceMap[p.id] = Number(p.price) || 0);
 

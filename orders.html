@@ -26,10 +26,10 @@
     </style>
     <meta name="theme-color" content="#0284c7">
     <title>الطلبات الواردة | مركز التاجر</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=43">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=44">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/theme.css?v=43">
+    <link rel="stylesheet" href="assets/css/theme.css?v=44">
     <style>body{font-family:'Cairo',sans-serif}</style>
     <style id="se-kill-offline">#se-offline-bar,#se-offline-bar.show{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;pointer-events:none!important}</style>
 </head>
@@ -158,12 +158,13 @@
         </div>
     </div>
 
-    <script src="assets/js/config.js?v=43"></script>
-    <script src="assets/js/app.js?v=43"></script>
-    <script src="assets/js/subscription.js?v=43"></script>
-    <script src="assets/js/merchant-shell.js?v=43"></script>
-    <script src="assets/js/integrations.js?v=43"></script>
-    <script src="assets/js/couriers.js?v=43"></script>
+    <script src="assets/js/config.js?v=44"></script>
+    <script src="assets/js/app.js?v=44"></script>
+    <script src="assets/js/subscription.js?v=44"></script>
+    <script src="assets/js/intelligence.js?v=44"></script>
+    <script src="assets/js/merchant-shell.js?v=44"></script>
+    <script src="assets/js/integrations.js?v=44"></script>
+    <script src="assets/js/couriers.js?v=44"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -366,7 +367,24 @@
             return s === 'cancel' ? 'cancelled' : s;
         }
 
+        /* سياق تقييم الخطورة — يُحسب مرة واحدة لا لكل طلب */
+        let aiCtx = null;
+        function buildAiCtx() {
+            if (!window.SE_AI) return null;
+            try {
+                const done = allOrders.filter(o => SE_AI.status(o) === 'completed');
+                const avg = done.length
+                    ? done.reduce((s, o) => s + SE_AI.orderValue(o), 0) / done.length : 0;
+                return {
+                    customerHistory: SE_AI.buildCustomerHistory(allOrders),
+                    wilayaStats: SE_AI.analyzeWilayas(allOrders),
+                    avgOrder: avg
+                };
+            } catch (e) { console.error('AI ctx:', e); return null; }
+        }
+
         function renderList(list) {
+            aiCtx = buildAiCtx();
             const box = document.getElementById('ordersList');
             document.getElementById('emptyState').classList.toggle('hidden', list.length > 0);
             box.innerHTML = list.map(o => {
@@ -378,6 +396,27 @@
                 const badge = s === 'completed' ? '<span class="se-badge se-badge-green">✅ مكتمل</span>'
                     : s === 'cancelled' ? '<span class="se-badge se-badge-red">❌ ملغى</span>'
                     : '<span class="se-badge" style="background:rgba(245,158,11,.15);color:#b45309">⏳ قيد الانتظار</span>';
+                /* شارة الخطورة: تظهر للطلبات المعلّقة فقط — بعد الشحن
+                   لا فائدة منها، والهدف منع الروتور قبل وقوعه. */
+                let riskBadge = '', riskBox = '';
+                if (s === 'pending' && aiCtx && window.SE_AI) {
+                    try {
+                        const rk = SE_AI.scoreOrder(o, aiCtx);
+                        if (rk.level !== 'low') {
+                            const st = rk.level === 'high'
+                                ? 'background:rgba(244,63,94,.14);color:#be123c'
+                                : 'background:rgba(245,158,11,.16);color:#b45309';
+                            riskBadge = `<span class="se-badge !text-[10px]" style="${st}" title="${esc(rk.advice)}">${rk.level === 'high' ? '⚠️' : '👁️'} ${esc(rk.label)}</span>`;
+                            riskBox = `
+                            <div class="rounded-xl p-2.5 text-[11px] font-bold leading-relaxed" style="${st}">
+                                <div class="font-black mb-0.5">${rk.level === 'high' ? '⚠️ تحقّق قبل الشحن' : '👁️ يُنصح بالتأكيد'}</div>
+                                <div>${rk.reasons.map(x => esc(x)).join(' · ')}</div>
+                                <div class="mt-1">← ${esc(rk.advice)}</div>
+                            </div>`;
+                        }
+                    } catch (e) { /* لا نكسر عرض الطلب بسبب التحليل */ }
+                }
+
                 const opts = [];
                 if (o.selected_color && !['غير محدد', 'قياسي', ''].includes(o.selected_color)) opts.push('اللون: ' + esc(o.selected_color));
                 if (o.selected_size && !['غير محدد', 'قياسي', ''].includes(o.selected_size)) opts.push('المقاس: ' + esc(o.selected_size));
@@ -389,6 +428,7 @@
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="font-black text-sm truncate">${esc(o.customer_name || 'زبون')}</span>
                                 ${badge}
+                                ${riskBadge}
                             </div>
                             <div class="text-[11px] se-muted font-bold mt-1">${esc(ref)} • ${d ? d.toLocaleDateString('ar-DZ') + ' ' + d.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' }) : 'بلا تاريخ'}</div>
                         </div>
@@ -408,6 +448,8 @@
                             <div class="se-muted mt-1 break-words">${esc(o.address || 'بلا عنوان')}</div>
                         </div>
                     </div>
+
+                    ${riskBox}
 
                     <div class="flex items-center gap-2 flex-wrap">
                         <a href="tel:${esc(o.phone_number || '')}" class="se-btn se-btn-ghost !px-3 !py-2 !text-[11px]">📞 ${esc(o.phone_number || '—')}</a>
